@@ -1,7 +1,8 @@
 url: https://pharmaverse.github.io/admiralneuro
 
-neuro:
+template:
   bootstrap: 5
+  math-rendering: mathjax
   params:
     bootswatch: flatly
 repo:

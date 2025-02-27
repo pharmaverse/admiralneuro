@@ -3,7 +3,7 @@ Package: admiralneuro
 Title: Neuroscience Extension Package for ADaM in 'R' Asset Library
 Version: 0.1.0
 Authors@R: 
-    person("Open", "Source", , "admiraltemplate@pharmaverse.com", role = c("aut", "cre"))
+    person("Open", "Source", , "admiralneuro@pharmaverse.com", role = c("aut", "cre"))
 Description: A toolbox for programming Clinical Data Standards Interchange
     Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R.
     ADaM datasets are a mandatory part of any New Drug or Biologics
@@ -14,8 +14,8 @@ Description: A toolbox for programming Clinical Data Standards Interchange
     <https://www.cdisc.org/standards/foundational/adam>).  The package is
     an extension package of the 'admiral' package.
 License: Apache License (>= 2)
-URL: https://pharmaverse.github.io/admiraltemplate,
-    https://github.com/pharmaverse/admiraltemplate
+URL: https://pharmaverse.github.io/admiralneuro,
+    https://github.com/pharmaverse/admiralneuro
 Depends: 
     R (>= 4.1)
 Imports:
