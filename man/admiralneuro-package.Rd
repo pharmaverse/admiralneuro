@@ -13,13 +13,13 @@ A toolbox for programming Clinical Data Standards Interchange Consortium (CDISC)
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pharmaverse.github.io/admiraltemplate}
-  \item \url{https://github.com/pharmaverse/admiraltemplate}
+  \item \url{https://pharmaverse.github.io/admiralneuro}
+  \item \url{https://github.com/pharmaverse/admiralneuro}
 }
 
 }
 \author{
-\strong{Maintainer}: Open Source \email{admiraltemplate@pharmaverse.com}
+\strong{Maintainer}: Open Source \email{admiralneuro@pharmaverse.com}
 
 }
 \concept{internal}
