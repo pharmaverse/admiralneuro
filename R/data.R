@@ -1,6 +1,6 @@
-#' xx Dataset
+#' Demographic Dataset - Neuro
 #'
-#' An xx test dataset for xx
+#' An updated SDTM DM dataset subset with age appropriate Alzheimer's Disease patients
 #' @keywords datasets
 #' @family datasets
-# "xx"
+"dm_neuro"
