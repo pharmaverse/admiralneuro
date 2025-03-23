@@ -1,5 +1,5 @@
-#' Dataset: nv_neuro
-#' Description: Create NV test SDTM dataset for Alzheimer's Disease (Neuro)
+# Dataset: nv_neuro
+# Description: Create NV test SDTM dataset for Alzheimer's Disease (Neuro)
 
 # Load libraries ----
 
@@ -19,13 +19,14 @@ visit_schedule <- vs %>%
   dplyr::filter(USUBJID %in% dm_neuro$USUBJID) %>%
   dplyr::filter(VISITNUM %in% c(3.0, 13.0)) %>%
   dplyr::rename(NVDTC = VSDTC, NVDY = VSDY) %>%
-  select(USUBJID, VISITNUM, VISIT, NVDTC, NVDY) %>%
+  dplyr::select(USUBJID, VISITNUM, VISIT, NVDTC, NVDY) %>%
   group_by(USUBJID) %>%
   distinct()
 
 # MHTERM has diagnosis of AD or other diagnoses
-#mh <- pharmaversesdtm::mh
+# mh <- pharmaversesdtm::mh
 
+# Create records for one USUBJID ----
 
 create_one_visit_dataset <- function(usubjid = "01-701-1015", visitnum = 3,
                                      amy_suvr_cb = 1.461, amy_suvr_com = 1.452, tau_suvr_icbgm = 1.331) {
@@ -50,8 +51,12 @@ create_one_visit_dataset <- function(usubjid = "01-701-1015", visitnum = 3,
 }
 
 visit3_temp_dat <- create_one_visit_dataset()
-visit13_temp_dat <- create_one_visit_dataset(usubjid = "01-701-1016", visitnum = 13,
-                                        amy_suvr_cb = 1.500, amy_suvr_com = 1.480, tau_suvr_icbgm = 1.350)
+visit13_temp_dat <- create_one_visit_dataset(
+  usubjid = "01-701-1016", visitnum = 13,
+  amy_suvr_cb = 1.500, amy_suvr_com = 1.480, tau_suvr_icbgm = 1.350
+)
+
+# Create records for multiple USUBJIDs ----
 
 create_multiple_visit_datasets <- function(ids, visitnum = 3) {
   # Initialize an empty list to store the datasets
@@ -76,43 +81,56 @@ create_multiple_visit_datasets <- function(ids, visitnum = 3) {
     )
   }
 
-  bind_rows(datasets)
+  dplyr::bind_rows(datasets)
 }
 
-# Create synthetic datasets
+# Create separate datasets for visit 3
 visit3_dat <- create_multiple_visit_datasets(ids = dm_neuro$USUBJID, visitnum = 3)
 
+
+# Create visit 13 dataset for placebo group
 pbo_visit13_dat <- visit3_dat %>%
   dplyr::filter(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM")) %>%
-  mutate(
+  dplyr::mutate(
     VISITNUM = 13,
     NVSEQ = NVSEQ + 5,
     NVORRES = as.character(round(as.numeric(NVORRES) + runif(1, min = 0.005, max = 0.01), 3)),
-                     NVORRES)
+    NVORRES
+  )
 
+# Create visit 13 dataset for treatment group
 treat_visit13_dat <- visit3_dat %>%
   dplyr::filter(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM")) %>%
-  mutate(
+  dplyr::mutate(
     VISITNUM = 13,
     NVSEQ = NVSEQ + 5,
     NVORRES = ifelse(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM"),
-                     as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.5), 3)),
-                     ifelse(NVTESTCD == "TAUSUVRICBGM",
-                            as.character(round(as.numeric(NVORRES) - runif(1, min = 0.005, max = 0.01), 3)), NVORRES)))
+      as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.5), 3)),
+      ifelse(NVTESTCD == "TAUSUVRICBGM",
+        as.character(round(as.numeric(NVORRES) - runif(1, min = 0.005, max = 0.01), 3)), NVORRES
+      )
+    )
+  )
 
-
+# Combine datasets and add additional variables
 all_dat <- bind_rows(
   visit3_dat,
   pbo_visit13_dat,
-  treat_visit13_dat) %>%
-  mutate(NVBLFL = ifelse(VISITNUM == 3, "Y", NA_character_),
-         NVORRESU = ifelse(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM"),
-                     "RATIO", NA),
-         NVSTRESC = NVORRES,
-         NVSTRESN = ifelse(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM"),
-                           suppressWarnings(as.numeric(NVORRES)), NA),
-         NVSTRESU = ifelse(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM"),
-                     "RATIO", NA)) %>%
+  treat_visit13_dat
+) %>%
+  dplyr::mutate(
+    NVBLFL = ifelse(VISITNUM == 3, "Y", NA_character_),
+    NVORRESU = ifelse(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM"),
+      "RATIO", NA
+    ),
+    NVSTRESC = NVORRES,
+    NVSTRESN = ifelse(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM"),
+      suppressWarnings(as.numeric(NVORRES)), NA
+    ),
+    NVSTRESU = ifelse(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM"),
+      "RATIO", NA
+    )
+  ) %>%
   dplyr::left_join(
     visit_schedule,
     by = c("USUBJID", "VISITNUM")
@@ -121,10 +139,12 @@ all_dat <- bind_rows(
     STUDYID, DOMAIN, USUBJID, NVSEQ, NVTESTCD, NVTEST,
     NVORRES, NVORRESU, NVSTRESC, NVSTRESN, NVSTRESU,
     NVNAM, NVMETHOD, NVBLFL,
-    VISITNUM, VISIT, NVDTC, NVDY)
+    VISITNUM, VISIT, NVDTC, NVDY
+  )
 
 
-# Add labels to variables
+# Add labels to variables ----
+
 labels <- list(
   STUDYID = "Study Identifier",
   DOMAIN = "Domain Abbreviation",
@@ -153,7 +173,9 @@ for (var in names(labels)) {
 nv_neuro <- all_dat
 
 # Label NV dataset ----
+
 attr(nv_neuro, "label") <- "Nervous System Findings"
 
 # Save dataset ----
+
 usethis::use_data(nv_neuro, overwrite = TRUE)
