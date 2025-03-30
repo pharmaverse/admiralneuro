@@ -1,5 +1,5 @@
 # Dataset: nv_neuro
-# Description: Create NV test SDTM dataset for Alzheimer's Disease (Neuro)
+# Description: Create NV test SDTM dataset for Alzheimer's Disease (neuro studies)
 
 # Load libraries ----
 
@@ -11,11 +11,28 @@ library(admiral)
 # Read input data ----
 
 data("dm_neuro")
+
+
+# Convert blank to NV ----
+
 dm_neuro <- convert_blanks_to_na(dm_neuro)
 
-# use vs visit associated with neuro dataset USUBJID
-vs <- pharmaversesdtm::vs
-visit_schedule <- vs %>%
+
+# Separate placebo and treatment group to mimic different disease progression ----
+
+placebo_group <- dm_neuro %>%
+  dplyr::filter(ARMCD == "Pbo") %>%
+  dplyr::select(USUBJID) %>%
+  distinct()
+
+treatment_group <- dm_neuro %>%
+  dplyr::filter(ARMCD == "Xan_Hi") %>%
+  dplyr::select(USUBJID) %>%
+  distinct()
+
+# Use VS visit associated with USUBJID of dm_neuro dataset
+
+visit_schedule <- pharmaversesdtm::vs %>%
   dplyr::filter(USUBJID %in% dm_neuro$USUBJID) %>%
   dplyr::filter(VISITNUM %in% c(3.0, 13.0)) %>%
   dplyr::rename(NVDTC = VSDTC, NVDY = VSDY) %>%
@@ -23,13 +40,21 @@ visit_schedule <- vs %>%
   group_by(USUBJID) %>%
   distinct()
 
+# Not all USUBJID have visit 13 data
+
+visit_13_usubjid <- visit_schedule %>%
+  dplyr::filter(VISITNUM == 13) %>%
+  distinct()
+
 # MHTERM has diagnosis of AD or other diagnoses
 # mh <- pharmaversesdtm::mh
+# dm_neuro should use MHTERM to restrict to subjects with a diagnosis of Alzheimer's Disease (AD)
+
 
 # Create records for one USUBJID ----
 
-create_one_visit_dataset <- function(usubjid = "01-701-1015", visitnum = 3,
-                                     amy_suvr_cb = 1.461, amy_suvr_com = 1.452, tau_suvr_icbgm = 1.331) {
+create_records_for_one_id <- function(usubjid = "01-701-1015", visitnum = 3,
+                                      amy_suvr_cb = 1.461, amy_suvr_com = 1.452, tau_suvr_icbgm = 1.331) {
   tibble(
     STUDYID = rep("CIDSCPILOT01", 5),
     DOMAIN = rep("NV", 5),
@@ -50,15 +75,15 @@ create_one_visit_dataset <- function(usubjid = "01-701-1015", visitnum = 3,
   )
 }
 
-visit3_temp_dat <- create_one_visit_dataset()
-visit13_temp_dat <- create_one_visit_dataset(
-  usubjid = "01-701-1016", visitnum = 13,
-  amy_suvr_cb = 1.500, amy_suvr_com = 1.480, tau_suvr_icbgm = 1.350
-)
+# visit3_temp_dat <- create_records_for_one_id()
+# visit13_temp_dat <- create_records_for_one_id(
+#   usubjid = "01-701-1016", visitnum = 13,
+#   amy_suvr_cb = 1.500, amy_suvr_com = 1.480, tau_suvr_icbgm = 1.350
+# )
 
 # Create records for multiple USUBJIDs ----
 
-create_multiple_visit_datasets <- function(ids, visitnum = 3) {
+create_records_for_multiple_ids <- function(ids, visitnum = 3) {
   # Initialize an empty list to store the datasets
   datasets <- list()
 
@@ -67,12 +92,12 @@ create_multiple_visit_datasets <- function(ids, visitnum = 3) {
 
   for (i in seq_along(ids)) {
     # Generate random values for the parameters
-    amy_suvr_cb <- round(runif(1, 1.25, 2.5), 3)
+    amy_suvr_cb <- round(runif(1, 1.25, 2.5), 3) # 3 decimal places for amy_suvr_cb
     amy_suvr_com <- round(amy_suvr_cb - runif(1, min = 0.005, max = 0.01), 3)
     tau_suvr_icbgm <- round(amy_suvr_cb - runif(1, min = 0.1, max = 0.13), 3)
 
     # Create the dataset
-    datasets[[i]] <- create_one_visit_dataset(
+    datasets[[i]] <- create_records_for_one_id(
       amy_suvr_cb = amy_suvr_cb,
       amy_suvr_com = amy_suvr_com,
       tau_suvr_icbgm = tau_suvr_icbgm,
@@ -84,12 +109,15 @@ create_multiple_visit_datasets <- function(ids, visitnum = 3) {
   dplyr::bind_rows(datasets)
 }
 
-# Create separate datasets for visit 3
-visit3_dat <- create_multiple_visit_datasets(ids = dm_neuro$USUBJID, visitnum = 3)
+# Create dataset for visit 3 (baseline)
+all_visit3_dat <- create_records_for_multiple_ids(ids = dm_neuro$USUBJID, visitnum = 3)
 
 
-# Create visit 13 dataset for placebo group
-pbo_visit13_dat <- visit3_dat %>%
+# Create visit 13 dataset for placebo group ----
+
+pbo_visit13_dat <- all_visit3_dat %>%
+  dplyr::filter(USUBJID %in% placebo_group$USUBJID) %>%
+  dplyr::filter(USUBJID %in% visit_13_usubjid$USUBJID) %>%
   dplyr::filter(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM")) %>%
   dplyr::mutate(
     VISITNUM = 13,
@@ -98,8 +126,12 @@ pbo_visit13_dat <- visit3_dat %>%
     NVORRES
   )
 
-# Create visit 13 dataset for treatment group
-treat_visit13_dat <- visit3_dat %>%
+
+# Create visit 13 dataset for treatment group ----
+
+treat_visit13_dat <- all_visit3_dat %>%
+  dplyr::filter(USUBJID %in% treatment_group$USUBJID) %>%
+  dplyr::filter(USUBJID %in% visit_13_usubjid$USUBJID) %>%
   dplyr::filter(NVTESTCD %in% c("AMYSUVRCB", "AMYSUVRCOM", "TAUSUVRICBGM")) %>%
   dplyr::mutate(
     VISITNUM = 13,
@@ -112,9 +144,11 @@ treat_visit13_dat <- visit3_dat %>%
     )
   )
 
-# Combine datasets and add additional variables
+
+# Combine datasets and add additional variables ----
+
 all_dat <- bind_rows(
-  visit3_dat,
+  all_visit3_dat,
   pbo_visit13_dat,
   treat_visit13_dat
 ) %>%
