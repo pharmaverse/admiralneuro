@@ -12,11 +12,9 @@ library(admiral)
 
 data("dm_neuro")
 
-
 # Convert blank to NV ----
 
 dm_neuro <- convert_blanks_to_na(dm_neuro)
-
 
 # Separate placebo and treatment group to mimic different disease progression ----
 
@@ -49,7 +47,6 @@ visit_13_usubjid <- visit_schedule %>%
 # MHTERM has diagnosis of AD or other diagnoses
 # mh <- pharmaversesdtm::mh
 # dm_neuro should use MHTERM to restrict to subjects with a diagnosis of Alzheimer's Disease (AD)
-
 
 # Create records for one USUBJID ----
 
@@ -112,7 +109,6 @@ create_records_for_multiple_ids <- function(ids, visitnum = 3) {
 # Create dataset for visit 3 (baseline)
 all_visit3_dat <- create_records_for_multiple_ids(ids = dm_neuro$USUBJID, visitnum = 3)
 
-
 # Create visit 13 dataset for placebo group ----
 
 pbo_visit13_dat <- all_visit3_dat %>%
@@ -125,7 +121,6 @@ pbo_visit13_dat <- all_visit3_dat %>%
     NVORRES = as.character(round(as.numeric(NVORRES) + runif(1, min = 0.005, max = 0.01), 3)),
     NVORRES
   )
-
 
 # Create visit 13 dataset for treatment group ----
 
@@ -143,7 +138,6 @@ treat_visit13_dat <- all_visit3_dat %>%
       )
     )
   )
-
 
 # Combine datasets and add additional variables ----
 
@@ -175,7 +169,6 @@ all_dat <- bind_rows(
     NVNAM, NVMETHOD, NVBLFL,
     VISITNUM, VISIT, NVDTC, NVDY
   )
-
 
 # Add labels to variables ----
 
