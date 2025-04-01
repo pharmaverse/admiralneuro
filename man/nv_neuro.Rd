@@ -5,7 +5,7 @@
 \alias{nv_neuro}
 \title{Example NV SDTM dataset}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 120 rows and 18 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 99 rows and 18 columns.
 }
 \source{
 Constructed using \code{dm_neuro} from \code{{admiralneuro}} package for USUBJID and cohort information, \code{vs} from \code{{pharmaversesdtm}} for visit schedule such as VISIT, NVDTC, NVDY
@@ -14,7 +14,7 @@ Constructed using \code{dm_neuro} from \code{{admiralneuro}} package for USUBJID
 nv_neuro
 }
 \description{
-An example NV SDTM dataset for Alzheimer's disease observational and interventional studies. The amyloid and tau PET data at two visit reflect levels of pathology appropriate for disease or treatment course
+An example NV SDTM dataset for Alzheimer's disease observational and interventional studies. The amyloid and tau PET data at two visits reflect levels of pathology appropriate for disease or treatment course
 }
 \seealso{
 Other datasets: 
