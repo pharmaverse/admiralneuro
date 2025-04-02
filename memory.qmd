@@ -1,0 +1,65 @@
+---
+title: "AAMEMORY"
+format: html
+---
+
+## NOTES
+
+Berkley Pipeline
+file:///C:/Users/C085541/Downloads/ADNI_UCBerkeley_AmyloidPET_Methods_v2_2023-06-29%20(2).pdf
+
+
+FBP, whole cerebellum as reference
+
+CL=188.22 × SUMMARY_SUVR − 189.16
+
+FBB, whole cerebellum as reference
+
+CL= 157.15 × SUMMARY_SUVR − 151.87
+
+
+
+FTP
+reference region:
+inferior cerebellar GM
+file:///C:/Users/C085541/Downloads/ADNI_UCBerkeley_TauPET_Methods_2023-09-27.pdf
+
+
+### CDISC
+
+https://library.cdisc.org/browser/#/mdr/sdtmig/3-4/classes/Findings/datasets/NV
+wang_jian_wj@lilly.com
+Wangmumu98@
+
+
+### Pharmaverse ADaM
+
+https://github.com/pharmaverse/pharmaverseadam
+
+
+### Clarify
+
+the code to create nv_neuro is in data-raw/ as .R file
+the output nv_neuro dataset is in data/ as .rda file
+
+go to R/data.R to manually add nv_neuro documentation
+
+the man page for nv_neuro is at man/ as .Rd file, created by running roxygen2::roxygenise()
+
+
+## CODES
+
+### Check AACI SDTM for example
+
+```{r}
+
+library(haven)
+
+aaci_dir <- "/lillyce/qa/ly3002813/i5t_mc_aaci/intrm7/data/observed/restricted"
+xp_file <- "xp.sas7bdat"
+xp_df <- read_sas(file.path(aaci_dir, xp_file))
+
+
+```
+
+
