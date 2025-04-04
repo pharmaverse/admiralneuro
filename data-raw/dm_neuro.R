@@ -23,8 +23,10 @@ dm_neuro <- dm %>%
   ))
 
 # Create a vector of USUBJID values to modify
-usubjid_to_modify <- c("01-701-1345", "01-714-1288" , "01-701-1028",
-                       "01-701-1181", "01-701-1360")
+usubjid_to_modify <- c(
+  "01-701-1345", "01-714-1288", "01-701-1028",
+  "01-701-1181", "01-701-1360"
+)
 
 # Store the labels before modifying
 var_labels <- lapply(dm_neuro, function(x) attr(x, "label"))
@@ -33,9 +35,9 @@ var_labels <- lapply(dm_neuro, function(x) attr(x, "label"))
 dm_neuro <- dm_neuro %>%
   mutate(
     across(c(ARMCD, ARM, ACTARMCD, ACTARM, RFXSTDTC, RFXENDTC),
-           ~ ifelse(USUBJID %in% usubjid_to_modify, NA_character_, .),
-           .names = "{.col}"),
-
+      ~ ifelse(USUBJID %in% usubjid_to_modify, NA_character_, .),
+      .names = "{.col}"
+    ),
     ARMNRS = case_when(
       USUBJID %in% usubjid_to_modify ~ "Observational Study",
       TRUE ~ NA_character_
@@ -43,9 +45,9 @@ dm_neuro <- dm_neuro %>%
 
     # Convert RFSDTC from char to date, -2 days, and convert back to char
     RFICDTC = if_else(
-      !is.na(RFSTDTC),  # Check if RFSDTC is not NA
+      !is.na(RFSTDTC), # Check if RFSDTC is not NA
       as.character(as.Date(RFSTDTC, format = "%Y-%m-%d") - days(2)),
-      NA_character_  # Return NA if RFSDTC is NA
+      NA_character_ # Return NA if RFSDTC is NA
     )
   )
 
