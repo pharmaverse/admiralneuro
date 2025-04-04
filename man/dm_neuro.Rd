@@ -5,7 +5,7 @@
 \alias{dm_neuro}
 \title{Demographic Dataset - Neuro}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 15 rows and 25 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 15 rows and 26 columns.
 }
 \usage{
 dm_neuro
