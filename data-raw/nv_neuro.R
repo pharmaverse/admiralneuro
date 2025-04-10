@@ -60,7 +60,7 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", visitnum = 3,
     USUBJID = rep(usubjid, 5),
     SUBJID = sub(".*-", "", rep(usubjid, 5)),
     NVSEQ = 1:5,
-    NVTESTCD = c("FBPVR", "FBPSCB", "FBBSCB", "FTPVR", "FTPSICBGM"),
+    NVTESTCD = c("FBPVR", "FBPSCB", "FBBSCB", "FTPVR", "FTPSICBG"),
     NVTEST = c(
       "FBP Qualitative Visual Classification",
       "FBP SUVR Ref Cerebellum",
@@ -77,43 +77,35 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", visitnum = 3,
   )
 }
 
-# Create records for multiple USUBJIDs ----
+# Create dataset for visit 3 (baseline) for all ids from dm_neuro ----
 
-create_records_for_multiple_ids <- function(ids, visitnum = 3, suvr_lo = 1.25, suvr_hi = 2.5) {
-  # Initialize an empty list to store the datasets
-  datasets <- list()
+# Set the seed for reproducibility
+set.seed(2774)
 
-  # Set a seed for reproducibility
-  set.seed(2774)
-
-  for (i in seq_along(ids)) {
+# Generate the data using lapply
+all_visit3_dat <- dplyr::bind_rows(
+  lapply(dm_neuro$USUBJID, function(id) {
     # Generate random values for the parameters
-    fbp_suvr_cb <- round(runif(1, suvr_lo, suvr_hi), 3) # 3 decimal places for suvr
-    fbb_suvr_com <- round(fbp_suvr_cb - runif(1, min = 0.005, max = 0.01), 3) # determine suvr values of fbb and ftp from fbp
+    fbp_suvr_cb <- round(runif(1, 1.25, 2.5), 3)
+    fbb_suvr_com <- round(fbp_suvr_cb - runif(1, min = 0.005, max = 0.01), 3)
     ftp_suvr_icbgm <- round(fbp_suvr_cb - runif(1, min = 0.1, max = 0.13), 3)
 
-    # Create the dataset
-    datasets[[i]] <- create_records_for_one_id(
-      usubjid = ids[i],
-      visitnum = visitnum,
+    # Create the dataset using create_records_for_one_id function
+    create_records_for_one_id(
+      usubjid = id,
+      visitnum = 3,
       fbp_suvr_cb = fbp_suvr_cb,
       fbb_suvr_com = fbb_suvr_com,
       ftp_suvr_icbgm = ftp_suvr_icbgm
     )
-  }
-
-  dplyr::bind_rows(datasets)
-}
-
-# Create dataset for visit 3 (baseline) for all ids from dm_neuro ----
-
-all_visit3_dat <- create_records_for_multiple_ids(ids = dm_neuro$USUBJID, visitnum = 3, )
+  })
+)
 
 # Create visit 9 dataset for placebo and observational groups ----
 
 pbo_obs_visit9_dat <- all_visit3_dat %>%
   dplyr::filter(USUBJID %in% c(placebo_group$USUBJID, observation_group$USUBJID)) %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBGM")) %>%
+  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
   dplyr::mutate(
     VISITNUM = 9,
     NVSEQ = NVSEQ + 5,
@@ -125,13 +117,13 @@ pbo_obs_visit9_dat <- all_visit3_dat %>%
 
 treat_visit9_dat <- all_visit3_dat %>%
   dplyr::filter(USUBJID %in% treatment_group$USUBJID) %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBGM")) %>%
+  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
   dplyr::mutate(
     VISITNUM = 9,
     NVSEQ = NVSEQ + 5,
     NVORRES = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
-      ifelse(NVTESTCD == "FTPSICBGM",
+      ifelse(NVTESTCD == "FTPSICBG",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.005, max = 0.01), 3)), NVORRES
       )
     )
@@ -141,7 +133,7 @@ treat_visit9_dat <- all_visit3_dat %>%
 # Create visit 13 dataset for placebo and observational groups ----
 
 pbo_obs_visit13_dat <- pbo_obs_visit9_dat %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBGM")) %>%
+  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
   dplyr::mutate(
     VISITNUM = 13,
     NVSEQ = NVSEQ + 5,
@@ -153,13 +145,13 @@ pbo_obs_visit13_dat <- pbo_obs_visit9_dat %>%
 
 treat_visit13_dat <- treat_visit9_dat %>%
   # dplyr::filter(USUBJID %in% visit_13_usubjid$USUBJID) %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBGM")) %>%
+  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
   dplyr::mutate(
     VISITNUM = 13,
     NVSEQ = NVSEQ + 5,
     NVORRES = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
-      ifelse(NVTESTCD == "FTPSICBGM",
+      ifelse(NVTESTCD == "FTPSICBG",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.01, max = 0.05), 3)), NVORRES
       )
     )
@@ -180,14 +172,14 @@ all_dat <- bind_rows(
 ) %>%
   dplyr::mutate(
     NVBLFL = ifelse(VISITNUM == 3, "Y", NA_character_),
-    NVORRESU = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBGM"),
+    NVORRESU = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG"),
       "RATIO", NA
     ),
     NVSTRESC = NVORRES,
-    NVSTRESN = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBGM"),
+    NVSTRESN = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG"),
       suppressWarnings(as.numeric(NVORRES)), NA
     ),
-    NVSTRESU = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBGM"),
+    NVSTRESU = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG"),
       "RATIO", NA
     )
   ) %>%
