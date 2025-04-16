@@ -50,7 +50,7 @@ labels <- list(
   AGSEQ = "Sequence Number",
   AGTRT = "Tracer Name",
   AGCAT = "Tracer Category",
-  AGDOSE = "Dose per Adminstration",
+  AGDOSE = "Dose per Administration",
   AGDOSEU = "Dose Units",
   AGROUTE = "Route of Administration",
   AGLNKID = "Link to Subject's NV Domain Record",
