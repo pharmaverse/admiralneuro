@@ -102,4 +102,5 @@
 #'  \item{VISIT}{Visit Name}
 #'  \item{AGSTDTC}{Date/Time of Administration}
 #'  }
-#'
+#' @source Constructed using `nv_neuro` from `{admiralneuro}` package
+"ag_neuro"
