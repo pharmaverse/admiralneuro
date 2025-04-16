@@ -20,8 +20,8 @@ suppnv_neuro <- nv_neuro %>%
   dplyr::filter(!is.na(NVLOC)) %>%
   dplyr::mutate(RDOMAIN = "NV", IDVAR = "NVSEQ", IDVARVAL = NVSEQ, QNAM = "REFREG", QLABEL = "Reference Region") %>%
   dplyr::mutate(QVAL = case_when(
-    stringr::str_detect(NVTEST, "Ref Cerebellum|FBB SUVR Ref Cerebellum") ~ "Whole Cerebellum",
-    stringr::str_detect(NVTEST, "Ref Inf Cerebellar GM") ~ "Inferior Cerebellar Gray Matter",
+    NVCAT %in% c("FBP", "FBB") ~ "Whole Cerebellum",
+    NVCAT == "FTP" ~ "Inferior Cerebellar Gray Matter",
     TRUE ~ NA_character_
   )) %>%
   dplyr::select(STUDYID, RDOMAIN, USUBJID, IDVAR, IDVARVAL, QNAM, QLABEL, QVAL)
@@ -43,7 +43,7 @@ for (var in names(labels)) {
   attr(suppnv_neuro[[var]], "label") <- labels[[var]]
 }
 
-# Label NV dataset ----
+# Label SUPPNV dataset ----
 
 attr(suppnv_neuro, "label") <- "Supplemental to Nervous System Findings"
 

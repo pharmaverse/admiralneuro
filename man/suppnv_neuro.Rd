@@ -29,7 +29,7 @@ A SDTM SUPPNV domain dataset containing reference regions used for SUVR calculat
 \details{
 Supplemental Nervous System Findings Dataset
 
-A SDTM SUPPNV domain dataset NV domain dataset
+A SDTM SUPPNV domain dataset
 }
 \seealso{
 Other datasets: 

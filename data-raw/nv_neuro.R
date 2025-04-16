@@ -60,13 +60,13 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", visitnum = 3,
     USUBJID = rep(usubjid, 5),
     SUBJID = sub(".*-", "", rep(usubjid, 5)),
     NVSEQ = 1:5,
-    NVTESTCD = c("FBPVR", "FBPSCB", "FBBSCB", "FTPVR", "FTPSICBG"),
+    NVTESTCD = c("VR", "SUVR", "SUVR", "VR", "SUVR"),
     NVTEST = c(
-      "FBP Qualitative Visual Classification",
-      "FBP SUVR Ref Cerebellum",
-      "FBB SUVR Ref Cerebellum",
-      "FTP Qualitative Visual Classification",
-      "FTP SUVR Ref Inf Cerebellar GM"
+      "Qualitative Visual Classification",
+      "Standardized Uptake Value Ratio",
+      "Standardized Uptake Value Ratio",
+      "Qualitative Visual Classification",
+      "Standardized Uptake Value Ratio"
     ),
     NVCAT = c("FBP", "FBP", "FBB", "FTP", "FTP"),
     NVORRES = c("Positive", as.character(fbp_suvr_cb), as.character(fbb_suvr_com), "Positive", as.character(ftp_suvr_icbgm)),
@@ -105,7 +105,7 @@ all_visit3_dat <- dplyr::bind_rows(
 
 pbo_obs_visit9_dat <- all_visit3_dat %>%
   dplyr::filter(USUBJID %in% c(placebo_group$USUBJID, observation_group$USUBJID)) %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
+  dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 9,
     NVSEQ = NVSEQ + 5,
@@ -117,23 +117,22 @@ pbo_obs_visit9_dat <- all_visit3_dat %>%
 
 treat_visit9_dat <- all_visit3_dat %>%
   dplyr::filter(USUBJID %in% treatment_group$USUBJID) %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
+  dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 9,
     NVSEQ = NVSEQ + 5,
-    NVORRES = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB"),
+    NVORRES = ifelse(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
-      ifelse(NVTESTCD == "FTPSICBG",
+      ifelse(NVCAT == "FTP",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.005, max = 0.01), 3)), NVORRES
       )
     )
   )
 
-
 # Create visit 13 dataset for placebo and observational groups ----
 
 pbo_obs_visit13_dat <- pbo_obs_visit9_dat %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
+  dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 13,
     NVSEQ = NVSEQ + 5,
@@ -145,13 +144,13 @@ pbo_obs_visit13_dat <- pbo_obs_visit9_dat %>%
 
 treat_visit13_dat <- treat_visit9_dat %>%
   # dplyr::filter(USUBJID %in% visit_13_usubjid$USUBJID) %>%
-  dplyr::filter(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG")) %>%
+  dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 13,
     NVSEQ = NVSEQ + 5,
-    NVORRES = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB"),
+    NVORRES = ifelse(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
-      ifelse(NVTESTCD == "FTPSICBG",
+      ifelse(NVCAT == "FTP",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.01, max = 0.05), 3)), NVORRES
       )
     )
@@ -172,14 +171,14 @@ all_dat <- bind_rows(
 ) %>%
   dplyr::mutate(
     NVBLFL = ifelse(VISITNUM == 3, "Y", NA_character_),
-    NVORRESU = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG"),
+    NVORRESU = ifelse(NVTESTCD == "SUVR",
       "RATIO", NA
     ),
     NVSTRESC = NVORRES,
-    NVSTRESN = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG"),
+    NVSTRESN = ifelse(NVTESTCD == "SUVR",
       suppressWarnings(as.numeric(NVORRES)), NA
     ),
-    NVSTRESU = ifelse(NVTESTCD %in% c("FBPSCB", "FBBSCB", "FTPSICBG"),
+    NVSTRESU = ifelse(NVTESTCD == "SUVR",
       "RATIO", NA
     )
   ) %>%
@@ -187,8 +186,9 @@ all_dat <- bind_rows(
     visit_schedule,
     by = c("USUBJID", "VISITNUM")
   ) %>%
+  dplyr::mutate(NVLNKID = NVSEQ) %>%
   dplyr::select(
-    STUDYID, DOMAIN, USUBJID, NVSEQ,
+    STUDYID, DOMAIN, USUBJID, NVSEQ, NVLNKID,
     NVTESTCD, NVTEST, NVCAT,
     NVLOC, NVMETHOD, NVNAM,
     NVORRES, NVORRESU, NVSTRESC, NVSTRESN, NVSTRESU,
