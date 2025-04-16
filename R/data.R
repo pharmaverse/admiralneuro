@@ -24,6 +24,7 @@
 #'     \item{DOMAIN}{Domain Abbreviation}
 #'     \item{USUBJID}{Unique Subject Identifier}
 #'     \item{NVSEQ}{Sequence Number}
+#'     \item{NVLNKID}{Link to Subject's AG Domain Record}
 #'     \item{NVTESTCD}{Nervous System Test Short Name}
 #'     \item{NVTEST}{Nervous System Test Name}
 #'     \item{NVCAT}{Category for Nervous System Test}

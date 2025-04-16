@@ -204,6 +204,7 @@ labels <- list(
   DOMAIN = "Domain Abbreviation",
   USUBJID = "Unique Subject Identifier",
   NVSEQ = "Sequence Number",
+  NVLNKID = "Link to Subject's AG Domain Record",
 
   # Topic Variables\
   NVTESTCD = "Nervous System Test Short Name",
