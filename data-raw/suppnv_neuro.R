@@ -25,8 +25,6 @@ suppnv_neuro <- nv_neuro %>%
     TRUE ~ NA_character_)) %>%
   dplyr::select(STUDYID, RDOMAIN, USUBJID, IDVAR, IDVARVAL, QNAM, QLABEL, QVAL)
 
-
-
 # Add labels to variables ----
 
 labels <- list(
@@ -38,7 +36,6 @@ labels <- list(
   QNAM = "Qualifier Variable Name",
   QLABEL = "Qualifier Variable Label",
   QVAL = "Qualifier Value")
-
 
 for (var in names(labels)) {
   attr(suppnv_neuro[[var]], "label") <- labels[[var]]
