@@ -22,7 +22,8 @@ suppnv_neuro <- nv_neuro %>%
   dplyr::mutate(QVAL = case_when(
     stringr::str_detect(NVTEST, "Ref Cerebellum|FBB SUVR Ref Cerebellum") ~ "Whole Cerebellum",
     stringr::str_detect(NVTEST, "Ref Inf Cerebellar GM") ~ "Inferior Cerebellar Gray Matter",
-    TRUE ~ NA_character_)) %>%
+    TRUE ~ NA_character_
+  )) %>%
   dplyr::select(STUDYID, RDOMAIN, USUBJID, IDVAR, IDVARVAL, QNAM, QLABEL, QVAL)
 
 # Add labels to variables ----
@@ -35,7 +36,8 @@ labels <- list(
   IDVARVAL = "Identifying Variable Value",
   QNAM = "Qualifier Variable Name",
   QLABEL = "Qualifier Variable Label",
-  QVAL = "Qualifier Value")
+  QVAL = "Qualifier Value"
+)
 
 for (var in names(labels)) {
   attr(suppnv_neuro[[var]], "label") <- labels[[var]]
