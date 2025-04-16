@@ -45,7 +45,8 @@ A SDTM NV domain dataset for Alzheimer's disease observational and interventiona
 }
 \seealso{
 Other datasets: 
-\code{\link{dm_neuro}}
+\code{\link{dm_neuro}},
+\code{\link{suppnv_neuro}}
 }
 \concept{datasets}
 \keyword{datasets}
