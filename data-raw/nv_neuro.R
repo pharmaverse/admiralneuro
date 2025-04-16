@@ -71,7 +71,7 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", visitnum = 3,
     NVCAT = c("FBP", "FBP", "FBB", "FTP", "FTP"),
     NVORRES = c("Positive", as.character(fbp_suvr_cb), as.character(fbb_suvr_com), "Positive", as.character(ftp_suvr_icbgm)),
     NVLOC = c(NA, "NEOCORTICAL COMPOSITE", "NEOCORTICAL COMPOSITE", NA, "NEOCORTICAL COMPOSITE"),
-    NVNAM = c(NA, "Whole Cerebellum", "Whole Cerebellum", NA, "Inferior Cerebellar Gray Matter"),
+    NVNAM = c("IXICO", "AVID", "BERKELEY", "IXICO", "BERKELEY"),
     NVMETHOD = c("FBP VISUAL CLASSIFICATION", "AVID FBP SUVR PIPELINE", "BERKELEY FBB SUVR PIPELINE", "FTP VISUAL CLASSIFICATION", "BERKELEY FTP SUVR PIPELINE"),
     VISITNUM = visitnum
   )
@@ -213,7 +213,7 @@ labels <- list(
   # Qualifier Variables
   NVLOC = "Location of Nervous System Finding",
   NVMETHOD = "Method of Test or Examination",
-  NVNAM = "Nervous System Finding Subcategory",
+  NVNAM = "Vendor Name",
 
   # Result Variables
   NVORRES = "Result or Finding in Original Units",
