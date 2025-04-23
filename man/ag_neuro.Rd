@@ -11,15 +11,15 @@ A data frame with 12 columns:
 \item{DOMAIN}{Domain Abbreviation}
 \item{USUBJID}{Unique Subject Identifier}
 \item{AGSEQ}{Sequence Number}
-\item{AGTRT}{Tracer Name}
-\item{AGCAT}{Tracer Category}
+\item{AGTRT}{Reported Agent Name}
+\item{AGCAT}{Category for Category}
 \item{AGDOSE}{Dose per Administration}
 \item{AGDOSEU}{Dose Units}
 \item{AGROUTE}{Route of Administration}
-\item{AGLNKID}{Link to Subject's NV Domain Record}
+\item{AGLNKID}{Link ID}
 \item{VISITNUM}{Visit Number}
 \item{VISIT}{Visit Name}
-\item{AGSTDTC}{Date/Time of Administration}
+\item{AGSTDTC}{Start Date/Time of Agent}
 }
 }
 \source{

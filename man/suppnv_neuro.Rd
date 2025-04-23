@@ -14,7 +14,9 @@ A data frame with 8 columns:
 \item{IDVARVAL}{Identifying Variable Value}
 \item{QNAM}{Qualifier Variable Name}
 \item{QLABEL}{Qualifier Variable Label}
-\item{QVAL}{Qualifier Value}
+\item{QVAL}{Data Value}
+\item{QORIG}{Origin}
+\item{QEVAL}{Evaluator}
 }
 }
 \source{

@@ -11,13 +11,13 @@ A data frame with 20 columns:
 \item{DOMAIN}{Domain Abbreviation}
 \item{USUBJID}{Unique Subject Identifier}
 \item{NVSEQ}{Sequence Number}
-\item{NVLNKID}{Link to Subject's AG Domain Record}
-\item{NVTESTCD}{Nervous System Test Short Name}
-\item{NVTEST}{Nervous System Test Name}
+\item{NVLNKID}{Link ID}
+\item{NVTESTCD}{Short Name of Nervous System Test}
+\item{NVTEST}{Name of Nervous System Test}
 \item{NVCAT}{Category for Nervous System Test}
-\item{NVLOC}{Location of Nervous System Finding}
+\item{NVLOC}{Location Used for the Measurement}
 \item{NVMETHOD}{Method of Test or Examination}
-\item{NVNAM}{Nervous System Finding Subcategory}
+\item{NVNAM}{Vendor Name}
 \item{NVORRES}{Result or Finding in Original Units}
 \item{NVORRESU}{Original Units}
 \item{NVSTRESC}{Character Result/Finding in Std Format}
@@ -27,7 +27,7 @@ A data frame with 20 columns:
 \item{VISIT}{Visit Name}
 \item{NVDTC}{Date/Time of Collection}
 \item{NVDY}{Study Day of Collection}
-\item{NVBLFL}{Baseline Flag}
+\item{NVLOBXFL}{Last Observation Before Exposure Flag}
 }
 }
 \source{

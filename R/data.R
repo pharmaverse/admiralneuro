@@ -24,13 +24,13 @@
 #'     \item{DOMAIN}{Domain Abbreviation}
 #'     \item{USUBJID}{Unique Subject Identifier}
 #'     \item{NVSEQ}{Sequence Number}
-#'     \item{NVLNKID}{Link to Subject's AG Domain Record}
-#'     \item{NVTESTCD}{Nervous System Test Short Name}
-#'     \item{NVTEST}{Nervous System Test Name}
+#'     \item{NVLNKID}{Link ID}
+#'     \item{NVTESTCD}{Short Name of Nervous System Test}
+#'     \item{NVTEST}{Name of Nervous System Test}
 #'     \item{NVCAT}{Category for Nervous System Test}
-#'     \item{NVLOC}{Location of Nervous System Finding}
+#'     \item{NVLOC}{Location Used for the Measurement}
 #'     \item{NVMETHOD}{Method of Test or Examination}
-#'     \item{NVNAM}{Nervous System Finding Subcategory}
+#'     \item{NVNAM}{Vendor Name}
 #'     \item{NVORRES}{Result or Finding in Original Units}
 #'     \item{NVORRESU}{Original Units}
 #'     \item{NVSTRESC}{Character Result/Finding in Std Format}
@@ -40,7 +40,7 @@
 #'     \item{VISIT}{Visit Name}
 #'     \item{NVDTC}{Date/Time of Collection}
 #'     \item{NVDY}{Study Day of Collection}
-#'     \item{NVBLFL}{Baseline Flag}
+#'     \item{NVLOBXFL}{Last Observation Before Exposure Flag}
 #'   }
 #'
 #' @source Constructed using `dm_neuro` from `{admiralneuro}` package for USUBJID and cohort information, `vs` from `{pharmaversesdtm}` for visit schedule such as VISIT, NVDTC, NVDY
@@ -68,7 +68,9 @@
 #'   \item{IDVARVAL}{Identifying Variable Value}
 #'   \item{QNAM}{Qualifier Variable Name}
 #'   \item{QLABEL}{Qualifier Variable Label}
-#'   \item{QVAL}{Qualifier Value}
+#'   \item{QVAL}{Data Value}
+#'   \item{QORIG}{Origin}
+#'   \item{QEVAL}{Evaluator}
 #'   }
 #' @source Constructed using `nv_neuro` from `{admiralneuro}` package
 "suppnv_neuro"
@@ -92,15 +94,15 @@
 #'  \item{DOMAIN}{Domain Abbreviation}
 #'  \item{USUBJID}{Unique Subject Identifier}
 #'  \item{AGSEQ}{Sequence Number}
-#'  \item{AGTRT}{Tracer Name}
-#'  \item{AGCAT}{Tracer Category}
+#'  \item{AGTRT}{Reported Agent Name}
+#'  \item{AGCAT}{Category for Category}
 #'  \item{AGDOSE}{Dose per Administration}
 #'  \item{AGDOSEU}{Dose Units}
 #'  \item{AGROUTE}{Route of Administration}
-#'  \item{AGLNKID}{Link to Subject's NV Domain Record}
+#'  \item{AGLNKID}{Link ID}
 #'  \item{VISITNUM}{Visit Number}
 #'  \item{VISIT}{Visit Name}
-#'  \item{AGSTDTC}{Date/Time of Administration}
+#'  \item{AGSTDTC}{Start Date/Time of Agent}
 #'  }
 #' @source Constructed using `nv_neuro` from `{admiralneuro}` package
 "ag_neuro"
