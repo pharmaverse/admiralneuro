@@ -170,7 +170,7 @@ all_dat <- bind_rows(
     dplyr::filter(USUBJID %in% visit13_usubjid)
 ) %>%
   dplyr::mutate(
-    NVBLFL = ifelse(VISITNUM == 3, "Y", NA_character_),
+    NVLOBXFL = ifelse(VISITNUM == 3, "Y", NA_character_),
     NVORRESU = ifelse(NVTESTCD == "SUVR",
       "RATIO", NA
     ),
@@ -193,7 +193,7 @@ all_dat <- bind_rows(
     NVLOC, NVMETHOD, NVNAM,
     NVORRES, NVORRESU, NVSTRESC, NVSTRESN, NVSTRESU,
     VISITNUM, VISIT, NVDTC, NVDY,
-    NVBLFL
+    NVLOBXFL
   )
 
 # Add labels to variables ----
@@ -204,15 +204,15 @@ labels <- list(
   DOMAIN = "Domain Abbreviation",
   USUBJID = "Unique Subject Identifier",
   NVSEQ = "Sequence Number",
-  NVLNKID = "Link to Subject's AG Domain Record",
+  NVLNKID = "Link ID",
 
   # Topic Variables\
-  NVTESTCD = "Nervous System Test Short Name",
-  NVTEST = "Nervous System Test Name",
+  NVTESTCD = "Short Name of Nervous System Test",
+  NVTEST = "Name of Nervous System Test",
   NVCAT = "Category for Nervous System Test",
 
   # Qualifier Variables
-  NVLOC = "Location of Nervous System Finding",
+  NVLOC = "Location Used for the Measurement",
   NVMETHOD = "Method of Test or Examination",
   NVNAM = "Vendor Name",
 
@@ -230,7 +230,7 @@ labels <- list(
   NVDY = "Study Day of Collection",
 
   # Additional Qualifier
-  NVBLFL = "Baseline Flag"
+  NVLOBXFL = "Last Observation Before Exposure Flag"
 )
 
 for (var in names(labels)) {
