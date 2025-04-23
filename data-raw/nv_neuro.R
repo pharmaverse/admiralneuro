@@ -59,7 +59,6 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", visitnum = 3,
     DOMAIN = rep("NV", 5),
     USUBJID = rep(usubjid, 5),
     SUBJID = sub(".*-", "", rep(usubjid, 5)),
-    NVSEQ = 1:5,
     NVTESTCD = c("VR", "SUVR", "SUVR", "VR", "SUVR"),
     NVTEST = c(
       "Qualitative Visual Classification",
@@ -108,7 +107,6 @@ pbo_obs_visit9_dat <- all_visit3_dat %>%
   dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 9,
-    NVSEQ = NVSEQ + 5,
     NVORRES = as.character(round(as.numeric(NVORRES) + runif(1, min = 0.1, max = 0.2), 3)),
     NVORRES
   )
@@ -120,7 +118,6 @@ treat_visit9_dat <- all_visit3_dat %>%
   dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 9,
-    NVSEQ = NVSEQ + 5,
     NVORRES = ifelse(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
       ifelse(NVCAT == "FTP",
@@ -135,7 +132,6 @@ pbo_obs_visit13_dat <- pbo_obs_visit9_dat %>%
   dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 13,
-    NVSEQ = NVSEQ + 5,
     NVORRES = as.character(round(as.numeric(NVORRES) + runif(1, min = 0.2, max = 0.3), 3)),
     NVORRES
   )
@@ -147,7 +143,6 @@ treat_visit13_dat <- treat_visit9_dat %>%
   dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 13,
-    NVSEQ = NVSEQ + 5,
     NVORRES = ifelse(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
       ifelse(NVCAT == "FTP",
@@ -186,7 +181,16 @@ all_dat <- bind_rows(
     visit_schedule,
     by = c("USUBJID", "VISITNUM")
   ) %>%
-  dplyr::mutate(NVLNKID = NVSEQ) %>%
+  dplyr::group_by(USUBJID) %>%
+  dplyr::mutate(NVSEQ = row_number()) %>%
+  dplyr::ungroup() %>%
+  dplyr::arrange(USUBJID, VISIT) %>%
+  dplyr::group_by(USUBJID) %>%
+  dplyr::mutate(
+    NVLNKID = match(NVCAT, c("FBP", "FBB", "FTP")) +
+      (n_distinct(NVCAT) * (dense_rank(VISIT) - 1))
+  ) %>%
+  dplyr::ungroup() %>%
   dplyr::select(
     STUDYID, DOMAIN, USUBJID, NVSEQ, NVLNKID,
     NVTESTCD, NVTEST, NVCAT,

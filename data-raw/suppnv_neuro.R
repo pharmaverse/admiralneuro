@@ -24,7 +24,8 @@ suppnv_neuro <- nv_neuro %>%
     NVCAT == "FTP" ~ "Inferior Cerebellar Gray Matter",
     TRUE ~ NA_character_
   )) %>%
-  dplyr::select(STUDYID, RDOMAIN, USUBJID, IDVAR, IDVARVAL, QNAM, QLABEL, QVAL)
+  dplyr::mutate(QORIG = "Assigned", QEVAL = "STATISTICIAN") %>%
+  dplyr::select(STUDYID, RDOMAIN, USUBJID, IDVAR, IDVARVAL, QNAM, QLABEL, QVAL, QORIG, QEVAL)
 
 # Add labels to variables ----
 
@@ -36,7 +37,9 @@ labels <- list(
   IDVARVAL = "Identifying Variable Value",
   QNAM = "Qualifier Variable Name",
   QLABEL = "Qualifier Variable Label",
-  QVAL = "Qualifier Value"
+  QVAL = "Data Value",
+  QORIG = "Origin",
+  QEVAL = "Evaluator"
 )
 
 for (var in names(labels)) {
@@ -45,7 +48,7 @@ for (var in names(labels)) {
 
 # Label SUPPNV dataset ----
 
-attr(suppnv_neuro, "label") <- "Supplemental to Nervous System Findings"
+attr(suppnv_neuro, "label") <- "Supplemental Qualifiers for Nervous System Findings"
 
 # Save dataset ----
 

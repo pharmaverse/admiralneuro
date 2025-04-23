@@ -17,7 +17,9 @@ data("nv_neuro")
 nv_neuro <- convert_blanks_to_na(nv_neuro)
 
 ag_neuro <- nv_neuro %>%
-  dplyr::mutate(DOMAIN = "AG", AGSEQ = NVSEQ, AGLNKID = NVLNKID, AGSTDTC = NVDTC) %>%
+  dplyr::select(STUDYID, USUBJID, NVLNKID, NVDTC, NVCAT, VISITNUM, VISIT) %>%
+  distinct() %>%
+  dplyr::mutate(DOMAIN = "AG", AGLNKID = NVLNKID, AGSTDTC = NVDTC) %>%
   dplyr::mutate(AGTRT = case_when(
     NVCAT == "FBP" ~ "18F-Florbetapir",
     NVCAT == "FBB" ~ "18F-Florbetaben",
@@ -29,10 +31,13 @@ ag_neuro <- nv_neuro %>%
     NVCAT == "FTP" ~ "TAU TRACER"
   )) %>%
   dplyr::mutate(AGDOSE = case_when(
-    NVCAT == "FBP" ~ "370 MBq",
-    NVCAT == "FBB" ~ "300 MBq",
-    NVCAT == "FTP" ~ "370 MBq"
+    NVCAT == "FBP" ~ "370",
+    NVCAT == "FBB" ~ "300",
+    NVCAT == "FTP" ~ "370"
   )) %>%
+  dplyr::group_by(USUBJID) %>%
+  dplyr::mutate(AGSEQ = row_number()) %>%
+  dplyr::ungroup() %>%
   dplyr::mutate(AGDOSEU = "MBq") %>%
   dplyr::mutate(AGROUTE = "Intravenous") %>%
   dplyr::select(
@@ -48,15 +53,15 @@ labels <- list(
   DOMAIN = "Domain Abbreviation",
   USUBJID = "Unique Subject Identifier",
   AGSEQ = "Sequence Number",
-  AGTRT = "Tracer Name",
-  AGCAT = "Tracer Category",
+  AGTRT = "Reported Agent Name",
+  AGCAT = "Category for Agent",
   AGDOSE = "Dose per Administration",
   AGDOSEU = "Dose Units",
   AGROUTE = "Route of Administration",
-  AGLNKID = "Link to Subject's NV Domain Record",
+  AGLNKID = "Link ID",
   VISITNUM = "Visit Number",
   VISIT = "Visit Name",
-  AGSTDTC = "Date/Time of Administration"
+  AGSTDTC = "Start Date/Time of Agent"
 )
 
 for (var in names(labels)) {
@@ -65,7 +70,7 @@ for (var in names(labels)) {
 
 # Label AG dataset ----
 
-attr(ag_neuro, "label") <- "Procedure Agents for Nervous System"
+attr(ag_neuro, "label") <- "Procedure Agents"
 
 # Save dataset ----
 
