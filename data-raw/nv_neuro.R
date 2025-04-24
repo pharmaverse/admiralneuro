@@ -139,7 +139,6 @@ pbo_obs_visit13_dat <- pbo_obs_visit9_dat %>%
 # Create visit 13 dataset for treatment group ----
 
 treat_visit13_dat <- treat_visit9_dat %>%
-  # dplyr::filter(USUBJID %in% visit_13_usubjid$USUBJID) %>%
   dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 13,
