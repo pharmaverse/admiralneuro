@@ -13,5 +13,11 @@ dm_neuro
 \description{
 An updated SDTM DM dataset subset with age appropriate Alzheimer's Disease patients
 }
+\seealso{
+Other datasets: 
+\code{\link{ag_neuro}},
+\code{\link{nv_neuro}},
+\code{\link{suppnv_neuro}}
+}
 \concept{datasets}
 \keyword{datasets}
