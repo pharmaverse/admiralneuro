@@ -16,6 +16,7 @@ library(stringr)
 # For illustration purposes read in admiral test data
 
 data(dm_neuro)
+ex <- pharmaversesdtm::ex
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -23,13 +24,21 @@ data(dm_neuro)
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 
 dm_neuro <- convert_blanks_to_na(dm_neuro)
+ex <- convert_blanks_to_na(ex)
+
+# Select patients from DM Neuro only
+dm_neuro_pat <- dm_neuro %>%
+  pull(unique(USUBJID))
+
+ex <- ex %>%
+  filter(USUBJID %in% dm_neuro_pat)
 
 # Derive Treatment Variables ----
 adsl <- dm_neuro %>%
   # Select all necessary variables only
   select(
     STUDYID, USUBJID, SUBJID, SITEID, COUNTRY, AGE, AGEU, SEX, RACE, ETHNIC, ARM,
-    ARMCD, ACTARM, ACTARMCD, ARMNRS, DTHDTC, DTHFL, RFXSTDTC, RFXENDTC
+    ARMCD, ACTARM, ACTARMCD, ARMNRS, DTHDTC, DTHFL
     ) %>%
   mutate(
     TRT01P = if_else(!is.na(ARMNRS), "No Treatment", ARM),
@@ -44,27 +53,47 @@ adsl <- dm_neuro %>%
       TRT01A == "Placebo" ~ 2,
       TRUE ~ 1
     ),
-  ) %>%
-  select(-ARMNRS)
+  )
 
-# Treatment Start and End Date
-adsl <- adsl %>%
+# Treatment Start and End Dates ----
+ex_ext <- ex %>%
   derive_vars_dtm(
-    dtc = RFXSTDTC,
-    new_vars_prefix = "TRTS"
+    dtc = EXSTDTC,
+    new_vars_prefix = "EXST"
   ) %>%
   derive_vars_dtm(
-    dtc = RFXENDTC,
-    new_vars_prefix = "TRTE",
+    dtc = EXENDTC,
+    new_vars_prefix = "EXEN",
     time_imputation = "last"
+  ) %>%
+  # Merge DM.ARMNRS to not derive treatment dates for these patients
+  left_join(dm_neuro %>% select(USUBJID, ARMNRS), by = "USUBJID")
+
+adsl <- adsl %>%
+  # Treatment Start Datetime
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = (is.na(ARMNRS)),
+    new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
+    order = exprs(EXSTDTM, EXSEQ),
+    mode = "first",
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  # Treatment End Datetime
+  derive_vars_merged(
+    dataset_add = ex_ext,
+    filter_add = (is.na(ARMNRS)),
+    new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
+    order = exprs(EXENDTM, EXSEQ),
+    mode = "last",
+    by_vars = exprs(STUDYID, USUBJID)
   ) %>%
   # Convert Datetime variables to date
   derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
   # Treatment Start Time
   derive_vars_dtm_to_tm(source_vars = exprs(TRTSDTM)) %>%
   # Treatment Duration
-  derive_var_trtdurd() %>%
-  select(-c(RFXSTDTC, RFXENDTC))
+  derive_var_trtdurd()
 
 # Derive Age Grouping ----
 agegr1_lookup <- exprs(
