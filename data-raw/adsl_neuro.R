@@ -42,7 +42,7 @@ adsl <- dm_neuro %>%
       TRT01A == "No Treatment" ~ 3,
       TRT01A == "Placebo" ~ 2,
       TRUE ~ 1
-    ),
+    )
   )
 
 # Treatment Start and End Dates ----
