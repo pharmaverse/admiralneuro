@@ -1,0 +1,187 @@
+# Name: ADPET
+#
+# Label: PET Scan Analysis Dataset
+#
+# Input: adsl, nv,
+
+library(admiral)
+library(pharmaversesdtm) # Contains example datasets from the CDISC pilot project
+
+
+# Load source datasets ----
+
+# Use e.g. `haven::read_sas()` to read in .sas7bdat, or other suitable functions
+# as needed and assign to the variables below.
+# For illustration purposes read in admiral test data
+nv <- admiralneuro::nv_neuro
+adsl <- admiral::admiral_adsl
+
+nv <- convert_blanks_to_na(nv)
+
+# Lookup tables ----
+
+# Assign PARAMCD, PARAM, and PARAMN
+param_lookup <- tibble::tribble(
+  ~NVTESTCD, ~NVCAT, ~NVLOC, ~PARAMCD, ~PARAM, ~PARAMN,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "SUVRFBP", "FBP Standard Uptake Ratio Neocortical Composite", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "SUVRFBB", "FBB Standard Uptake Ratio Neocortical Composite", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "SUVRFTP", "FTP Standard Uptake Ratio Neocortical Composite", 3,
+  "VR", "FBP", NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
+  "VR", "FTP", NA, "VRFTP", "FTP Qualitative Visual Classifcation", 5
+)
+attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
+
+# Derivations ----
+
+# Get list of ADSL vars required for derivations
+adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
+
+adpet <- nv %>%
+  # Join ADSL with NV (need TRTSDT for ADY derivation)
+  derive_vars_merged(
+    dataset_add = adsl,
+    new_vars = adsl_vars,
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  ## Calculate ADT, ADY ----
+  derive_vars_dt(
+    new_vars_prefix = "A",
+    dtc = NVDTC
+  ) %>%
+  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
+
+adpet <- adpet %>%
+  ## Add PARAMCD only - add PARAM etc later ----
+  derive_vars_merged_lookup(
+    dataset_add = param_lookup,
+    new_vars = exprs(PARAMCD, PARAM),
+    by_vars = exprs(NVTESTCD, NVCAT, NVLOC)
+  ) %>%
+  ## Calculate AVAL and AVALC ----
+  # AVALC should only be mapped if it contains non-redundant information.
+  mutate(
+    AVAL = NVSTRESN,
+    AVALC = ifelse(
+      is.na(NVSTRESN) | as.character(NVSTRESN) != NVSTRESC,
+      NVSTRESC,
+      NA
+    )
+  )
+
+## Get visit info ----
+# See also the "Visit and Period Variables" vignette
+# (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
+adpet <- adpet %>%
+  # No Timing variables so we can remove?
+  mutate(
+    # ATPTN = NVTPTNUM,
+    # ATPT = NVTPT,
+    AVISIT = case_when(
+      str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
+      !is.na(VISIT) ~ str_to_title(VISIT),
+      TRUE ~ NA_character_
+    ),
+    AVISITN = as.numeric(case_when(
+      VISIT == "BASELINE" ~ "0",
+      str_detect(VISIT, "WEEK") ~ str_trim(str_replace(VISIT, "WEEK", "")),
+      TRUE ~ NA_character_
+    )),
+    BASETYPE = "LAST"
+  )
+
+## Calculate ONTRTFL ----
+adpet <- derive_var_ontrtfl(
+  adpet,
+  start_date = ADT,
+  ref_start_date = TRTSDT,
+  ref_end_date = TRTEDT
+)
+
+
+# Derive Treatment flags
+
+# Calculate ABLFL
+adpet <- restrict_derivation(
+  adpet,
+  derivation = derive_var_extreme_flag,
+  args = params(
+    new_var = ABLFL,
+    by_vars = c(get_admiral_option("subject_keys"), exprs(BASETYPE, PARAMCD)),
+    order = exprs(ADT, VISITNUM, NVSEQ),
+    mode = "last"
+  ),
+  filter = ((!is.na(AVAL) | !is.na(AVALC)) & ADT <= TRTSDT & !is.na(BASETYPE))
+)
+
+# Derive visit flags
+
+# ANL01FL: Flag last result within a visit and timepoint for baseline and post-baseline records
+adpet <- restrict_derivation(
+  adpet,
+  derivation = derive_var_extreme_flag,
+  args = params(
+    new_var = ANL01FL,
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, AVISIT)),
+    order = exprs(ADT, AVAL),
+    mode = "last"
+  ),
+  filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+) %>%
+  # ANL02FL: Flag last result within a PARAMCD for baseline & post-baseline records
+  restrict_derivation(
+    derivation = derive_var_extreme_flag,
+    args = params(
+      new_var = ANL02FL,
+      by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, ABLFL)),
+      order = exprs(ADT),
+      mode = "last"
+    ),
+    filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+  )
+
+# Derive baseline information
+
+# Calculate BASE
+adpet <- derive_var_base(
+  adpet,
+  by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
+  source_var = AVAL,
+  new_var = BASE
+) %>%
+  # Calculate BASEC
+  derive_var_base(
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
+    source_var = AVALC,
+    new_var = BASEC
+  ) # %>%
+# Commented out for now
+# Calculate CHG
+# derive_var_chg() %>%
+# Calculate PCHG
+#  derive_var_pchg()
+
+# Assign ASEQ
+adpet <- derive_var_obs_number(
+  adpet,
+  new_var = ASEQ,
+  by_vars = get_admiral_option("subject_keys"),
+  order = exprs(PARAMCD, ADT, AVISITN, VISITNUM),
+  check_type = "error"
+)
+
+
+# Final Steps, Select final variables and Add labels
+# This process will be based on your metadata, no example given for this reason
+# ...
+
+admiralneuro_adpet <- adpet
+
+# Save output ----
+
+# Change to whichever directory you want to save the dataset in
+# dir <- tools::R_user_dir("admiraltemplate_templates_data", which = "cache")
+# if (!file.exists(dir)) {
+#   # Create the folder
+#   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+# }
+# save(adxx, file = file.path(dir, "adxx.rda"), compress = "bzip2")
