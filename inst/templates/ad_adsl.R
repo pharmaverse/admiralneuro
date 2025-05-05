@@ -39,7 +39,7 @@ adsl <- dm_neuro %>%
   select(
     STUDYID, USUBJID, SUBJID, SITEID, COUNTRY, AGE, AGEU, SEX, RACE, ETHNIC, ARM,
     ARMCD, ACTARM, ACTARMCD, ARMNRS, DTHDTC, DTHFL
-    ) %>%
+  ) %>%
   mutate(
     TRT01P = if_else(!is.na(ARMNRS), "No Treatment", ARM),
     TRT01PN = case_when(
