@@ -15,6 +15,7 @@ An updated SDTM DM dataset subset with age appropriate Alzheimer's Disease patie
 }
 \seealso{
 Other datasets: 
+\code{\link{adsl_neuro}},
 \code{\link{ag_neuro}},
 \code{\link{nv_neuro}},
 \code{\link{suppnv_neuro}}
