@@ -10,6 +10,11 @@ library(dplyr)
 library(lubridate)
 library(stringr)
 
+# Define project options/variables ----
+# Use the admiral option functionality to store subject key variables in one
+# place (note: `subject_keys` defaults to STUDYID and USUBJID)
+set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
+
 # Load source datasets ----
 
 # Use e.g. `haven::read_sas()` to read in .sas7bdat, or other suitable functions
@@ -18,7 +23,12 @@ library(stringr)
 nv <- admiralneuro::nv_neuro
 adsl <- admiral::admiral_adsl
 
+# When SAS datasets are imported into R using haven::read_sas(), missing
+# character values from SAS appear as "" characters in R, instead of appearing
+# as NA values. Further details can be obtained via the following link:
+# https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 nv <- convert_blanks_to_na(nv)
+
 
 # Lookup tables ----
 
@@ -43,7 +53,7 @@ adpet <- nv %>%
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
-    by_vars = exprs(STUDYID, USUBJID)
+    by_vars = get_admiral_option("subject_keys")
   ) %>%
   ## Calculate ADT, ADY ----
   derive_vars_dt(
@@ -63,7 +73,7 @@ adpet <- adpet %>%
   # AVALC should only be mapped if it contains non-redundant information.
   mutate(
     AVAL = NVSTRESN,
-    AVALC = ifelse(
+    AVALC = if_else(
       is.na(NVSTRESN) | as.character(NVSTRESN) != NVSTRESC,
       NVSTRESC,
       NA
@@ -74,10 +84,7 @@ adpet <- adpet %>%
 # See also the "Visit and Period Variables" vignette
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
 adpet <- adpet %>%
-  # No Timing variables so we can remove?
   mutate(
-    # ATPTN = NVTPTNUM,
-    # ATPT = NVTPT,
     AVISIT = case_when(
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
       !is.na(VISIT) ~ str_to_title(VISIT),
@@ -92,19 +99,17 @@ adpet <- adpet %>%
   )
 
 ## Calculate ONTRTFL ----
-adpet <- derive_var_ontrtfl(
-  adpet,
+adpet <- adpet %>% derive_var_ontrtfl(
   start_date = ADT,
   ref_start_date = TRTSDT,
   ref_end_date = TRTEDT
 )
 
 
-# Derive Treatment flags
+# Derive Baseline flags
 
 # Calculate ABLFL
-adpet <- restrict_derivation(
-  adpet,
+adpet <- adpet %>% restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
     new_var = ABLFL,
@@ -118,8 +123,7 @@ adpet <- restrict_derivation(
 # Derive visit flags
 
 # ANL01FL: Flag last result within a visit and timepoint for baseline and post-baseline records
-adpet <- restrict_derivation(
-  adpet,
+adpet <- adpet %>% restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
     new_var = ANL01FL,
@@ -144,8 +148,7 @@ adpet <- restrict_derivation(
 # Derive baseline information
 
 # Calculate BASE
-adpet <- derive_var_base(
-  adpet,
+adpet <- adpet %>% derive_var_base(
   by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
   source_var = AVAL,
   new_var = BASE
@@ -156,15 +159,14 @@ adpet <- derive_var_base(
     source_var = AVALC,
     new_var = BASEC
   ) # %>%
-# Commented out for now
+
 # Calculate CHG
-# derive_var_chg() %>%
-# Calculate PCHG
-#  derive_var_pchg()
+derive_var_chg() %>%
+  # Calculate PCHG
+  derive_var_pchg()
 
 # Assign ASEQ
-adpet <- derive_var_obs_number(
-  adpet,
+adpet <- adpet %>% derive_var_obs_number(
   new_var = ASEQ,
   by_vars = get_admiral_option("subject_keys"),
   order = exprs(PARAMCD, ADT, AVISITN, VISITNUM),
@@ -181,9 +183,9 @@ admiralneuro_adpet <- adpet
 # Save output ----
 
 # Change to whichever directory you want to save the dataset in
-# dir <- tools::R_user_dir("admiraltemplate_templates_data", which = "cache")
-# if (!file.exists(dir)) {
-#   # Create the folder
-#   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-# }
-# save(adxx, file = file.path(dir, "adxx.rda"), compress = "bzip2")
+dir <- tools::R_user_dir("admiraltemplate_templates_data", which = "cache")
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+}
+save(admiralneuro_adpet, file = file.path(dir, "admiralneuro_adpet.rda"), compress = "bzip2")
