@@ -38,6 +38,7 @@ A SDTM AG domain dataset
 }
 \seealso{
 Other datasets: 
+\code{\link{admiralneuro_adpet}},
 \code{\link{dm_neuro}},
 \code{\link{nv_neuro}},
 \code{\link{suppnv_neuro}}

@@ -106,3 +106,10 @@
 #'  }
 #' @source Constructed using `nv_neuro` from `{admiralneuro}` package
 "ag_neuro"
+
+#' PET Scan Analysis Dataset - Neuro
+#'
+#' An updated ADaM ADPET dataset using NV and adsl
+#' @keywords datasets
+#' @family datasets
+"admiralneuro_adpet"
