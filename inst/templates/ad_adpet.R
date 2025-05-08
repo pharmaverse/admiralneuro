@@ -158,10 +158,9 @@ adpet <- adpet %>% derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVALC,
     new_var = BASEC
-  ) # %>%
-
-# Calculate CHG
-derive_var_chg() %>%
+  ) %>%
+  # Calculate CHG
+  derive_var_chg() %>%
   # Calculate PCHG
   derive_var_pchg()
 
