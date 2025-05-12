@@ -87,10 +87,10 @@ adsl <- adsl %>%
 
 # Derive Age Grouping ----
 agegr1_lookup <- exprs(
-  ~condition,            ~AGEGR1, ~AGEGR1N,
-  is.na(AGE),          "Missing",        3,
-  AGE < 65,                "<65",        1,
-  !is.na(AGE),            ">=65",        2
+  ~condition,   ~AGEGR1, ~AGEGR1N,
+  is.na(AGE), "Missing",        3,
+  AGE < 65,       "<65",        1,
+  !is.na(AGE),   ">=65",        2
 )
 
 adsl <- derive_vars_cat(
@@ -98,13 +98,14 @@ adsl <- derive_vars_cat(
   definition = agegr1_lookup
 )
 
-# Derive Intent-to-Treat and Safety Population Flags ----
+# Derive Intent-To-Treat and Safety Population Flags ----
 adsl <- adsl %>%
   mutate(ITTFL = "Y") %>%
   derive_var_merged_exist_flag(
     dataset_add = adsl,
     by_vars = exprs(STUDYID, USUBJID),
     new_var = SAFFL,
+    false_value = "N",
     condition = (!is.na(TRTSDT))
   )
 
@@ -140,9 +141,9 @@ labels <- list(
   TRTEDT = "Date of Last Exposure to Treatment",
   TRTSTM = "Time of First Exposure to Treatment",
   TRTDURD = "Treatment Duration",
-  AGEGR1 = "Age Group 1",
-  AGEGR1N = "Age Group 1 (N)",
-  ITTFL = "Intent-to-Treat Flag",
+  AGEGR1 = "Pooled Age Group 1",
+  AGEGR1N = "Pooled Age Group 1 (N)",
+  ITTFL = "Intent-To-Treat Population Flag",
   SAFFL = "Safety Population Flag",
   DTHDT = "Date of Death",
   DTHDTF = "Date of Death Imputation Flag",
