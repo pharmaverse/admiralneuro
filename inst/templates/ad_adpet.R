@@ -159,10 +159,16 @@ adpet <- adpet %>% derive_var_base(
     source_var = AVALC,
     new_var = BASEC
   ) %>%
-  # Calculate CHG
-  derive_var_chg() %>%
-  # Calculate PCHG
-  derive_var_pchg()
+  # Calculate CHG for post-baseline records
+  restrict_derivation(
+    derivation = derive_var_chg,
+    filter = AVISITN > 0
+  ) %>%
+  # Calculate PCHG for post-baseline records
+  restrict_derivation(
+    derivation = derive_var_pchg,
+    filter = AVISITN > 0
+  )
 
 # Assign ASEQ
 adpet <- adpet %>% derive_var_obs_number(
