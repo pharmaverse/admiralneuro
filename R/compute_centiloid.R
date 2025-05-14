@@ -90,7 +90,7 @@ compute_centiloid <- function(tracer, pipeline, ref_region, suvr, custom_params 
     assert_character_scalar(pipeline)
     assert_character_scalar(ref_region)
   }
-  assert_numeric_scalar(suvr)
+  assert_numeric_vector(suvr, length = 1)
 
   # Custom params validation if provided
   if (!is.null(custom_params)) {
