@@ -1,6 +1,6 @@
 #' Compute Centiloid Value
 #'
-#' Computes centiloid values based on amyloid PET tracer, SUVr value and pipeline,
+#' Computes centiloid values based on amyloid PET tracer, SUVR value and pipeline,
 #' and reference region.
 #' Also allows for custom formula parameters.
 #'
@@ -11,7 +11,7 @@
 #'   '18F-Florbetapir', '18F-Florbetaben'
 #'   If `custom_params` is provided, any string is accepted.
 #'
-#' @param pipeline SUVr pipeline from nv_neuro dataset
+#' @param pipeline SUVR pipeline from nv_neuro dataset
 #'
 #'   A character string is expected.
 #'   When `custom_params` is not provided, accepted values are:
@@ -25,7 +25,7 @@
 #'   'Whole Cerebellum', 'Composite Reference Region'
 #'   If `custom_params` is provided, any string is accepted.
 #'
-#' @param suvr SUVr value
+#' @param suvr SUVR value
 #'
 #'   A numeric value is expected.
 #'
@@ -38,12 +38,12 @@
 #' @details
 #' The centiloid scale is a standardized quantitative measure for amyloid PET imaging
 #' that allows comparison between different tracers and analysis methods. This function
-#' converts SUVr values to the centiloid scale based on published conversion
+#' converts SUVR values to the centiloid scale based on published conversion
 #' equations for specific tracer, pipeline, and reference region combinations.
 #'
 #' Centiloid is calculated as:
 #'
-#' Centiloid = m * SUVr + c
+#' Centiloid = m * SUVR + c
 #'
 #' where m and c are formula parameters. If `custom_params` is provided, this formula
 #' is used regardless of the tracer, pipeline, or reference region values.
@@ -76,15 +76,31 @@
 #'   custom_params = list(m = 193, c = -187)
 #' )
 compute_centiloid <- function(tracer, pipeline, ref_region, suvr, custom_params = NULL) {
+  params_map <- list(
+    # reference: https://doi.org/10.1016/j.jalz.2018.06.1353
+    "18F-Florbetapir | AVID FBP SUVR PIPELINE | Whole Cerebellum"      = list(m = 183, c = -177),
+    # reference: ADNI UCBerkeley Amyloid PET methods
+    "18F-Florbetapir | BERKELEY FBP SUVR PIPELINE | Whole Cerebellum"  = list(m = 188.22, c = -189.16),
+    # reference: ADNI UCBerkeley Amyloid PET methods
+    "18F-Florbetaben | BERKELEY FBB SUVR PIPELINE | Whole Cerebellum"  = list(m = 157.15, c = -151.87)
+  )
+
+  build_key <- function(tracer, pipeline, ref_region) {
+    paste(tracer, pipeline, ref_region, sep = " | ")
+  }
 
   # Input validation
   if (is.null(custom_params)) {
     assert_character_scalar(tracer, values = c("18F-Florbetapir", "18F-Florbetaben"))
-    assert_character_scalar(pipeline, values = c("AVID FBP SUVR PIPELINE",
-                                                 "BERKELEY FBP SUVR PIPELINE",
-                                                 "BERKELEY FBB SUVR PIPELINE"))
-    assert_character_scalar(ref_region, values = c("Whole Cerebellum",
-                                                   "Composite Reference Region"))
+    assert_character_scalar(pipeline, values = c(
+      "AVID FBP SUVR PIPELINE",
+      "BERKELEY FBP SUVR PIPELINE",
+      "BERKELEY FBB SUVR PIPELINE"
+    ))
+    assert_character_scalar(ref_region, values = c(
+      "Whole Cerebellum",
+      "Composite Reference Region"
+    ))
   } else {
     assert_character_scalar(tracer)
     assert_character_scalar(pipeline)
@@ -107,23 +123,8 @@ compute_centiloid <- function(tracer, pipeline, ref_region, suvr, custom_params 
     # Use custom parameters
     params <- list(m = custom_params$m, c = custom_params$c)
   } else {
-    # Use standard parameters based on tracer, pipeline, and reference region
-    params <- dplyr::case_when(
-      # reference: https://doi.org/10.1016/j.jalz.2018.06.1353
-      tracer == "18F-Florbetapir" & pipeline == "AVID FBP SUVR PIPELINE" &
-        ref_region == "Whole Cerebellum" ~
-        list(m = 183, c = -177),
-      # reference: ADNI UCBerkeley Amyloid PET methods
-      tracer == "18F-Florbetapir" & pipeline == "BERKELEY FBP SUVR PIPELINE" &
-        ref_region == "Whole Cerebellum" ~
-        list(m = 188.22, c = -189.16),
-      # reference: ADNI UCBerkeley Amyloid PET methods
-      tracer == "18F-Florbetaben" & pipeline == "BERKELEY FBB SUVR PIPELINE" &
-        ref_region == "Whole Cerebellum" ~
-        list(m = 157.15, c = -151.87),
-      TRUE ~
-        NULL
-    )
+    key <- build_key(tracer, pipeline, ref_region)
+    params <- params_map[[key]]
 
     if (is.null(params)) {
       warning(
