@@ -1,6 +1,7 @@
 #' Compute Centiloid Value
 #'
-#' Computes centiloid values based on amyloid PET tracer, SUVr value and pipeline, and reference region.
+#' Computes centiloid values based on amyloid PET tracer, SUVr value and pipeline,
+#' and reference region.
 #' Also allows for custom formula parameters.
 #'
 #' @param tracer Amyloid PET tracer from ag_neuro dataset
@@ -79,8 +80,11 @@ compute_centiloid <- function(tracer, pipeline, ref_region, suvr, custom_params 
   # Input validation
   if (is.null(custom_params)) {
     assert_character_scalar(tracer, values = c("18F-Florbetapir", "18F-Florbetaben"))
-    assert_character_scalar(pipeline, values = c("AVID FBP SUVR PIPELINE", "BERKELEY FBP SUVR PIPELINE", "BERKELEY FBB SUVR PIPELINE"))
-    assert_character_scalar(ref_region, values = c("Whole Cerebellum", "Composite Reference Region"))
+    assert_character_scalar(pipeline, values = c("AVID FBP SUVR PIPELINE",
+                                                 "BERKELEY FBP SUVR PIPELINE",
+                                                 "BERKELEY FBB SUVR PIPELINE"))
+    assert_character_scalar(ref_region, values = c("Whole Cerebellum",
+                                                   "Composite Reference Region"))
   } else {
     assert_character_scalar(tracer)
     assert_character_scalar(pipeline)
@@ -106,13 +110,16 @@ compute_centiloid <- function(tracer, pipeline, ref_region, suvr, custom_params 
     # Use standard parameters based on tracer, pipeline, and reference region
     params <- dplyr::case_when(
       # reference: https://doi.org/10.1016/j.jalz.2018.06.1353
-      tracer == "18F-Florbetapir" & pipeline == "AVID FBP SUVR PIPELINE" & ref_region == "Whole Cerebellum" ~
+      tracer == "18F-Florbetapir" & pipeline == "AVID FBP SUVR PIPELINE" &
+        ref_region == "Whole Cerebellum" ~
         list(m = 183, c = -177),
       # reference: ADNI UCBerkeley Amyloid PET methods
-      tracer == "18F-Florbetapir" & pipeline == "BERKELEY FBP SUVR PIPELINE" & ref_region == "Whole Cerebellum" ~
+      tracer == "18F-Florbetapir" & pipeline == "BERKELEY FBP SUVR PIPELINE" &
+        ref_region == "Whole Cerebellum" ~
         list(m = 188.22, c = -189.16),
       # reference: ADNI UCBerkeley Amyloid PET methods
-      tracer == "18F-Florbetaben" & pipeline == "BERKELEY FBB SUVR PIPELINE" & ref_region == "Whole Cerebellum" ~
+      tracer == "18F-Florbetaben" & pipeline == "BERKELEY FBB SUVR PIPELINE" &
+        ref_region == "Whole Cerebellum" ~
         list(m = 157.15, c = -151.87),
       TRUE ~
         NULL
