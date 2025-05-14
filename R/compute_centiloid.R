@@ -78,13 +78,13 @@
 compute_centiloid <- function(tracer, pipeline, ref_region, suvr, custom_params = NULL) {
   params_map <- list(
     # reference: https://doi.org/10.1016/j.jalz.2018.06.1353
-    "18F-Florbetapir | AVID FBP SUVR PIPELINE | Whole Cerebellum"      =
+    "18F-Florbetapir | AVID FBP SUVR PIPELINE | Whole Cerebellum" =
       list(m = 183, c = -177),
     # reference: ADNI UCBerkeley Amyloid PET methods
-    "18F-Florbetapir | BERKELEY FBP SUVR PIPELINE | Whole Cerebellum"  =
+    "18F-Florbetapir | BERKELEY FBP SUVR PIPELINE | Whole Cerebellum" =
       list(m = 188.22, c = -189.16),
     # reference: ADNI UCBerkeley Amyloid PET methods
-    "18F-Florbetaben | BERKELEY FBB SUVR PIPELINE | Whole Cerebellum"  =
+    "18F-Florbetaben | BERKELEY FBB SUVR PIPELINE | Whole Cerebellum" =
       list(m = 157.15, c = -151.87)
   )
 
