@@ -14,7 +14,7 @@ When \code{custom_params} is not provided, accepted values are:
 '18F-Florbetapir', '18F-Florbetaben'
 If \code{custom_params} is provided, any string is accepted.}
 
-\item{pipeline}{SUVr pipeline from nv_neuro dataset
+\item{pipeline}{SUVR pipeline from nv_neuro dataset
 
 A character string is expected.
 When \code{custom_params} is not provided, accepted values are:
@@ -28,7 +28,7 @@ When \code{custom_params} is not provided, accepted values are:
 'Whole Cerebellum', 'Composite Reference Region'
 If \code{custom_params} is provided, any string is accepted.}
 
-\item{suvr}{SUVr value
+\item{suvr}{SUVR value
 
 A numeric value is expected.}
 
@@ -42,19 +42,19 @@ When provided, this overrides the standard formula parameters}
 A numeric centiloid value
 }
 \description{
-Computes centiloid values based on amyloid PET tracer, SUVr value and pipeline,
+Computes centiloid values based on amyloid PET tracer, SUVR value and pipeline,
 and reference region.
 Also allows for custom formula parameters.
 }
 \details{
 The centiloid scale is a standardized quantitative measure for amyloid PET imaging
 that allows comparison between different tracers and analysis methods. This function
-converts SUVr values to the centiloid scale based on published conversion
+converts SUVR values to the centiloid scale based on published conversion
 equations for specific tracer, pipeline, and reference region combinations.
 
 Centiloid is calculated as:
 
-Centiloid = m * SUVr + c
+Centiloid = m * SUVR + c
 
 where m and c are formula parameters. If \code{custom_params} is provided, this formula
 is used regardless of the tracer, pipeline, or reference region values.
