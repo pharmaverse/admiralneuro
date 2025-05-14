@@ -160,11 +160,13 @@ adpet <- adpet %>% derive_var_base(
     new_var = BASEC
   ) %>%
   # Calculate CHG for post-baseline records
+  #The decision on how to populate pre-baseline and baseline values of CHG is left to producer choice
   restrict_derivation(
     derivation = derive_var_chg,
     filter = AVISITN > 0
   ) %>%
   # Calculate PCHG for post-baseline records
+  #The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
   restrict_derivation(
     derivation = derive_var_pchg,
     filter = AVISITN > 0
