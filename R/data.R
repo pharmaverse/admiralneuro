@@ -106,3 +106,10 @@
 #'  }
 #' @source Constructed using `nv_neuro` from `{admiralneuro}` package
 "ag_neuro"
+
+#' Subject Level Analysis Dataset-updated
+#'
+#' An updated ADaM ADSL dataset with Alzheimer's Disease patients
+#' @keywords datasets
+#' @family datasets
+"adsl_neuro"

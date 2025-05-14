@@ -35,6 +35,7 @@ A SDTM SUPPNV domain dataset
 }
 \seealso{
 Other datasets: 
+\code{\link{adsl_neuro}},
 \code{\link{ag_neuro}},
 \code{\link{dm_neuro}},
 \code{\link{nv_neuro}}
