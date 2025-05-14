@@ -120,4 +120,3 @@
 #' @keywords datasets
 #' @family datasets
 "adsl_neuro"
-
