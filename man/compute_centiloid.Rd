@@ -42,7 +42,8 @@ When provided, this overrides the standard formula parameters}
 A numeric centiloid value
 }
 \description{
-Computes centiloid values based on amyloid PET tracer, SUVr value and pipeline, and reference region.
+Computes centiloid values based on amyloid PET tracer, SUVr value and pipeline,
+and reference region.
 Also allows for custom formula parameters.
 }
 \details{
