@@ -88,8 +88,7 @@ compute_centiloid <- function(
     ref_region,
     suvr,
     custom_slope = NULL,
-    custom_intercept = NULL
-) {
+    custom_intercept = NULL) {
   params_map <- list(
     # reference: https://doi.org/10.1016/j.jalz.2018.06.1353
     "18F-Florbetapir | AVID FBP SUVR PIPELINE | Whole Cerebellum" =
@@ -128,8 +127,8 @@ compute_centiloid <- function(
   if (has_custom_slope != has_custom_intercept) {
     stop("Both numeric custom_slope and custom_intercept must be provided together")
   }
+  use_custom_params <- has_custom_slope && has_custom_intercept
 
-  us_custom_params <- has_custom_slope && has_custom_intercept
 
   # 3. Input validation
   if (!use_custom_params) {
@@ -151,7 +150,7 @@ compute_centiloid <- function(
   assert_numeric_vector(suvr, length = 1)
 
   # 4. Prepare parameters for calculation
-  if (us_custom_params) {
+  if (use_custom_params) {
     params <- list(slope = custom_slope, intercept = custom_intercept)
   } else {
     # Use standard parameters based on tracer, pipeline, and reference region

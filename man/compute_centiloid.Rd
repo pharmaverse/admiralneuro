@@ -4,39 +4,52 @@
 \alias{compute_centiloid}
 \title{Compute Centiloid Value}
 \usage{
-compute_centiloid(tracer, pipeline, ref_region, suvr, custom_params = NULL)
+compute_centiloid(
+  tracer,
+  pipeline,
+  ref_region,
+  suvr,
+  custom_slope = NULL,
+  custom_intercept = NULL
+)
 }
 \arguments{
 \item{tracer}{Amyloid PET tracer from ag_neuro dataset
 
 A character string is expected.
-When \code{custom_params} is not provided, accepted values are:
+When custom parameters are not provided, accepted values are:
 '18F-Florbetapir', '18F-Florbetaben'
-If \code{custom_params} is provided, any string is accepted.}
+If custom slope and intercept are provided, any string is accepted.}
 
 \item{pipeline}{SUVR pipeline from nv_neuro dataset
 
 A character string is expected.
-When \code{custom_params} is not provided, accepted values are:
+When custom parameters are not provided, accepted values are:
 'AVID FBP SUVR PIPELINE', 'BERKELEY FBP SUVR PIPELINE', 'BERKELEY FBB SUVR PIPELINE'
-If \code{custom_params} is provided, any string is accepted.}
+If custom slope and intercept are provided, any string is accepted.}
 
 \item{ref_region}{Reference region from suppnv_neuro dataset
 
 A character string is expected.
-When \code{custom_params} is not provided, accepted values are:
+When custom parameters are not provided, accepted values are:
 'Whole Cerebellum', 'Composite Reference Region'
-If \code{custom_params} is provided, any string is accepted.}
+If custom slope and intercept are provided, any string is accepted.}
 
 \item{suvr}{SUVR value
 
 A numeric value is expected.}
 
-\item{custom_params}{Optional list containing custom formula parameters 'm' and 'c'
+\item{custom_slope}{Optional slope parameter for custom centiloid calculation formula
 
-A list with two named numeric values is expected when provided:
-list(m = numeric_value, c = numeric_value)
-When provided, this overrides the standard formula parameters}
+A numeric value is expected when provided.
+When provided with custom_slope, this overrides the standard formula parameters.
+Default is NULL.}
+
+\item{custom_intercept}{Optional intercept parameter for custom centiloid calculation formula
+
+A numeric value is expected when provided.
+When provided with custom_intercept, this overrides the standard formula parameters.
+Default is NULL.}
 }
 \value{
 A numeric centiloid value
@@ -54,12 +67,12 @@ equations for specific tracer, pipeline, and reference region combinations.
 
 Centiloid is calculated as:
 
-Centiloid = m * SUVR + c
+Centiloid = slope * SUVR + intercept
 
-where m and c are formula parameters. If \code{custom_params} is provided, this formula
-is used regardless of the tracer, pipeline, or reference region values.
+where slope and intercept are formula parameters. If custom slope and intercept are provided,
+this formula is used regardless of the tracer, pipeline, or reference region values.
 
-If a matching standard combination is not found and no \code{custom_params} are provided,
+If a matching standard combination is not found and no custom parameters are provided,
 a warning is issued and \code{NA_real_} is returned.
 }
 \examples{
@@ -77,7 +90,8 @@ compute_centiloid(
   pipeline = "MyPipeline",
   ref_region = "MyRegion",
   suvr = 1.25,
-  custom_params = list(m = 193, c = -187)
+  custom_slope = 193,
+  custom_intercept = -187
 )
 }
 \concept{com_bds_findings}
