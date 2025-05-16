@@ -1,7 +1,4 @@
-# test-compute_centiloid.R
-
 # ---- Standard parameter tests ----
-
 test_that("Test 1: 18F-Florbetapir with AVID pipeline", {
   expect_equal(
     compute_centiloid(
@@ -85,7 +82,7 @@ test_that("Test 7: Invalid reference region triggers error", {
   )
 })
 
-test_that("Test 8: Non-numeric SUVr value triggers error", {
+test_that("Test 8: Non-numeric SUVR value triggers error", {
   expect_error(
     compute_centiloid(
       tracer = "18F-Florbetapir",
@@ -97,15 +94,15 @@ test_that("Test 8: Non-numeric SUVr value triggers error", {
 })
 
 # ---- Custom parameter tests ----
-
 test_that("Test 9: Custom parameters override standard formula", {
   expect_equal(
     compute_centiloid(
-      tracer = "18F-Florbetapir",
-      pipeline = "AVID FBP SUVR PIPELINE",
-      ref_region = "Whole Cerebellum",
+      tracer = "AnyTracer",
+      pipeline = "AnyPipeline",
+      ref_region = "AnyRegion",
       suvr = 1.25,
-      custom_params = list(m = 193, c = -187)
+      custom_slope = 193,
+      custom_intercept = -187
     ),
     193 * 1.25 - 187
   )
@@ -114,72 +111,81 @@ test_that("Test 9: Custom parameters override standard formula", {
 test_that("Test 10: Custom parameters with invalid combination still works", {
   expect_equal(
     compute_centiloid(
-      tracer = "18F-Florbetapir",
-      pipeline = "Unknown",
-      ref_region = "Composite Reference Region",
+      tracer = "InvalidTracer",
+      pipeline = "InvalidPipeline",
+      ref_region = "InvalidRegion",
       suvr = 1.25,
-      custom_params = list(m = 150, c = -100)
+      custom_slope = 150,
+      custom_intercept = -100
     ),
     150 * 1.25 - 100
   )
 })
 
-test_that("Test 11: custom_params not a list triggers error", {
+test_that("Test 11: Only one custom parameter provided triggers error", {
   expect_error(
     compute_centiloid(
-      tracer = "18F-Florbetapir",
-      pipeline = "AVID FBP SUVR PIPELINE",
-      ref_region = "Whole Cerebellum",
+      tracer = "Tracer",
+      pipeline = "Pipeline",
+      ref_region = "Region",
       suvr = 1.25,
-      custom_params = c(m = 193, c = -187)
+      custom_slope = 193
     )
   )
-})
 
-test_that("Test 12: custom_params missing 'c' component triggers error", {
   expect_error(
     compute_centiloid(
-      tracer = "18F-Florbetapir",
-      pipeline = "AVID FBP SUVR PIPELINE",
-      ref_region = "Whole Cerebellum",
+      tracer = "Tracer",
+      pipeline = "Pipeline",
+      ref_region = "Region",
       suvr = 1.25,
-      custom_params = list(m = 193)
+      custom_intercept = -187
     )
   )
 })
+test_that("Test 12: Custom parameters with missing values triggers error", {
+  expect_error(
+    compute_centiloid(
+      tracer = "Tracer",
+      pipeline = "Pipeline",
+      ref_region = "Region",
+      suvr = 1.25,
+      custom_slope = NULL,
+      custom_intercept = -187
+    )
+  )
 
-test_that("Test 13: custom_params missing 'm' component triggers error", {
   expect_error(
     compute_centiloid(
-      tracer = "18F-Florbetapir",
-      pipeline = "AVID FBP SUVR PIPELINE",
-      ref_region = "Whole Cerebellum",
+      tracer = "Tracer",
+      pipeline = "Pipeline",
+      ref_region = "Region",
       suvr = 1.25,
-      custom_params = list(c = -187)
+      custom_slope = 193,
+      custom_intercept = NULL
     )
   )
 })
+test_that("Test 13: Custom parameters non numeric inputs", {
+  expect_error(
+    compute_centiloid(
+      tracer = "Tracer",
+      pipeline = "Pipeline",
+      ref_region = "Region",
+      suvr = 1.25,
+      custom_slope = "193",
+      custom_intercept = -187
+    )
+  )
 
-test_that("Test 14: custom_params with non-numeric 'm' triggers error", {
   expect_error(
     compute_centiloid(
-      tracer = "18F-Florbetapir",
-      pipeline = "AVID FBP SUVR PIPELINE",
-      ref_region = "Whole Cerebellum",
+      tracer = "Tracer",
+      pipeline = "Pipeline",
+      ref_region = "Region",
       suvr = 1.25,
-      custom_params = list(m = "193", c = -187)
+      custom_slope = 193,
+      custom_intercept = "-187"
     )
   )
-})
-
-test_that("Test 15: custom_params with non-numeric 'c' triggers error", {
-  expect_error(
-    compute_centiloid(
-      tracer = "18F-Florbetapir",
-      pipeline = "AVID FBP SUVR PIPELINE",
-      ref_region = "Whole Cerebellum",
-      suvr = 1.25,
-      custom_params = list(m = 193, c = "-187")
-    )
-  )
-})
+})")
