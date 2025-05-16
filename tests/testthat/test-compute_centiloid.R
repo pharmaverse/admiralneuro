@@ -188,4 +188,4 @@ test_that("Test 13: Custom parameters non numeric inputs", {
       custom_intercept = "-187"
     )
   )
-})")
+})
