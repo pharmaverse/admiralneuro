@@ -4,26 +4,23 @@
 #' and reference region.
 #' Also allows for custom formula parameters.
 #'
-#' @param tracer Amyloid PET tracer from ag_neuro dataset
+#' @param tracer Amyloid PET tracer
 #'
 #'   A character string is expected.
-#'   When custom parameters are not provided, accepted values are:
-#'   '18F-Florbetapir', '18F-Florbetaben'
-#'   If custom slope and intercept are provided, any string is accepted.
+#'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
+#'   See Details section for accepted values in combination with `pipeline` and `ref_region`.
 #'
-#' @param pipeline SUVR pipeline from nv_neuro dataset
-#'
-#'   A character string is expected.
-#'   When custom parameters are not provided, accepted values are:
-#'   'AVID FBP SUVR PIPELINE', 'BERKELEY FBP SUVR PIPELINE', 'BERKELEY FBB SUVR PIPELINE'
-#'   If custom slope and intercept are provided, any string is accepted.
-#'
-#' @param ref_region Reference region from suppnv_neuro dataset
+#' @param pipeline SUVR pipeline
 #'
 #'   A character string is expected.
-#'   When custom parameters are not provided, accepted values are:
-#'   'Whole Cerebellum', 'Composite Reference Region'
-#'   If custom slope and intercept are provided, any string is accepted.
+#'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
+#'   See Details section for accepted values in combination with `tracer` and `ref_region`.
+#'
+#' @param ref_region Reference region
+#'
+#'   A character string is expected.
+#'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
+#'   See Details section for accepted values in combination with `tracer` and `ref_region`.
 #'
 #' @param suvr SUVR value
 #'
@@ -32,14 +29,16 @@
 #' @param custom_slope Optional slope parameter for custom centiloid calculation formula
 #'
 #'   A numeric value is expected when provided.
-#'   When provided with custom_slope, this overrides the standard formula parameters.
-#'   Default is NULL.
+#'   When `custom_slope` is specified (along with `custom_intercept`), this overrides
+#'   the standard formula parameters `tracer`, `pipeline`, and `ref_region`.
+#'   Default is `NULL`.
 #'
 #' @param custom_intercept Optional intercept parameter for custom centiloid calculation formula
 #'
 #'   A numeric value is expected when provided.
-#'   When provided with custom_intercept, this overrides the standard formula parameters.
-#'   Default is NULL.
+#'   When `custom_intercept` is specified (along with `custom_slope`), this overrides
+#'   the standard formula parameters `tracer`, `pipeline`, and `ref_region`.
+#'   Default is `NULL`.
 #'
 #' @details
 #' The centiloid scale is a standardized quantitative measure for amyloid PET imaging
@@ -49,13 +48,36 @@
 #'
 #' Centiloid is calculated as:
 #'
-#' Centiloid = slope * SUVR + intercept
+#' Centiloid = \deqn{slope \times SUVR + intercept}
 #'
-#' where slope and intercept are formula parameters. If custom slope and intercept are provided,
-#' this formula is used regardless of the tracer, pipeline, or reference region values.
+#' where slope and intercept are formula parameters. If `custom_slope` and `custom_intercept`
+#' are not specified, this function uses pre-defined slope and intercept based on
+#' the user's selections of tracer, pipeline, and reference region.
+#
+#' The following combinations of tracer, pipeline, and reference region are supported:
 #'
-#' If a matching standard combination is not found and no custom parameters are provided,
-#' a warning is issued and `NA_real_` is returned.
+#'  - `tracer = "18F-Florbetapir"`, `pipeline = "AVID FBP SUVR PIPELINE"`,
+#'    `ref_region = "Whole Cerebellum"`
+#'  - `tracer = "18F-Florbetapir"`, `pipeline = "BERKELEY FBP SUVR PIPELINE"`,
+#'    `ref_region = "Whole Cerebellum"`
+#'  - `tracer = "18F-Florbetaben"`, `pipeline = "BERKELEY FBB SUVR PIPELINE"`,
+#'    `ref_region = "Whole Cerebellum"`
+#'
+#' The equation used for the conversion is based on the following references:
+#'  1. https://doi.org/10.1016/j.jalz.2018.06.1353 for 18F-Florbetapir, AVID FBP SUVR PIPELINE,
+#'     Whole Cerebellum.
+#'  2. ADNI UCBerkeley Amyloid PET methods for 18F-Florbetapir, BERKELEY FBP SUVR PIPELINE,
+#'     Whole Cerebellum.
+#'  3. ADNI UCBerkeley Amyloid PET methods for 18F-Florbetaben, BERKELEY FBB SUVR PIPELINE,
+#'     Whole Cerebellum.
+#'
+#' Alternatively, the user can override the pre-selection by specifying `custom_slope`
+#' and `custom_intercept` instead. If `custom_slope` and `custom_intercept` are specified,
+#' `tracer`, `pipeline` and `ref_region` are ignored.
+#'
+#' If a matching combination of tracer, pipeline and reference region is not specified and
+#' `custom_slope` and `custom_intercept` are not specified, a warning is issued and
+#' `NA_real_` is returned.
 #'
 #' @return A numeric centiloid value
 #'
@@ -89,49 +111,33 @@ compute_centiloid <- function(
     suvr,
     custom_slope = NULL,
     custom_intercept = NULL) {
-  params_map <- list(
-    # reference: https://doi.org/10.1016/j.jalz.2018.06.1353
-    "18F-Florbetapir | AVID FBP SUVR PIPELINE | Whole Cerebellum" =
-      list(slope = 183, intercept = -177),
-    # reference: ADNI UCBerkeley Amyloid PET methods
-    "18F-Florbetapir | BERKELEY FBP SUVR PIPELINE | Whole Cerebellum" =
-      list(slope = 188.22, intercept = -189.16),
-    # reference: ADNI UCBerkeley Amyloid PET methods
-    "18F-Florbetaben | BERKELEY FBB SUVR PIPELINE | Whole Cerebellum" =
-      list(slope = 157.15, intercept = -151.87)
+  valid_combinations <- tibble::tribble(
+    ~tracer,              ~pipeline,                     ~ref_region,          ~slope,   ~intercept,
+    "18F-Florbetapir",    "AVID FBP SUVR PIPELINE",      "Whole Cerebellum",   183,      -177,
+    "18F-Florbetapir",    "BERKELEY FBP SUVR PIPELINE",  "Whole Cerebellum",   188.22,   -189.16,
+    "18F-Florbetaben",    "BERKELEY FBB SUVR PIPELINE",  "Whole Cerebellum",   157.15,   -151.87
   )
 
-  build_key <- function(tracer, pipeline, ref_region) {
-    paste(tracer, pipeline, ref_region, sep = " | ")
-  }
+  # Check custom_slope and custom_intercept
+  has_custom_slope <- !is.null(custom_slope)
+  has_custom_intercept <- !is.null(custom_intercept)
 
-  # 1. Check that all required parameters are provided
-  if (missing(tracer) || is.null(tracer)) {
-    stop("tracer parameter is required")
-  }
-  if (missing(pipeline) || is.null(pipeline)) {
-    stop("pipeline parameter is required")
-  }
-  if (missing(ref_region) || is.null(ref_region)) {
-    stop("ref_region parameter is required")
-  }
-  if (missing(suvr) || is.null(suvr)) {
-    stop("suvr parameter is required")
-  }
-
-  # 2. Check custom parameters
-  has_custom_slope <- !is.null(custom_slope) & is.numeric(custom_slope)
-  has_custom_intercept <- !is.null(custom_intercept) & is.numeric(custom_intercept)
-
-  # Both custom parameters must be provided together
   if (has_custom_slope != has_custom_intercept) {
-    stop("Both numeric custom_slope and custom_intercept must be provided together")
+    cli::cli_abort("Both {.code custom_slope} and {.code custom_intercept}
+                   be specified together")
   }
+
   use_custom_params <- has_custom_slope && has_custom_intercept
 
+  if (use_custom_params) {
+    assert_numeric_vector(custom_slope, length = 1)
+    assert_numeric_vector(custom_intercept, length = 1)
+    assert_numeric_vector(suvr, length = 1)
 
-  # 3. Input validation
-  if (!use_custom_params) {
+    # Use custom parameters
+    slope <- custom_slope
+    intercept <- custom_intercept
+  } else {
     assert_character_scalar(tracer, values = c("18F-Florbetapir", "18F-Florbetaben"))
     assert_character_scalar(pipeline, values = c(
       "AVID FBP SUVR PIPELINE",
@@ -142,35 +148,32 @@ compute_centiloid <- function(
       "Whole Cerebellum",
       "Composite Reference Region"
     ))
-  } else {
-    assert_character_scalar(tracer)
-    assert_character_scalar(pipeline)
-    assert_character_scalar(ref_region)
-  }
-  assert_numeric_vector(suvr, length = 1)
 
-  # 4. Prepare parameters for calculation
-  if (use_custom_params) {
-    params <- list(slope = custom_slope, intercept = custom_intercept)
-  } else {
-    # Use standard parameters based on tracer, pipeline, and reference region
-    key <- build_key(tracer, pipeline, ref_region)
-    params <- params_map[[key]]
+    # Check if the combination exists in valid_combinations
+    check <- valid_combinations %>%
+      dplyr::filter(
+        tracer == !!tracer,
+        pipeline == !!pipeline,
+        ref_region == !!ref_region
+      )
 
-    if (is.null(params)) {
-      warning(
-        paste(
+    if (nrow(check) == 0) {
+      cli::cli_warn(
+        c(
           "No standard conversion formula available for:",
-          "tracer =", tracer,
-          "| pipeline =", pipeline,
-          "| ref_region =", ref_region
+          "i" = "tracer = {.val {tracer}}",
+          "i" = "pipeline = {.val {pipeline}}",
+          "i" = "ref_region = {.val {ref_region}}"
         )
       )
       return(NA_real_)
+    } else {
+      slope <- check$slope
+      intercept <- check$intercept
     }
   }
 
-  # 5. Calculate centiloid value
-  centiloid <- params$slope * suvr + params$intercept
+  # Calculate centiloid value
+  centiloid <- slope * suvr + intercept
   return(centiloid)
 }

@@ -1,4 +1,4 @@
-# ---- Standard parameter tests ----
+# ---- Valid combination tests ----
 test_that("Test 1: 18F-Florbetapir with AVID pipeline", {
   expect_equal(
     compute_centiloid(
@@ -48,7 +48,6 @@ test_that("Test 4: Unrecognized combination returns NA with warning", {
 })
 
 # ---- Input validation ----
-
 test_that("Test 5: Invalid tracer value triggers error", {
   expect_error(
     compute_centiloid(
@@ -143,6 +142,7 @@ test_that("Test 11: Only one custom parameter provided triggers error", {
     )
   )
 })
+
 test_that("Test 12: Custom parameters with missing values triggers error", {
   expect_error(
     compute_centiloid(
@@ -166,6 +166,7 @@ test_that("Test 12: Custom parameters with missing values triggers error", {
     )
   )
 })
+
 test_that("Test 13: Custom parameters non numeric inputs", {
   expect_error(
     compute_centiloid(

@@ -14,26 +14,23 @@ compute_centiloid(
 )
 }
 \arguments{
-\item{tracer}{Amyloid PET tracer from ag_neuro dataset
+\item{tracer}{Amyloid PET tracer
 
 A character string is expected.
-When custom parameters are not provided, accepted values are:
-'18F-Florbetapir', '18F-Florbetaben'
-If custom slope and intercept are provided, any string is accepted.}
+If \code{custom_slope} and \code{custom_intercept} are specified, this parameter is ignored.
+See Details section for accepted values in combination with \code{pipeline} and \code{ref_region}.}
 
-\item{pipeline}{SUVR pipeline from nv_neuro dataset
-
-A character string is expected.
-When custom parameters are not provided, accepted values are:
-'AVID FBP SUVR PIPELINE', 'BERKELEY FBP SUVR PIPELINE', 'BERKELEY FBB SUVR PIPELINE'
-If custom slope and intercept are provided, any string is accepted.}
-
-\item{ref_region}{Reference region from suppnv_neuro dataset
+\item{pipeline}{SUVR pipeline
 
 A character string is expected.
-When custom parameters are not provided, accepted values are:
-'Whole Cerebellum', 'Composite Reference Region'
-If custom slope and intercept are provided, any string is accepted.}
+If \code{custom_slope} and \code{custom_intercept} are specified, this parameter is ignored.
+See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.}
+
+\item{ref_region}{Reference region
+
+A character string is expected.
+If \code{custom_slope} and \code{custom_intercept} are specified, this parameter is ignored.
+See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.}
 
 \item{suvr}{SUVR value
 
@@ -42,14 +39,16 @@ A numeric value is expected.}
 \item{custom_slope}{Optional slope parameter for custom centiloid calculation formula
 
 A numeric value is expected when provided.
-When provided with custom_slope, this overrides the standard formula parameters.
-Default is NULL.}
+When \code{custom_slope} is specified (along with \code{custom_intercept}), this overrides
+the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_region}.
+Default is \code{NULL}.}
 
 \item{custom_intercept}{Optional intercept parameter for custom centiloid calculation formula
 
 A numeric value is expected when provided.
-When provided with custom_intercept, this overrides the standard formula parameters.
-Default is NULL.}
+When \code{custom_intercept} is specified (along with \code{custom_slope}), this overrides
+the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_region}.
+Default is \code{NULL}.}
 }
 \value{
 A numeric centiloid value
@@ -67,13 +66,38 @@ equations for specific tracer, pipeline, and reference region combinations.
 
 Centiloid is calculated as:
 
-Centiloid = slope * SUVR + intercept
+Centiloid = \deqn{slope \times SUVR + intercept}
 
-where slope and intercept are formula parameters. If custom slope and intercept are provided,
-this formula is used regardless of the tracer, pipeline, or reference region values.
+where slope and intercept are formula parameters. If \code{custom_slope} and \code{custom_intercept}
+are not specified, this function uses pre-defined slope and intercept based on
+the user's selections of tracer, pipeline, and reference region.
+The following combinations of tracer, pipeline, and reference region are supported:
+\itemize{
+\item \code{tracer = "18F-Florbetapir"}, \code{pipeline = "AVID FBP SUVR PIPELINE"},
+\code{ref_region = "Whole Cerebellum"}
+\item \code{tracer = "18F-Florbetapir"}, \code{pipeline = "BERKELEY FBP SUVR PIPELINE"},
+\code{ref_region = "Whole Cerebellum"}
+\item \code{tracer = "18F-Florbetaben"}, \code{pipeline = "BERKELEY FBB SUVR PIPELINE"},
+\code{ref_region = "Whole Cerebellum"}
+}
 
-If a matching standard combination is not found and no custom parameters are provided,
-a warning is issued and \code{NA_real_} is returned.
+The equation used for the conversion is based on the following references:
+\enumerate{
+\item https://doi.org/10.1016/j.jalz.2018.06.1353 for 18F-Florbetapir, AVID FBP SUVR PIPELINE,
+Whole Cerebellum.
+\item ADNI UCBerkeley Amyloid PET methods for 18F-Florbetapir, BERKELEY FBP SUVR PIPELINE,
+Whole Cerebellum.
+\item ADNI UCBerkeley Amyloid PET methods for 18F-Florbetaben, BERKELEY FBB SUVR PIPELINE,
+Whole Cerebellum.
+}
+
+Alternatively, the user can override the pre-selection by specifying \code{custom_slope}
+and \code{custom_intercept} instead. If \code{custom_slope} and \code{custom_intercept} are specified,
+\code{tracer}, \code{pipeline} and \code{ref_region} are ignored.
+
+If a matching combination of tracer, pipeline and reference region is not specified and
+\code{custom_slope} and \code{custom_intercept} are not specified, a warning is issued and
+\code{NA_real_} is returned.
 }
 \examples{
 # Using standard parameters
