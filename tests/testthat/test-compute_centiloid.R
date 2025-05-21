@@ -1,5 +1,4 @@
 # ---- Valid combination tests ----
-# compute_centiloid()
 ## Test 1: 18F-Florbetapir with AVID pipeline and ref_region
 test_that("Test 1: 18F-Florbetapir with AVID pipeline", {
   expect_equal(

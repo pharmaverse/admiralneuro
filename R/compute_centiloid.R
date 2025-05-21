@@ -64,8 +64,10 @@
 #'    `ref_region = "Whole Cerebellum"`
 #'
 #' The equation used for the conversion is based on the following references:
+# nolint start
 #'  1. https://doi.org/10.1016/j.jalz.2018.06.1353 for 18F-Florbetapir, AVID FBP SUVR PIPELINE,
 #'     Whole Cerebellum.
+# nolint end
 #'  2. ADNI UCBerkeley Amyloid PET methods for 18F-Florbetapir, BERKELEY FBP SUVR PIPELINE,
 #'     Whole Cerebellum.
 #'  3. ADNI UCBerkeley Amyloid PET methods for 18F-Florbetaben, BERKELEY FBB SUVR PIPELINE,
