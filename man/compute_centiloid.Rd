@@ -72,7 +72,8 @@ where slope and intercept are formula parameters. If \code{custom_slope} and \co
 are not specified, this function uses pre-defined slope and intercept based on
 the user's selections of tracer, pipeline, and reference region.
 
-The following combinations of tracer, pipeline, reference region, slope, and intercept are supported:\tabular{lllll}{
+The following combinations of tracer, pipeline, reference region, slope,
+and intercept are supported:\tabular{lllll}{
    tracer \tab pipeline \tab ref_region \tab slope \tab intercept \cr
    18F-Florbetapir \tab AVID FBP SUVR PIPELINE¹ \tab Whole Cerebellum \tab 183.00 \tab -177.00 \cr
    18F-Florbetapir \tab BERKELEY FBP SUVR PIPELINE² \tab Whole Cerebellum \tab 188.22 \tab -189.16 \cr
@@ -82,7 +83,7 @@ The following combinations of tracer, pipeline, reference region, slope, and int
 
 The equation used for the conversion is based on the following references:
 
-¹ \href{https://doi.org/10.1016/j.jalz.2018.06.1353}{Navitsky, et al., 2018}
+¹ \href{https://doi.org/10.1016/j.jalz.2018.06.1353}{Navitsky, et. al., 2018}
 ² \href{https://adni.loni.usc.edu/}{ADNI Florbetapir PET Methods, login required}
 ³ \href{https://adni.loni.usc.edu/}{ADNI Florbetaben PET Methods, login required}
 

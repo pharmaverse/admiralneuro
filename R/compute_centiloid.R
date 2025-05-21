@@ -4,7 +4,7 @@
 #' and reference region.
 #' Also allows for custom formula parameters.
 #'
-#'@md
+#' @md
 #'
 #' @param tracer Amyloid PET tracer
 #'
@@ -56,7 +56,8 @@
 #' are not specified, this function uses pre-defined slope and intercept based on
 #' the user's selections of tracer, pipeline, and reference region.
 #'
-#' The following combinations of tracer, pipeline, reference region, slope, and intercept are supported:
+#' The following combinations of tracer, pipeline, reference region, slope,
+#' and intercept are supported:
 #'
 #' | tracer            | pipeline                        | ref_region        | slope  | intercept |
 #' |-------------------|----------------------------------|-------------------|--------|-----------|
@@ -66,7 +67,7 @@
 #'
 #' The equation used for the conversion is based on the following references:
 #'
-#' ¹ [Navitsky, et al., 2018](https://doi.org/10.1016/j.jalz.2018.06.1353)
+#' ¹ [Navitsky, et. al., 2018](https://doi.org/10.1016/j.jalz.2018.06.1353)
 #' ² [ADNI Florbetapir PET Methods, login required](https://adni.loni.usc.edu/)
 #' ³ [ADNI Florbetaben PET Methods, login required](https://adni.loni.usc.edu/)
 #'
@@ -141,12 +142,14 @@ compute_centiloid <- function(
       "Composite Reference Region"
     ))
 
+    # nolint start
     valid_combinations <- tribble(
       ~tracer,              ~pipeline,                     ~ref_region,          ~slope,   ~intercept,
       "18F-Florbetapir",    "AVID FBP SUVR PIPELINE",      "Whole Cerebellum",   183,      -177,
       "18F-Florbetapir",    "BERKELEY FBP SUVR PIPELINE",  "Whole Cerebellum",   188.22,   -189.16,
       "18F-Florbetaben",    "BERKELEY FBB SUVR PIPELINE",  "Whole Cerebellum",   157.15,   -151.87
     )
+    # nolint end
 
     # Check if the combination exists in valid_combinations
     check <- valid_combinations %>%
