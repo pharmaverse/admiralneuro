@@ -66,30 +66,25 @@ equations for specific tracer, pipeline, and reference region combinations.
 
 Centiloid is calculated as:
 
-Centiloid = \deqn{slope \times SUVR + intercept}
+\deqn{Centiloid = slope \times SUVR + intercept}
 
 where slope and intercept are formula parameters. If \code{custom_slope} and \code{custom_intercept}
 are not specified, this function uses pre-defined slope and intercept based on
 the user's selections of tracer, pipeline, and reference region.
-The following combinations of tracer, pipeline, and reference region are supported:
-\itemize{
-\item \code{tracer = "18F-Florbetapir"}, \code{pipeline = "AVID FBP SUVR PIPELINE"},
-\code{ref_region = "Whole Cerebellum"}
-\item \code{tracer = "18F-Florbetapir"}, \code{pipeline = "BERKELEY FBP SUVR PIPELINE"},
-\code{ref_region = "Whole Cerebellum"}
-\item \code{tracer = "18F-Florbetaben"}, \code{pipeline = "BERKELEY FBB SUVR PIPELINE"},
-\code{ref_region = "Whole Cerebellum"}
+
+The following combinations of tracer, pipeline, reference region, slope, and intercept are supported:\tabular{lllll}{
+   tracer \tab pipeline \tab ref_region \tab slope \tab intercept \cr
+   18F-Florbetapir \tab AVID FBP SUVR PIPELINE¹ \tab Whole Cerebellum \tab 183.00 \tab -177.00 \cr
+   18F-Florbetapir \tab BERKELEY FBP SUVR PIPELINE² \tab Whole Cerebellum \tab 188.22 \tab -189.16 \cr
+   18F-Florbetaben \tab BERKELEY FBB SUVR PIPELINE³ \tab Whole Cerebellum \tab 157.15 \tab -151.87 \cr
 }
 
+
 The equation used for the conversion is based on the following references:
-\enumerate{
-\item https://doi.org/10.1016/j.jalz.2018.06.1353 for 18F-Florbetapir, AVID FBP SUVR PIPELINE,
-Whole Cerebellum.
-\item ADNI UCBerkeley Amyloid PET methods for 18F-Florbetapir, BERKELEY FBP SUVR PIPELINE,
-Whole Cerebellum.
-\item ADNI UCBerkeley Amyloid PET methods for 18F-Florbetaben, BERKELEY FBB SUVR PIPELINE,
-Whole Cerebellum.
-}
+
+¹ \href{https://doi.org/10.1016/j.jalz.2018.06.1353}{Navitsky, et al., 2018}
+² \href{https://adni.loni.usc.edu/}{ADNI Florbetapir PET Methods, login required}
+³ \href{https://adni.loni.usc.edu/}{ADNI Florbetaben PET Methods, login required}
 
 Alternatively, the user can override the pre-selection by specifying \code{custom_slope}
 and \code{custom_intercept} instead. If \code{custom_slope} and \code{custom_intercept} are specified,

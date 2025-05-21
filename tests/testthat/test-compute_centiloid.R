@@ -38,23 +38,21 @@ test_that("Test 3: 18F-Florbetaben with BERKELEY FBB pipeline", {
   )
 })
 
-## Test 4: 18F-Florbetapir with AVID pipeline and Composite Reference Region
-test_that("Test 4: Unrecognized combination returns NA with warning", {
-  expect_warning(
-    result <- compute_centiloid(
+test_that("Test 4: Unrecognized combination returns NA with error", {
+  expect_snapshot_error(
+    compute_centiloid(
       tracer = "18F-Florbetapir",
       pipeline = "AVID FBP SUVR PIPELINE",
       ref_region = "Composite Reference Region",
       suvr = 1.25
     )
   )
-  expect_true(is.na(result))
 })
 
 # ---- Input validation ----
 ## Test 5: Invalid tracer value triggers error
 test_that("Test 5: Invalid tracer value triggers error", {
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "InvalidTracer",
       pipeline = "AVID FBP SUVR PIPELINE",
@@ -66,7 +64,7 @@ test_that("Test 5: Invalid tracer value triggers error", {
 
 ## Test 6: Invalid pipeline value triggers error
 test_that("Test 6: Invalid pipeline value triggers error", {
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "18F-Florbetapir",
       pipeline = "UnknownPipeline",
@@ -78,7 +76,7 @@ test_that("Test 6: Invalid pipeline value triggers error", {
 
 ## Test 7: Invalid reference region value triggers error
 test_that("Test 7: Invalid reference region triggers error", {
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "18F-Florbetapir",
       pipeline = "AVID FBP SUVR PIPELINE",
@@ -89,7 +87,7 @@ test_that("Test 7: Invalid reference region triggers error", {
 })
 
 test_that("Test 8: Non-numeric SUVR value triggers error", {
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "18F-Florbetapir",
       pipeline = "AVID FBP SUVR PIPELINE",
@@ -132,7 +130,7 @@ test_that("Test 10: Custom parameters with invalid combination still works", {
 
 ## Test 11: Only one custom parameter provided triggers error
 test_that("Test 11: Only one custom parameter provided triggers error", {
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "Tracer",
       pipeline = "Pipeline",
@@ -142,7 +140,7 @@ test_that("Test 11: Only one custom parameter provided triggers error", {
     )
   )
 
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "Tracer",
       pipeline = "Pipeline",
@@ -155,7 +153,7 @@ test_that("Test 11: Only one custom parameter provided triggers error", {
 
 ## Test 12: Custom parameters with missing values triggers error
 test_that("Test 12: Custom parameters with missing values triggers error", {
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "Tracer",
       pipeline = "Pipeline",
@@ -166,7 +164,7 @@ test_that("Test 12: Custom parameters with missing values triggers error", {
     )
   )
 
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "Tracer",
       pipeline = "Pipeline",
@@ -180,7 +178,7 @@ test_that("Test 12: Custom parameters with missing values triggers error", {
 
 ## Test 13: Custom parameters non-numeric inputs triggers error
 test_that("Test 13: Custom parameters non numeric inputs", {
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "Tracer",
       pipeline = "Pipeline",
@@ -191,7 +189,7 @@ test_that("Test 13: Custom parameters non numeric inputs", {
     )
   )
 
-  expect_error(
+  expect_snapshot_error(
     compute_centiloid(
       tracer = "Tracer",
       pipeline = "Pipeline",

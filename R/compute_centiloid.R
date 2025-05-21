@@ -4,6 +4,8 @@
 #' and reference region.
 #' Also allows for custom formula parameters.
 #'
+#'@md
+#'
 #' @param tracer Amyloid PET tracer
 #'
 #'   A character string is expected.
@@ -48,30 +50,25 @@
 #'
 #' Centiloid is calculated as:
 #'
-#' Centiloid = \deqn{slope \times SUVR + intercept}
+#' \deqn{Centiloid = slope \times SUVR + intercept}
 #'
 #' where slope and intercept are formula parameters. If `custom_slope` and `custom_intercept`
 #' are not specified, this function uses pre-defined slope and intercept based on
 #' the user's selections of tracer, pipeline, and reference region.
-#
-#' The following combinations of tracer, pipeline, and reference region are supported:
 #'
-#'  - `tracer = "18F-Florbetapir"`, `pipeline = "AVID FBP SUVR PIPELINE"`,
-#'    `ref_region = "Whole Cerebellum"`
-#'  - `tracer = "18F-Florbetapir"`, `pipeline = "BERKELEY FBP SUVR PIPELINE"`,
-#'    `ref_region = "Whole Cerebellum"`
-#'  - `tracer = "18F-Florbetaben"`, `pipeline = "BERKELEY FBB SUVR PIPELINE"`,
-#'    `ref_region = "Whole Cerebellum"`
+#' The following combinations of tracer, pipeline, reference region, slope, and intercept are supported:
+#'
+#' | tracer            | pipeline                        | ref_region        | slope  | intercept |
+#' |-------------------|----------------------------------|-------------------|--------|-----------|
+#' | 18F-Florbetapir   | AVID FBP SUVR PIPELINE¹         | Whole Cerebellum  | 183.00 | -177.00   |
+#' | 18F-Florbetapir   | BERKELEY FBP SUVR PIPELINE²     | Whole Cerebellum  | 188.22 | -189.16   |
+#' | 18F-Florbetaben   | BERKELEY FBB SUVR PIPELINE³     | Whole Cerebellum  | 157.15 | -151.87   |
 #'
 #' The equation used for the conversion is based on the following references:
-# nolint start
-#'  1. https://doi.org/10.1016/j.jalz.2018.06.1353 for 18F-Florbetapir, AVID FBP SUVR PIPELINE,
-#'     Whole Cerebellum.
-# nolint end
-#'  2. ADNI UCBerkeley Amyloid PET methods for 18F-Florbetapir, BERKELEY FBP SUVR PIPELINE,
-#'     Whole Cerebellum.
-#'  3. ADNI UCBerkeley Amyloid PET methods for 18F-Florbetaben, BERKELEY FBB SUVR PIPELINE,
-#'     Whole Cerebellum.
+#'
+#' ¹ [Navitsky, et al., 2018](https://doi.org/10.1016/j.jalz.2018.06.1353)
+#' ² [ADNI Florbetapir PET Methods, login required](https://adni.loni.usc.edu/)
+#' ³ [ADNI Florbetaben PET Methods, login required](https://adni.loni.usc.edu/)
 #'
 #' Alternatively, the user can override the pre-selection by specifying `custom_slope`
 #' and `custom_intercept` instead. If `custom_slope` and `custom_intercept` are specified,
@@ -113,20 +110,13 @@ compute_centiloid <- function(
     suvr,
     custom_slope = NULL,
     custom_intercept = NULL) {
-  valid_combinations <- tibble::tribble(
-    ~tracer,              ~pipeline,                     ~ref_region,          ~slope,   ~intercept,
-    "18F-Florbetapir",    "AVID FBP SUVR PIPELINE",      "Whole Cerebellum",   183,      -177,
-    "18F-Florbetapir",    "BERKELEY FBP SUVR PIPELINE",  "Whole Cerebellum",   188.22,   -189.16,
-    "18F-Florbetaben",    "BERKELEY FBB SUVR PIPELINE",  "Whole Cerebellum",   157.15,   -151.87
-  )
-
   # Check custom_slope and custom_intercept
   has_custom_slope <- !is.null(custom_slope)
   has_custom_intercept <- !is.null(custom_intercept)
 
   if (has_custom_slope != has_custom_intercept) {
-    cli::cli_abort("Both {.code custom_slope} and {.code custom_intercept}
-                   be specified together")
+    cli_abort("Both {.code custom_slope} and {.code custom_intercept}
+                   must be specified together")
   }
 
   use_custom_params <- has_custom_slope && has_custom_intercept
@@ -151,23 +141,28 @@ compute_centiloid <- function(
       "Composite Reference Region"
     ))
 
+    valid_combinations <- tribble(
+      ~tracer,              ~pipeline,                     ~ref_region,          ~slope,   ~intercept,
+      "18F-Florbetapir",    "AVID FBP SUVR PIPELINE",      "Whole Cerebellum",   183,      -177,
+      "18F-Florbetapir",    "BERKELEY FBP SUVR PIPELINE",  "Whole Cerebellum",   188.22,   -189.16,
+      "18F-Florbetaben",    "BERKELEY FBB SUVR PIPELINE",  "Whole Cerebellum",   157.15,   -151.87
+    )
+
     # Check if the combination exists in valid_combinations
     check <- valid_combinations %>%
-      dplyr::filter(
+      filter(
         tracer == !!tracer,
         pipeline == !!pipeline,
         ref_region == !!ref_region
       )
 
     if (nrow(check) == 0) {
-      cli::cli_warn(
-        c(
-          "No standard conversion formula available for:",
-          "i" = "tracer = {.val {tracer}}",
-          "i" = "pipeline = {.val {pipeline}}",
-          "i" = "ref_region = {.val {ref_region}}"
-        )
-      )
+      cli_abort(c(
+        "No standard conversion formula available for:",
+        "*" = "tracer = {.val {tracer}}",
+        "*" = "pipeline = {.val {pipeline}}",
+        "*" = "ref_region = {.val {ref_region}}"
+      ))
       return(NA_real_)
     } else {
       slope <- check$slope
