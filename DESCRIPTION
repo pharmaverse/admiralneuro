@@ -21,6 +21,7 @@ Depends:
 Imports:
     admiral (>= 1.2.0),
     admiraldev (>= 1.2.0),
+    cli (>= 3.6.2),
     dplyr (>= 1.0.5),
     hms (>= 0.5.3),
     lifecycle (>= 0.1.0),
@@ -29,6 +30,7 @@ Imports:
     purrr (>= 0.3.3),
     rlang (>= 0.4.4),
     stringr (>= 1.4.0),
+    tibble (>= 3.2.1),
     tidyr (>= 1.0.2),
     tidyselect (>= 1.1.0)
 Suggests:
@@ -42,7 +44,6 @@ Suggests:
     readxl,
     rmarkdown,
     testthat (>= 3.0.0),
-    tibble
 VignetteBuilder: 
     knitr
 Config/testthat/edition: 3

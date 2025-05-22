@@ -81,7 +81,7 @@
 #' Procedure Agents for Nervous System Dataset
 #'
 #' A SDTM AG domain dataset
-#' @keywords keyword
+#' @keywords datasets
 #' @family datasets
 #'
 #' @name ag_neuro
