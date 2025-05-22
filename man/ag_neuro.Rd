@@ -44,4 +44,4 @@ Other datasets:
 \code{\link{suppnv_neuro}}
 }
 \concept{datasets}
-\keyword{keyword}
+\keyword{datasets}

@@ -60,7 +60,7 @@
 #' and intercept are supported:
 #'
 #' | tracer            | pipeline                        | ref_region        | slope  | intercept |
-#' |-------------------|----------------------------------|-------------------|--------|-----------|
+#' |-------------------|---------------------------------|-------------------|--------|-----------|
 #' | 18F-Florbetapir   | AVID FBP SUVR PIPELINE¹         | Whole Cerebellum  | 183.00 | -177.00   |
 #' | 18F-Florbetapir   | BERKELEY FBP SUVR PIPELINE²     | Whole Cerebellum  | 188.22 | -189.16   |
 #' | 18F-Florbetaben   | BERKELEY FBB SUVR PIPELINE³     | Whole Cerebellum  | 157.15 | -151.87   |
