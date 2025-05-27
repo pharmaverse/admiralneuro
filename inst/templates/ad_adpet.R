@@ -63,7 +63,6 @@ adpet <- nv %>%
     by_vars = get_admiral_option("subject_keys")
   ) %>%
 
-  #adpet <- adpet %>%
   # Join ADPET with AG for tracer information, users can add more variables in the `new_vars` argument as needed.
   derive_vars_merged(
     dataset_add = ag,
