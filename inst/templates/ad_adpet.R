@@ -46,7 +46,7 @@ param_lookup <- tibble::tribble(
   "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
   "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "SNCTFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
   "VR", "FBP", NA, NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classifcation", 5
+  "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classification", 5
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
