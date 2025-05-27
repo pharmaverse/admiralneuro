@@ -21,7 +21,9 @@ set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 # as needed and assign to the variables below.
 # For illustration purposes read in admiral test data
 nv <- admiralneuro::nv_neuro
-adsl <- admiral::admiral_adsl
+ag <- admiralneuro::ag_neuro
+suppnv <- admiralneuro::suppnv_neuro
+adsl <- admiralneuro::adsl_neuro
 
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
@@ -30,16 +32,21 @@ adsl <- admiral::admiral_adsl
 nv <- convert_blanks_to_na(nv)
 
 
+#Combine the parental datasets with their respective supp datasets (only if exist)
+# User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
+
+nv <- metatools::combine_supp(nv, suppnv)
+
 # Lookup tables ----
 
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
-  ~NVTESTCD, ~NVCAT, ~NVLOC, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "SUVRFBP", "FBP Standard Uptake Ratio Neocortical Composite", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "SUVRFBB", "FBB Standard Uptake Ratio Neocortical Composite", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "SUVRFTP", "FTP Standard Uptake Ratio Neocortical Composite", 3,
-  "VR", "FBP", NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, "VRFTP", "FTP Qualitative Visual Classifcation", 5
+  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~PARAMCD, ~PARAM, ~PARAMN,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE","Inferior Cerebellar Gray Matter", "SNCTFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "VR", "FBP", NA, NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
+  "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classifcation", 5
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
@@ -55,6 +62,15 @@ adpet <- nv %>%
     new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   ) %>%
+
+  #adpet <- adpet %>%
+  # Join ADPET with AG for tracer information, users can add more variables in the `new_vars` argument as needed.
+  derive_vars_merged(
+    dataset_add = ag,
+    new_vars = exprs(AGTRT, AGCAT),
+    by_vars = exprs(USUBJID, VISIT, NVLNKID = AGLNKID)
+  ) %>%
+
   ## Calculate ADT, ADY ----
   derive_vars_dt(
     new_vars_prefix = "A",
