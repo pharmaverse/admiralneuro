@@ -32,7 +32,7 @@ adsl <- admiralneuro::adsl_neuro
 nv <- convert_blanks_to_na(nv)
 
 
-#Combine the parental datasets with their respective supp datasets (only if exist)
+# Combine the parental datasets with their respective supp datasets (only if exist)
 # User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
 
 nv <- metatools::combine_supp(nv, suppnv)
@@ -44,7 +44,7 @@ param_lookup <- tibble::tribble(
   ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~PARAMCD, ~PARAM, ~PARAMN,
   "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
   "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE","Inferior Cerebellar Gray Matter", "SNCTFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "SNCTFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
   "VR", "FBP", NA, NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
   "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classifcation", 5
 )
@@ -62,14 +62,12 @@ adpet <- nv %>%
     new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   ) %>%
-
   # Join ADPET with AG for tracer information, users can add more variables in the `new_vars` argument as needed.
   derive_vars_merged(
     dataset_add = ag,
     new_vars = exprs(AGTRT, AGCAT),
     by_vars = exprs(USUBJID, VISIT, NVLNKID = AGLNKID)
   ) %>%
-
   ## Calculate ADT, ADY ----
   derive_vars_dt(
     new_vars_prefix = "A",
