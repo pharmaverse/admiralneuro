@@ -56,13 +56,14 @@ attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
 adpet <- nv %>%
-  # Join ADSL with NV (need TRTSDT for ADY derivation)
+  ## Join ADSL with NV (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   ) %>%
-  # Join ADPET with AG for tracer information, users can add more variables in the `new_vars` argument as needed.
+  ## Join ADPET with AG for tracer information ----
+  # Users can add more variables in the `new_vars` argument as needed.
   derive_vars_merged(
     dataset_add = ag,
     new_vars = exprs(AGTRT, AGCAT),
@@ -118,9 +119,9 @@ adpet <- adpet %>% derive_var_ontrtfl(
   ref_end_date = TRTEDT
 )
 
-# Derive Baseline flags
+### Derive Baseline flags ----
 
-# Calculate ABLFL
+### Calculate ABLFL ----
 adpet <- adpet %>% restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
@@ -132,7 +133,7 @@ adpet <- adpet %>% restrict_derivation(
   filter = ((!is.na(AVAL) | !is.na(AVALC)) & ADT <= TRTSDT & !is.na(BASETYPE))
 )
 
-# Derive visit flags
+## Derive visit flags ----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and post-baseline records ----
 adpet <- adpet %>% restrict_derivation(
@@ -157,34 +158,34 @@ adpet <- adpet %>% restrict_derivation(
     filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
   )
 
-# Derive baseline information
+## Derive baseline information ----
 
-# Calculate BASE
+## Calculate BASE ----
 adpet <- adpet %>% derive_var_base(
   by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
   source_var = AVAL,
   new_var = BASE
 ) %>%
-  # Calculate BASEC
+  ## Calculate BASEC ----
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVALC,
     new_var = BASEC
   ) %>%
-  # Calculate CHG for post-baseline records
-  # The decision on how to populate pre-baseline and baseline values of CHG is left to producer choice
+  ## Calculate CHG for post-baseline records ----
+  # The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
   restrict_derivation(
     derivation = derive_var_chg,
     filter = AVISITN > 0
   ) %>%
-  # Calculate PCHG for post-baseline records
+  ## Calculate PCHG for post-baseline records ----
   # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
   restrict_derivation(
     derivation = derive_var_pchg,
     filter = AVISITN > 0
   )
 
-# Assign ASEQ
+## Assign ASEQ ----
 adpet <- adpet %>% derive_var_obs_number(
   new_var = ASEQ,
   by_vars = get_admiral_option("subject_keys"),
@@ -193,7 +194,7 @@ adpet <- adpet %>% derive_var_obs_number(
 )
 
 
-# Final Steps, Select final variables and Add labels
+# Final Steps, Select final variables and Add labels ----
 # This process will be based on your metadata, no example given for this reason
 # ...
 
