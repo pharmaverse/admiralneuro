@@ -118,7 +118,6 @@ adpet <- adpet %>% derive_var_ontrtfl(
   ref_end_date = TRTEDT
 )
 
-
 # Derive Baseline flags
 
 # Calculate ABLFL
@@ -135,7 +134,7 @@ adpet <- adpet %>% restrict_derivation(
 
 # Derive visit flags
 
-# ANL01FL: Flag last result within a visit and timepoint for baseline and post-baseline records
+### ANL01FL: Flag last result within a visit and timepoint for baseline and post-baseline records ----
 adpet <- adpet %>% restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
@@ -146,7 +145,7 @@ adpet <- adpet %>% restrict_derivation(
   ),
   filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
 ) %>%
-  # ANL02FL: Flag last result within a PARAMCD for baseline & post-baseline records
+  #### ANL02FL: Flag last result within a PARAMCD for baseline & post-baseline records ----
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
