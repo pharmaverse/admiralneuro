@@ -134,7 +134,7 @@ adpet <- adpet %>% restrict_derivation(
   filter = ((!is.na(AVAL) | !is.na(AVALC)) & ADT <= TRTSDT & !is.na(BASETYPE))
 )
 
-# Derive visit flags
+## Derive visit flags ----
 
 # ANL01FL: Flag last result within a visit and timepoint for baseline and post-baseline records
 adpet <- adpet %>% restrict_derivation(
@@ -159,15 +159,15 @@ adpet <- adpet %>% restrict_derivation(
     filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
   )
 
-# Derive baseline information
+## Derive baseline information ----
 
-# Calculate BASE
+## Calculate BASE ----
 adpet <- adpet %>% derive_var_base(
   by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
   source_var = AVAL,
   new_var = BASE
 ) %>%
-  # Calculate BASEC
+  ## Calculate BASEC ----
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVALC,
@@ -179,7 +179,7 @@ adpet <- adpet %>% derive_var_base(
     derivation = derive_var_chg,
     filter = AVISITN > 0
   ) %>%
-  # Calculate PCHG for post-baseline records
+  ## Calculate PCHG for post-baseline records ----
   # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
   restrict_derivation(
     derivation = derive_var_pchg,
