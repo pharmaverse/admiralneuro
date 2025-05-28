@@ -56,13 +56,14 @@ attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
 adpet <- nv %>%
-  # Join ADSL with NV (need TRTSDT for ADY derivation)
+  ## Join ADSL with NV (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   ) %>%
-  # Join ADPET with AG for tracer information, users can add more variables in the `new_vars` argument as needed.
+  ## Join ADPET with AG for tracer information ----
+  # Users can add more variables in the `new_vars` argument as needed.
   derive_vars_merged(
     dataset_add = ag,
     new_vars = exprs(AGTRT, AGCAT),
@@ -119,9 +120,9 @@ adpet <- adpet %>% derive_var_ontrtfl(
 )
 
 
-# Derive Baseline flags
+### Derive Baseline flags ----
 
-# Calculate ABLFL
+### Calculate ABLFL ----
 adpet <- adpet %>% restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
