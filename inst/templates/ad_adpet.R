@@ -173,8 +173,8 @@ adpet <- adpet %>% derive_var_base(
     source_var = AVALC,
     new_var = BASEC
   ) %>%
-  # Calculate CHG for post-baseline records
-  # The decision on how to populate pre-baseline and baseline values of CHG is left to producer choice
+  ## Calculate CHG for post-baseline records ----
+  # The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
   restrict_derivation(
     derivation = derive_var_chg,
     filter = AVISITN > 0
@@ -186,7 +186,7 @@ adpet <- adpet %>% derive_var_base(
     filter = AVISITN > 0
   )
 
-# Assign ASEQ
+## Assign ASEQ ----
 adpet <- adpet %>% derive_var_obs_number(
   new_var = ASEQ,
   by_vars = get_admiral_option("subject_keys"),
@@ -195,7 +195,7 @@ adpet <- adpet %>% derive_var_obs_number(
 )
 
 
-# Final Steps, Select final variables and Add labels
+# Final Steps, Select final variables and Add labels ----
 # This process will be based on your metadata, no example given for this reason
 # ...
 
