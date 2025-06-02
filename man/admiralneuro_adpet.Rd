@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 admiralneuro_adpet
 }
 \description{
-An updated ADaM ADPET dataset using NV and adsl
+An updated ADaM ADPET dataset using NV, AG, SUPPNV, ADSL
 }
 \seealso{
 Other datasets: 
