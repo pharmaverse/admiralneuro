@@ -114,41 +114,41 @@ adpet <- adpet %>%
 ## Calculate ONTRTFL ----
 adpet <- adpet %>%
   derive_var_ontrtfl(
-  start_date = ADT,
-  ref_start_date = TRTSDT,
-  ref_end_date = TRTEDT,
-  filter_pre_timepoint = toupper(AVISIT) == "BASELINE" # Observations as not on-treatment
-)
+    start_date = ADT,
+    ref_start_date = TRTSDT,
+    ref_end_date = TRTEDT,
+    filter_pre_timepoint = toupper(AVISIT) == "BASELINE" # Observations as not on-treatment
+  )
 
 ### Derive Baseline flags ----
 
 ### Calculate ABLFL ----
 adpet <- adpet %>%
   restrict_derivation(
-  derivation = derive_var_extreme_flag,
-  args = params(
-    new_var = ABLFL,
-    by_vars = c(get_admiral_option("subject_keys"), exprs(BASETYPE, PARAMCD)),
-    order = exprs(ADT, VISITNUM, NVSEQ),
-    mode = "last"
-  ),
-  filter = ((!is.na(AVAL) | !is.na(AVALC)) & ADT <= TRTSDT & !is.na(BASETYPE))
-)
+    derivation = derive_var_extreme_flag,
+    args = params(
+      new_var = ABLFL,
+      by_vars = c(get_admiral_option("subject_keys"), exprs(BASETYPE, PARAMCD)),
+      order = exprs(ADT, VISITNUM, NVSEQ),
+      mode = "last"
+    ),
+    filter = ((!is.na(AVAL) | !is.na(AVALC)) & ADT <= TRTSDT & !is.na(BASETYPE))
+  )
 
 ## Derive visit flags ----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
 adpet <- adpet %>%
   restrict_derivation(
-  derivation = derive_var_extreme_flag,
-  args = params(
-    new_var = ANL01FL,
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, AVISIT)),
-    order = exprs(ADT, AVAL),
-    mode = "last"
-  ),
-  filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
-) %>%
+    derivation = derive_var_extreme_flag,
+    args = params(
+      new_var = ANL01FL,
+      by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, AVISIT)),
+      order = exprs(ADT, AVAL),
+      mode = "last"
+    ),
+    filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+  ) %>%
   ### ANL02FL: Flag last result within a PARAMCD for baseline & on-treatment post-baseline records ----
   restrict_derivation(
     derivation = derive_var_extreme_flag,
@@ -166,10 +166,10 @@ adpet <- adpet %>%
 ## Calculate BASE ----
 adpet <- adpet %>%
   derive_var_base(
-  by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
-  source_var = AVAL,
-  new_var = BASE
-) %>%
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
+    source_var = AVAL,
+    new_var = BASE
+  ) %>%
   ## Calculate BASEC ----
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
@@ -192,11 +192,11 @@ adpet <- adpet %>%
 ## Assign ASEQ ----
 adpet <- adpet %>%
   derive_var_obs_number(
-  new_var = ASEQ,
-  by_vars = get_admiral_option("subject_keys"),
-  order = exprs(PARAMCD, ADT, AVISITN, VISITNUM),
-  check_type = "error"
-)
+    new_var = ASEQ,
+    by_vars = get_admiral_option("subject_keys"),
+    order = exprs(PARAMCD, ADT, AVISITN, VISITNUM),
+    check_type = "error"
+  )
 
 
 # Final Steps, Select final variables and Add labels ----
