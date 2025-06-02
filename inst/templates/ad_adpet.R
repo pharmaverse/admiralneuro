@@ -2,7 +2,7 @@
 #
 # Label: PET Scan Analysis Dataset
 #
-# Input: adsl, nv,
+# Input: adsl, nv, ag, suppnv
 
 library(admiral)
 library(pharmaversesdtm) # Contains example datasets from the CDISC pilot project
@@ -34,7 +34,6 @@ nv <- convert_blanks_to_na(nv)
 
 # Combine the parental datasets with their respective supp datasets (only if exist)
 # User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
-
 nv <- metatools::combine_supp(nv, suppnv)
 
 # Lookup tables ----
@@ -77,7 +76,7 @@ adpet <- nv %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
 adpet <- adpet %>%
-  ## Add PARAMCD only - add PARAM etc later ----
+  ## Add PARAMCD and PARAM ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM),
@@ -113,16 +112,19 @@ adpet <- adpet %>%
   )
 
 ## Calculate ONTRTFL ----
-adpet <- adpet %>% derive_var_ontrtfl(
+adpet <- adpet %>%
+  derive_var_ontrtfl(
   start_date = ADT,
   ref_start_date = TRTSDT,
-  ref_end_date = TRTEDT
+  ref_end_date = TRTEDT,
+  filter_pre_timepoint = toupper(AVISIT) == "BASELINE" # Observations as not on-treatment
 )
 
 ### Derive Baseline flags ----
 
 ### Calculate ABLFL ----
-adpet <- adpet %>% restrict_derivation(
+adpet <- adpet %>%
+  restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
     new_var = ABLFL,
@@ -135,8 +137,9 @@ adpet <- adpet %>% restrict_derivation(
 
 ## Derive visit flags ----
 
-### ANL01FL: Flag last result within a visit and timepoint for baseline and post-baseline records ----
-adpet <- adpet %>% restrict_derivation(
+### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
+adpet <- adpet %>%
+  restrict_derivation(
   derivation = derive_var_extreme_flag,
   args = params(
     new_var = ANL01FL,
@@ -146,7 +149,7 @@ adpet <- adpet %>% restrict_derivation(
   ),
   filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
 ) %>%
-  #### ANL02FL: Flag last result within a PARAMCD for baseline & post-baseline records ----
+  ### ANL02FL: Flag last result within a PARAMCD for baseline & on-treatment post-baseline records ----
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -161,7 +164,8 @@ adpet <- adpet %>% restrict_derivation(
 ## Derive baseline information ----
 
 ## Calculate BASE ----
-adpet <- adpet %>% derive_var_base(
+adpet <- adpet %>%
+  derive_var_base(
   by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
   source_var = AVAL,
   new_var = BASE
@@ -186,7 +190,8 @@ adpet <- adpet %>% derive_var_base(
   )
 
 ## Assign ASEQ ----
-adpet <- adpet %>% derive_var_obs_number(
+adpet <- adpet %>%
+  derive_var_obs_number(
   new_var = ASEQ,
   by_vars = get_admiral_option("subject_keys"),
   order = exprs(PARAMCD, ADT, AVISITN, VISITNUM),

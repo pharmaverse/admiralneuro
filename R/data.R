@@ -109,7 +109,7 @@
 
 #' PET Scan Analysis Dataset - Neuro
 #'
-#' An updated ADaM ADPET dataset using NV and adsl
+#' An updated ADaM ADPET dataset using NV, AG, SUPPNV, ADSL
 #' @keywords datasets
 #' @family datasets
 "admiralneuro_adpet"
