@@ -107,6 +107,13 @@
 #' @source Constructed using `nv_neuro` from `{admiralneuro}` package
 "ag_neuro"
 
+#' PET Scan Analysis Dataset - Neuro
+#'
+#' An updated ADaM ADPET dataset using NV, AG, SUPPNV, ADSL
+#' @keywords datasets
+#' @family datasets
+"admiralneuro_adpet"
+
 #' Subject Level Analysis Dataset-updated
 #'
 #' An updated ADaM ADSL dataset with Alzheimer's Disease patients
