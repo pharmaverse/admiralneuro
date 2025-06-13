@@ -2,8 +2,17 @@ Type: Package
 Package: admiralneuro
 Title: Neuroscience Extension Package for ADaM in 'R' Asset Library
 Version: 0.1.0
-Authors@R: 
-    person("Open", "Source", , "admiralneuro@pharmaverse.com", role = c("aut", "cre"))
+Authors@R: c(
+  person("Jian", "Wang", , "wang_jian_wj@lilly.com", role = c("aut", "cre")),
+  person("Chris", "Pelentrides", role = "aut"),
+  person("Edoardo", "Mancini", role = "aut"),
+  person("Eric", "Nantz", role = "aut"),
+  person("Fanny", "Gautier", role = "aut", comment = c(ORCID = "0009-0004-3581-0131")),
+  person("Gayatri", "G.", role = "aut"),
+  person("Leena", "Khatri", role = "aut"),
+  person("Meilin", "Jiang", role = "aut", comment = c(ORCID = "0000-0003-4515-4567")),
+  person("Miles", "Almond", role = "aut")
+  )
 Description: A toolbox for programming Clinical Data Standards Interchange
     Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R.
     ADaM datasets are a mandatory part of any New Drug or Biologics
@@ -11,7 +20,7 @@ Description: A toolbox for programming Clinical Data Standards Interchange
     Administration (FDA). Analysis derivations are implemented in
     accordance with the "Analysis Data Model Implementation Guide" (CDISC
     Analysis Data Model Team, 2021,
-    <https://www.cdisc.org/standards/foundational/adam>).  The package is
+    <https://www.cdisc.org/standards/foundational/adam>). The package is
     an extension package of the 'admiral' package.
 License: Apache License (>= 2)
 URL: https://pharmaverse.github.io/admiralneuro,

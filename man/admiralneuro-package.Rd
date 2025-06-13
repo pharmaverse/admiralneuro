@@ -19,7 +19,19 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Open Source \email{admiralneuro@pharmaverse.com}
+\strong{Maintainer}: Jian Wang \email{wang_jian_wj@lilly.com}
+
+Authors:
+\itemize{
+  \item Chris Pelentrides
+  \item Edoardo Mancini
+  \item Eric Nantz
+  \item Fanny Gautier (\href{https://orcid.org/0009-0004-3581-0131}{ORCID})
+  \item Gayatri G.
+  \item Leena Khatri
+  \item Meilin Jiang (\href{https://orcid.org/0000-0003-4515-4567}{ORCID})
+  \item Miles Almond
+}
 
 }
 \concept{internal}
