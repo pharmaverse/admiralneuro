@@ -5,6 +5,7 @@ ADaM
 Biologics
 CDISC
 DM
+ORCID
 NVDTC
 NVDY
 Neuro
@@ -16,6 +17,7 @@ USUBJID
 adsl
 adxx
 der
+funder
 interventional
 pharmaverse
 pkgdown
@@ -55,4 +57,5 @@ ADNI
 et
 al
 Navitsky
+Hoffmann
 
