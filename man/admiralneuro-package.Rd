@@ -33,6 +33,12 @@ Authors:
   \item Miles Almond
 }
 
+Other contributors:
+\itemize{
+  \item Eli Lilly [copyright holder, funder]
+  \item F. Hoffmann-La Roche AG [copyright holder, funder]
+}
+
 }
 \concept{internal}
 \keyword{internal}
