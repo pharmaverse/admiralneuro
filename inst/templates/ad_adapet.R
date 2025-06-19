@@ -99,82 +99,87 @@ adapet <- adpet %>%
   slice_derivation(
     derivation = derive_param_computed,
     args = params(
-      by_vars = exprs(STUDYID,DOMAIN,USUBJID, NVSEQ, NVLNKID,NVLOC,NVMETHOD,NVNAM,NVCAT,
-                      VISITNUM,VISIT,NVDTC,NVDY,REFREG,IDVARVAL,
-                      NVLOBXFL, TRTSDT,   TRTEDT,   TRT01A,   TRT01P,
-                      AGTRT,    AGCAT,    ADT,      ADY
-                      #AVISIT,   AVISITN
+      by_vars = exprs(
+        STUDYID, DOMAIN, USUBJID, NVSEQ, NVLNKID, NVLOC, NVMETHOD, NVNAM, NVCAT,
+        VISITNUM, VISIT, NVDTC, NVDY, REFREG, IDVARVAL,
+        NVLOBXFL, TRTSDT, TRTEDT, TRT01A, TRT01P,
+        AGTRT, AGCAT, ADT, ADY
       ),
       constant_by_vars = NULL,
       constant_parameters = NULL,
       keep_nas = T
     ),
     derivation_slice(
-      filter = (PARAMCD == "SUVRFBB")&(NVMETHOD == "BERKELEY FBB SUVR PIPELINE")&(REFREG == "Whole Cerebellum"),
-
-      args = params(parameters = c("SUVRFBB"),
-                    set_values_to = exprs(
-                      AVAL = compute_centiloid(
-                        tracer = "18F-Florbetaben",
-                        pipeline = "BERKELEY FBB SUVR PIPELINE",
-                        ref_region = "Whole Cerebellum",
-                        suvr = AVAL
-                      ),
-                      NVTESTCD = "CLFBB_BERKELEY",
-                      NVTEST = "Centiloid (CL) based on BERKELEY FBB",
-                      PARAMCD = "CLFBB_BERKELEY",
-                      PARAM = "Centiloid (CL) based on BERKELEY FBB",
-                      AVALU = "CL",
-                      NVORRES = as.character(AVAL),
-                      NVORRESU = AVALU,
-                      NVSTRESC = as.character(AVAL),
-                      NVSTRESN = AVAL,
-                      NVSTRESU = AVALU
-                    ))
+      filter = (PARAMCD == "SUVRFBB") & (NVMETHOD == "BERKELEY FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRFBB"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetaben",
+            pipeline = "BERKELEY FBB SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          NVTESTCD = "CLFBB_BERKELEY",
+          NVTEST = "Centiloid (CL) based on BERKELEY FBB",
+          PARAMCD = "CLFBB_BERKELEY",
+          PARAM = "Centiloid (CL) based on BERKELEY FBB",
+          AVALU = "CL",
+          NVORRES = as.character(AVAL),
+          NVORRESU = AVALU,
+          NVSTRESC = as.character(AVAL),
+          NVSTRESN = AVAL,
+          NVSTRESU = AVALU
+        )
+      )
     ),
     derivation_slice(
-      filter = (PARAMCD == "SUVRFBP")&(NVMETHOD == "BERKELEY FBP SUVR PIPELINE")&(REFREG == "Whole Cerebellum"),
-      args = params(parameters = c("SUVRFBP"),
-                    set_values_to = exprs(
-                      AVAL = compute_centiloid(
-                        tracer = "18F-Florbetapir",
-                        pipeline = "BERKELEY FBP SUVR PIPELINE",
-                        ref_region = "Whole Cerebellum",
-                        suvr = AVAL
-                      ),
-                      NVTESTCD = "CLFBP_BERKELEY",
-                      NVTEST = "Centiloid (CL) based on BERKELEY FBP",
-                      PARAMCD = "CLFBP_BERKELEY",
-                      PARAM = "Centiloid (CL) based on BERKELEY FBP",
-                      AVALU = "CL",
-                      NVORRES = as.character(AVAL),
-                      NVORRESU = AVALU,
-                      NVSTRESC = as.character(AVAL),
-                      NVSTRESN = AVAL,
-                      NVSTRESU = AVALU
-                    ))
+      filter = (PARAMCD == "SUVRFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRFBP"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetapir",
+            pipeline = "BERKELEY FBP SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          NVTESTCD = "CLFBP_BERKELEY",
+          NVTEST = "Centiloid (CL) based on BERKELEY FBP",
+          PARAMCD = "CLFBP_BERKELEY",
+          PARAM = "Centiloid (CL) based on BERKELEY FBP",
+          AVALU = "CL",
+          NVORRES = as.character(AVAL),
+          NVORRESU = AVALU,
+          NVSTRESC = as.character(AVAL),
+          NVSTRESN = AVAL,
+          NVSTRESU = AVALU
+        )
+      )
     ),
     derivation_slice(
-      filter = (PARAMCD == "SUVRFBP")&(NVMETHOD == "AVID FBP SUVR PIPELINE")&(REFREG == "Whole Cerebellum"),
-      args = params(parameters = c("SUVRFBP"),
-                    set_values_to = exprs(
-                      AVAL = compute_centiloid(
-                        tracer = "18F-Florbetapir",
-                        pipeline = "AVID FBP SUVR PIPELINE",
-                        ref_region = "Whole Cerebellum",
-                        suvr = AVAL
-                      ),
-                      NVTESTCD = "CLFBP_AVID",
-                      NVTEST = "Centiloid (CL) based on AVID FBP",
-                      PARAMCD = "CLFBP_AVID",
-                      PARAM = "Centiloid (CL) based on AVID FBP",
-                      AVALU = "CL",
-                      NVORRES = as.character(AVAL),
-                      NVORRESU = AVALU,
-                      NVSTRESC = as.character(AVAL),
-                      NVSTRESN = AVAL,
-                      NVSTRESU = AVALU
-                    ))
+      filter = (PARAMCD == "SUVRFBP") & (NVMETHOD == "AVID FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRFBP"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetapir",
+            pipeline = "AVID FBP SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          NVTESTCD = "CLFBP_AVID",
+          NVTEST = "Centiloid (CL) based on AVID FBP",
+          PARAMCD = "CLFBP_AVID",
+          PARAM = "Centiloid (CL) based on AVID FBP",
+          AVALU = "CL",
+          NVORRES = as.character(AVAL),
+          NVORRESU = AVALU,
+          NVSTRESC = as.character(AVAL),
+          NVSTRESN = AVAL,
+          NVSTRESU = AVALU
+        )
+      )
     )
   )
 
@@ -184,11 +189,11 @@ adapet <- adapet %>%
   slice_derivation(
     derivation = derive_param_computed,
     args = params(
-      by_vars = exprs(STUDYID,DOMAIN,USUBJID, NVSEQ, NVLNKID,NVLOC,NVMETHOD,NVNAM,NVCAT,
-                      VISITNUM,VISIT,NVDTC,NVDY,REFREG,IDVARVAL,
-                      NVLOBXFL, TRTSDT,   TRTEDT,   TRT01A,   TRT01P,
-                      AGTRT,    AGCAT,    ADT,      ADY
-                      #AVISIT,   AVISITN
+      by_vars = exprs(
+        STUDYID, DOMAIN, USUBJID, NVSEQ, NVLNKID, NVLOC, NVMETHOD, NVNAM, NVCAT,
+        VISITNUM, VISIT, NVDTC, NVDY, REFREG, IDVARVAL,
+        NVLOBXFL, TRTSDT, TRTEDT, TRT01A, TRT01P,
+        AGTRT, AGCAT, ADT, ADY
       ),
       constant_by_vars = NULL,
       constant_parameters = NULL,
@@ -196,41 +201,47 @@ adapet <- adapet %>%
     ),
     derivation_slice(
       filter = (PARAMCD == "CLFBB_BERKELEY"),
-      args = params(    parameters = c("CLFBB_BERKELEY"),
-                        set_values_to = exprs(
-                          AVALC = ifelse(AVAL.CLFBB_BERKELEY > 24.1,"Positive","Negative"),
-                          NVTESTCD = "CLC_FBB_BERKELEY",
-                          NVTEST = "Amyloid Classification Centiloid > 24.1",
-                          PARAMCD = "CLC_FBB_BERKELEY",
-                          PARAM = "Amyloid Classification Centiloid > 24.1",
-                          NVORRES = as.character(AVALC),
-                          NVSTRESC = as.character(AVALC))
+      args = params(
+        parameters = c("CLFBB_BERKELEY"),
+        set_values_to = exprs(
+          AVALC = ifelse(AVAL.CLFBB_BERKELEY > 24.1, "Positive", "Negative"),
+          NVTESTCD = "CLC_FBB_BERKELEY",
+          NVTEST = "Amyloid Classification Centiloid > 24.1",
+          PARAMCD = "CLC_FBB_BERKELEY",
+          PARAM = "Amyloid Classification Centiloid > 24.1",
+          NVORRES = as.character(AVALC),
+          NVSTRESC = as.character(AVALC)
+        )
       )
     ),
     derivation_slice(
       filter = (PARAMCD == "CLFBP_BERKELEY"),
-      args = params(    parameters = c("CLFBP_BERKELEY"),
-                        set_values_to = exprs(
-                          AVALC = ifelse(AVAL.CLFBP_BERKELEY > 24.1,"Positive","Negative"),
-                          NVTESTCD = "CLC_FBP_BERKELEY",
-                          NVTEST = "Amyloid Classification Centiloid > 24.1",
-                          PARAMCD = "CLC_FBP_BERKELEY",
-                          PARAM = "Amyloid Classification Centiloid > 24.1",
-                          NVORRES = as.character(AVALC),
-                          NVSTRESC = as.character(AVALC))
+      args = params(
+        parameters = c("CLFBP_BERKELEY"),
+        set_values_to = exprs(
+          AVALC = ifelse(AVAL.CLFBP_BERKELEY > 24.1, "Positive", "Negative"),
+          NVTESTCD = "CLC_FBP_BERKELEY",
+          NVTEST = "Amyloid Classification Centiloid > 24.1",
+          PARAMCD = "CLC_FBP_BERKELEY",
+          PARAM = "Amyloid Classification Centiloid > 24.1",
+          NVORRES = as.character(AVALC),
+          NVSTRESC = as.character(AVALC)
+        )
       )
     ),
     derivation_slice(
       filter = (PARAMCD == "CLFBP_AVID"),
-      args = params(    parameters = c("CLFBP_AVID"),
-                        set_values_to = exprs(
-                          AVALC = ifelse(AVAL.CLFBP_AVID > 24.1,"Positive","Negative"),
-                          NVTESTCD = "CLC_FBB_AVID",
-                          NVTEST = "Amyloid Classification Centiloid > 24.1",
-                          PARAMCD = "CLC_FBB_AVID",
-                          PARAM = "Amyloid Classification Centiloid > 24.1",
-                          NVORRES = as.character(AVALC),
-                          NVSTRESC = as.character(AVALC))
+      args = params(
+        parameters = c("CLFBP_AVID"),
+        set_values_to = exprs(
+          AVALC = ifelse(AVAL.CLFBP_AVID > 24.1, "Positive", "Negative"),
+          NVTESTCD = "CLC_FBB_AVID",
+          NVTEST = "Amyloid Classification Centiloid > 24.1",
+          PARAMCD = "CLC_FBB_AVID",
+          PARAM = "Amyloid Classification Centiloid > 24.1",
+          NVORRES = as.character(AVALC),
+          NVSTRESC = as.character(AVALC)
+        )
       )
     )
   )
