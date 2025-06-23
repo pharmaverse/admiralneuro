@@ -96,7 +96,6 @@ adapet <- adapet %>%
 
 ## Convert SUVR to Centiloid
 adapet <- adapet %>%
-  filter(AGCAT == "AMYLOID TRACER") %>%
   slice_derivation(
     derivation = derive_param_computed,
     args = params(
