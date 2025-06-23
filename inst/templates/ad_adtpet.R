@@ -1,6 +1,6 @@
-# Name: ADAPET
+# Name: ADTPET
 #
-# Label: Amyloid PET Scan Analysis Dataset
+# Label: tau PET Scan Analysis Dataset
 #
 # Input: adsl, nv, ag, suppnv
 
@@ -41,9 +41,9 @@ nv <- metatools::combine_supp(nv, suppnv)
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
   ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SUVRFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SUVRFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "SUVRFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "SNCTFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
   "VR", "FBP", NA, NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
   "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classification", 5
 )
@@ -54,14 +54,14 @@ attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
-adapet <- nv %>%
+adtpet <- nv %>%
   ## Join ADSL with NV (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   ) %>%
-  ## Join ADAPET with AG for tracer information ----
+  ## Join ADTPET with AG for tracer information ----
   # Users can add more variables in the `new_vars` argument as needed.
   derive_vars_merged(
     dataset_add = ag,
@@ -74,9 +74,9 @@ adapet <- nv %>%
     dtc = NVDTC
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT)) %>%
-  filter(AGCAT == "AMYLOID TRACER")
+  filter(AGCAT == "TAU TRACER")
 
-adapet <- adapet %>%
+adtpet <- adtpet %>%
   ## Add PARAMCD and PARAM ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
@@ -94,84 +94,10 @@ adapet <- adapet %>%
     )
   )
 
-## Convert SUVR to Centiloid
-adapet <- adapet %>%
-  filter(AGCAT == "AMYLOID TRACER") %>%
-  slice_derivation(
-    derivation = derive_param_computed,
-    args = params(
-      by_vars = c(
-        get_admiral_option("subject_keys"),
-        exprs(TRT01A, TRT01P, ADT, ADY, TRTSDT, TRTEDT)
-      ),
-      keep_nas = TRUE
-    ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRFBB") & (NVMETHOD == "BERKELEY FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRFBB"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetaben",
-            pipeline = "BERKELEY FBB SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLBFBB",
-          PARAM = "Centiloid (CL) based on BERKELEY FBB",
-          AVALU = "CL",
-          AVISIT = VISIT,
-          AVISITNUM = VISITNUM,
-        )
-      )
-    ),
-    # Can use the following code if data contain "BERKELEY FBP SUVR PIPELINE"
-    # Commented out as the the example nv data do not have such pipeline
-    # derivation_slice(
-    #   filter = (PARAMCD == "SUVRFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-    #   args = params(
-    #     parameters = c("SUVRFBP"),
-    #     set_values_to = exprs(
-    #       AVAL = compute_centiloid(
-    #         tracer = "18F-Florbetapir",
-    #         pipeline = "BERKELEY FBP SUVR PIPELINE",
-    #         ref_region = "Whole Cerebellum",
-    #         suvr = AVAL
-    #       ),
-    #       PARAMCD = "CLBFBP",
-    #       PARAM = "Centiloid (CL) based on BERKELEY FBP",
-    #       AVALU = "CL",
-    #       AVISIT = VISIT,
-    #       AVISITNUM = VISITNUM,
-    #     )
-    #   )
-    # ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRFBP") & (NVMETHOD == "AVID FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRFBP"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetapir",
-            pipeline = "AVID FBP SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLAFBP",
-          PARAM = "Centiloid (CL) based on AVID FBP",
-          AVALU = "CL",
-          AVISIT = VISIT,
-          AVISITNUM = VISITNUM,
-        )
-      )
-    )
-  )
-
-
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
-adapet <- adapet %>%
+adtpet <- adtpet %>%
   mutate(
     AVISIT = case_when(
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
@@ -187,7 +113,7 @@ adapet <- adapet %>%
   )
 
 ## Calculate ONTRTFL ----
-adapet <- adapet %>%
+adtpet <- adtpet %>%
   derive_var_ontrtfl(
     start_date = ADT,
     ref_start_date = TRTSDT,
@@ -195,11 +121,10 @@ adapet <- adapet %>%
     filter_pre_timepoint = toupper(AVISIT) == "BASELINE" # Observations as not on-treatment
   )
 
-
 ### Derive Baseline flags ----
 
 ### Calculate ABLFL ----
-adapet <- adapet %>%
+adtpet <- adtpet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -214,7 +139,7 @@ adapet <- adapet %>%
 ## Derive visit flags ----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
-adapet <- adapet %>%
+adtpet <- adtpet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -240,7 +165,7 @@ adapet <- adapet %>%
 ## Derive baseline information ----
 
 ## Calculate BASE ----
-adapet <- adapet %>%
+adtpet <- adtpet %>%
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVAL,
@@ -266,7 +191,7 @@ adapet <- adapet %>%
   )
 
 ## Assign ASEQ ----
-adapet <- adapet %>%
+adtpet <- adtpet %>%
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = get_admiral_option("subject_keys"),
@@ -279,9 +204,7 @@ adapet <- adapet %>%
 # This process will be based on your metadata, no example given for this reason
 # ...
 
-
-
-admiralneuro_adapet <- adapet
+admiralneuro_adtpet <- adtpet
 
 # Save output ----
 
@@ -291,4 +214,4 @@ if (!file.exists(dir)) {
   # Create the folder
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
-save(admiralneuro_adapet, file = file.path(dir, "admiralneuro_adapet.rda"), compress = "bzip2")
+save(admiralneuro_adtpet, file = file.path(dir, "admiralneuro_adtpet.rda"), compress = "bzip2")
