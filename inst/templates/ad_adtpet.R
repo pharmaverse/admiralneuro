@@ -1,6 +1,6 @@
 # Name: ADTPET
 #
-# Label: tau PET Scan Analysis Dataset
+# Label: Tau PET Scan Analysis Dataset
 #
 # Input: adsl, nv, ag, suppnv
 
@@ -66,7 +66,7 @@ adtpet <- nv %>%
   derive_vars_merged(
     dataset_add = ag,
     new_vars = exprs(AGTRT, AGCAT),
-    by_vars = exprs(USUBJID, VISIT, NVLNKID = AGLNKID)
+    by_vars = c(get_admiral_option("subject_keys"), exprs(VISIT, NVLNKID = AGLNKID))
   ) %>%
   ## Calculate ADT, ADY ----
   derive_vars_dt(
@@ -74,7 +74,7 @@ adtpet <- nv %>%
     dtc = NVDTC
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT)) %>%
-  filter(AGCAT == "TAU TRACER")
+  filter(AGCAT == "TAU TRACER") # Filter nv dataset for tau records only
 
 adtpet <- adtpet %>%
   ## Add PARAMCD and PARAM ----

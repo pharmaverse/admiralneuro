@@ -66,7 +66,7 @@ adapet <- nv %>%
   derive_vars_merged(
     dataset_add = ag,
     new_vars = exprs(AGTRT, AGCAT),
-    by_vars = exprs(USUBJID, VISIT, NVLNKID = AGLNKID)
+    by_vars = c(get_admiral_option("subject_keys"), exprs(VISIT, NVLNKID = AGLNKID))
   ) %>%
   ## Calculate ADT, ADY ----
   derive_vars_dt(
@@ -74,7 +74,7 @@ adapet <- nv %>%
     dtc = NVDTC
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT)) %>%
-  filter(AGCAT == "AMYLOID TRACER")
+  filter(AGCAT == "AMYLOID TRACER") # Filter nv dataset for amyloid records only
 
 adapet <- adapet %>%
   ## Add PARAMCD and PARAM ----
@@ -101,7 +101,8 @@ adapet <- adapet %>%
     args = params(
       by_vars = c(
         get_admiral_option("subject_keys"),
-        exprs(TRT01A, TRT01P, ADT, ADY, TRTSDT, TRTEDT)
+        adsl_vars,
+        exprs(ADT, ADY, VISIT)
       ),
       keep_nas = TRUE
     ),
@@ -118,9 +119,7 @@ adapet <- adapet %>%
           ),
           PARAMCD = "CLBFBB",
           PARAM = "Centiloid (CL) based on BERKELEY FBB",
-          AVALU = "CL",
-          AVISIT = VISIT,
-          AVISITNUM = VISITNUM,
+          AVALU = "CL"
         )
       )
     ),
@@ -139,9 +138,7 @@ adapet <- adapet %>%
     #       ),
     #       PARAMCD = "CLBFBP",
     #       PARAM = "Centiloid (CL) based on BERKELEY FBP",
-    #       AVALU = "CL",
-    #       AVISIT = VISIT,
-    #       AVISITNUM = VISITNUM,
+    #       AVALU = "CL"
     #     )
     #   )
     # ),
@@ -158,9 +155,7 @@ adapet <- adapet %>%
           ),
           PARAMCD = "CLAFBP",
           PARAM = "Centiloid (CL) based on AVID FBP",
-          AVALU = "CL",
-          AVISIT = VISIT,
-          AVISITNUM = VISITNUM,
+          AVALU = "CL"
         )
       )
     )
@@ -277,7 +272,6 @@ adapet <- adapet %>%
 # Final Steps, Select final variables and Add labels ----
 # This process will be based on your metadata, no example given for this reason
 # ...
-
 
 
 admiralneuro_adapet <- adapet
