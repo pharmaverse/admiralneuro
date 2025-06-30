@@ -180,6 +180,37 @@ all_dat <- bind_rows(
     visit_schedule,
     by = c("USUBJID", "VISITNUM")
   ) %>%
+  # remove FBP records for some USUBJID so same patients won't have two amyloid PET tracers
+  dplyr::filter(!(NVCAT == "FBP" & USUBJID %in% c(
+    "01-701-1023", "01-701-1146", "01-701-1181",
+    "01-701-1275", "01-701-1302", "01-701-1345", "01-701-1360"
+  ))) %>%
+  # remove FBB records for some USUBJID so same patients won't have two amyloid PET tracers
+  dplyr::filter(!(NVCAT == "FBB" & USUBJID %in% c(
+    "01-701-1015", "01-701-1028", "01-701-1034",
+    "01-701-1153", "01-701-1234", "01-701-1383",
+    "01-701-1392", "01-714-1288"
+  ))) %>%
+  dplyr::mutate(
+    # For FTP records: subtract 3 days if WEEK 26, add 3 days otherwise
+    NVDTC = case_when(
+      NVCAT == "FTP" & VISIT == "WEEK 26" ~ as.character(ymd(NVDTC) - days(3)),
+      NVCAT == "FTP" & VISIT != "WEEK 26" ~ as.character(ymd(NVDTC) + days(3)),
+      TRUE ~ NVDTC
+    ),
+    # For FTP records: subtract 3 from VISITDY if WEEK 26, add 3 otherwise
+    VISITDY = case_when(
+      NVCAT == "FTP" & VISIT == "WEEK 26" ~ VISITDY - 3,
+      NVCAT == "FTP" & VISIT != "WEEK 26" ~ VISITDY + 3,
+      TRUE ~ VISITDY
+    ),
+    # For FTP records: subtract 3 from NVDY if WEEK 26, add 3 otherwise
+    NVDY = case_when(
+      NVCAT == "FTP" & VISIT == "WEEK 26" ~ NVDY - 3,
+      NVCAT == "FTP" & VISIT != "WEEK 26" ~ NVDY + 3,
+      TRUE ~ NVDY
+    )
+  ) %>%
   dplyr::group_by(USUBJID) %>%
   dplyr::mutate(NVSEQ = row_number()) %>%
   dplyr::ungroup() %>%
