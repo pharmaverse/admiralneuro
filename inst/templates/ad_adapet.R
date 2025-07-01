@@ -31,7 +31,6 @@ adsl <- admiralneuro::adsl_neuro
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 nv <- convert_blanks_to_na(nv)
 
-
 # Combine the parental datasets with their respective supp datasets (only if exist)
 # User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
 nv <- metatools::combine_supp(nv, suppnv)
@@ -40,12 +39,12 @@ nv <- metatools::combine_supp(nv, suppnv)
 
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
-  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SUVRFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SUVRFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "SUVRFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
-  "VR", "FBP", NA, NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classification", 5
+  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 4,
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 5
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
@@ -68,13 +67,13 @@ adapet <- nv %>%
     new_vars = exprs(AGTRT, AGCAT),
     by_vars = c(get_admiral_option("subject_keys"), exprs(VISIT, NVLNKID = AGLNKID))
   ) %>%
+  filter(AGCAT == "AMYLOID TRACER") %>% # Filter nv dataset for amyloid records only
   ## Calculate ADT, ADY ----
   derive_vars_dt(
     new_vars_prefix = "A",
     dtc = NVDTC
   ) %>%
-  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT)) %>%
-  filter(AGCAT == "AMYLOID TRACER") # Filter nv dataset for amyloid records only
+  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
 adapet <- adapet %>%
   ## Add PARAMCD and PARAM ----
@@ -107,9 +106,9 @@ adapet <- adapet %>%
       keep_nas = TRUE
     ),
     derivation_slice(
-      filter = (PARAMCD == "SUVRFBB") & (NVMETHOD == "BERKELEY FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      filter = (PARAMCD == "SUVRBFBB") & (NVMETHOD == "BERKELEY FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
       args = params(
-        parameters = c("SUVRFBB"),
+        parameters = c("SUVRBFBB"),
         set_values_to = exprs(
           AVAL = compute_centiloid(
             tracer = "18F-Florbetaben",
@@ -126,9 +125,9 @@ adapet <- adapet %>%
     # Can use the following code if data contain "BERKELEY FBP SUVR PIPELINE"
     # Commented out as the the example nv data do not have such pipeline
     # derivation_slice(
-    #   filter = (PARAMCD == "SUVRFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+    #   filter = (PARAMCD == "SUVRBFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
     #   args = params(
-    #     parameters = c("SUVRFBP"),
+    #     parameters = c("SUVRBFBP"),
     #     set_values_to = exprs(
     #       AVAL = compute_centiloid(
     #         tracer = "18F-Florbetapir",
@@ -143,9 +142,9 @@ adapet <- adapet %>%
     #   )
     # ),
     derivation_slice(
-      filter = (PARAMCD == "SUVRFBP") & (NVMETHOD == "AVID FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      filter = (PARAMCD == "SUVRAFBP") & (NVMETHOD == "AVID FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
       args = params(
-        parameters = c("SUVRFBP"),
+        parameters = c("SUVRAFBP"),
         set_values_to = exprs(
           AVAL = compute_centiloid(
             tracer = "18F-Florbetapir",
@@ -160,7 +159,6 @@ adapet <- adapet %>%
       )
     )
   )
-
 
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
@@ -188,7 +186,6 @@ adapet <- adapet %>%
     ref_end_date = TRTEDT,
     filter_pre_timepoint = toupper(AVISIT) == "BASELINE" # Observations as not on-treatment
   )
-
 
 ### Derive Baseline flags ----
 
@@ -272,7 +269,6 @@ adapet <- adapet %>%
 # Final Steps, Select final variables and Add labels ----
 # This process will be based on your metadata, no example given for this reason
 # ...
-
 
 admiralneuro_adapet <- adapet
 

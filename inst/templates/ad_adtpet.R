@@ -31,7 +31,6 @@ adsl <- admiralneuro::adsl_neuro
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 nv <- convert_blanks_to_na(nv)
 
-
 # Combine the parental datasets with their respective supp datasets (only if exist)
 # User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
 nv <- metatools::combine_supp(nv, suppnv)
@@ -40,12 +39,12 @@ nv <- metatools::combine_supp(nv, suppnv)
 
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
-  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "SNCTFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
-  "VR", "FBP", NA, NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classification", 5
+  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 4,
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 5
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
@@ -68,13 +67,13 @@ adtpet <- nv %>%
     new_vars = exprs(AGTRT, AGCAT),
     by_vars = c(get_admiral_option("subject_keys"), exprs(VISIT, NVLNKID = AGLNKID))
   ) %>%
+  filter(AGCAT == "TAU TRACER") %>% # Filter nv dataset for tau records only
   ## Calculate ADT, ADY ----
   derive_vars_dt(
     new_vars_prefix = "A",
     dtc = NVDTC
   ) %>%
-  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT)) %>%
-  filter(AGCAT == "TAU TRACER") # Filter nv dataset for tau records only
+  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
 adtpet <- adtpet %>%
   ## Add PARAMCD and PARAM ----
