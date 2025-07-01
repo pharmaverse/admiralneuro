@@ -5,6 +5,7 @@
 # Input: adsl, nv, ag, suppnv
 
 library(admiral)
+library(admiralneuro)
 library(pharmaversesdtm) # Contains example datasets from the CDISC pilot project
 library(dplyr)
 library(lubridate)
