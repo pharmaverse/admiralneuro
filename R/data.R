@@ -107,12 +107,19 @@
 #' @source Constructed using `nv_neuro` from `{admiralneuro}` package
 "ag_neuro"
 
-#' PET Scan Analysis Dataset - Neuro
+#' Amyloid PET Scan Analysis Dataset - Neuro
 #'
-#' An updated ADaM ADPET dataset using NV, AG, SUPPNV, ADSL
+#' An updated ADaM ADAPET dataset using NV, AG, SUPPNV, ADSL
 #' @keywords datasets
 #' @family datasets
-"admiralneuro_adpet"
+"admiralneuro_adapet"
+
+#' Tau PET Scan Analysis Dataset - Neuro
+#'
+#' An updated ADaM ADTPET dataset using NV, AG, SUPPNV, ADSL
+#' @keywords datasets
+#' @family datasets
+"admiralneuro_adtpet"
 
 #' Subject Level Analysis Dataset-updated
 #'
