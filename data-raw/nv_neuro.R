@@ -52,26 +52,23 @@ visit13_usubjid <- visit_schedule %>%
 
 # Create records for one USUBJID ----
 
-create_records_for_one_id <- function(usubjid = "01-701-1015", visitnum = 3,
-                                      fbp_suvr_cb = 1.461, fbb_suvr_com = 1.452, ftp_suvr_icbgm = 1.331) {
+create_records_for_one_id <- function(usubjid = "01-701-1015", tracer = "FBP", vendor = "AVID", visitnum = 3, suvr_value = suvr_value) {
+
   tibble(
-    STUDYID = rep("CDISCPILOT01", 5),
-    DOMAIN = rep("NV", 5),
-    USUBJID = rep(usubjid, 5),
-    SUBJID = sub(".*-", "", rep(usubjid, 5)),
-    NVTESTCD = c("VR", "SUVR", "SUVR", "VR", "SUVR"),
+    STUDYID = rep("CDISCPILOT01", 2),
+    DOMAIN = rep("NV", 2),
+    USUBJID = rep(usubjid, 2),
+    SUBJID = sub(".*-", "", rep(usubjid, 2)),
+    NVTESTCD = c("VR", "SUVR"),
     NVTEST = c(
-      "Qualitative Visual Classification",
-      "Standardized Uptake Value Ratio",
-      "Standardized Uptake Value Ratio",
       "Qualitative Visual Classification",
       "Standardized Uptake Value Ratio"
     ),
-    NVCAT = c("FBP", "FBP", "FBB", "FTP", "FTP"),
-    NVORRES = c("Positive", as.character(fbp_suvr_cb), as.character(fbb_suvr_com), "Positive", as.character(ftp_suvr_icbgm)),
-    NVLOC = c(NA, "NEOCORTICAL COMPOSITE", "NEOCORTICAL COMPOSITE", NA, "NEOCORTICAL COMPOSITE"),
-    NVNAM = c("IXICO", "AVID", "BERKELEY", "IXICO", "BERKELEY"),
-    NVMETHOD = c("FBP VISUAL CLASSIFICATION", "AVID FBP SUVR PIPELINE", "BERKELEY FBB SUVR PIPELINE", "FTP VISUAL CLASSIFICATION", "BERKELEY FTP SUVR PIPELINE"),
+    NVCAT = rep(tracer, 2),
+    NVORRES = c("Positive", as.character(suvr_value)),
+    NVLOC = c(NA_character_, "NEOCORTICAL COMPOSITE"),
+    NVNAM = c("IXICO", vendor),
+    NVMETHOD = c(paste(tracer, "VISIUAL CLASSIFICATION"), paste(vendor, tracer, "SUVR PIPELINE")),
     VISITNUM = visitnum
   )
 }
@@ -85,17 +82,34 @@ set.seed(2774)
 all_visit3_dat <- dplyr::bind_rows(
   lapply(dm_neuro$USUBJID, function(id) {
     # Generate random values for the parameters
+    tracer <- sample(c("FBP", "FBB", "FTP"), size = 1)
+    vendor <- sample(c("AVID", "BERKELEY"), size = 1)
+
     fbp_suvr_cb <- round(runif(1, 1.25, 2.5), 3)
     fbb_suvr_com <- round(fbp_suvr_cb - runif(1, min = 0.005, max = 0.01), 3)
     ftp_suvr_icbgm <- round(fbp_suvr_cb - runif(1, min = 0.1, max = 0.13), 3)
 
+    if (tracer == "FBP") {
+
+      suvr_value <- fbp_suvr_cb
+
+    } else if (tracer == "FBB") {
+
+      suvr_value <- fbb_suvr_com
+
+    } else if (tracer == "FTP") {
+
+      suvr_value <- ftp_suvr_icbgm
+
+    }
+
     # Create the dataset using create_records_for_one_id function
     create_records_for_one_id(
       usubjid = id,
+      tracer = tracer,
+      vendor = vendor,
       visitnum = 3,
-      fbp_suvr_cb = fbp_suvr_cb,
-      fbb_suvr_com = fbb_suvr_com,
-      ftp_suvr_icbgm = ftp_suvr_icbgm
+      suvr_value = suvr_value
     )
   })
 )
