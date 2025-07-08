@@ -1,10 +1,11 @@
-# Name: ADPET
+# Name: ADTPET
 #
-# Label: PET Scan Analysis Dataset
+# Label: Tau PET Scan Analysis Dataset
 #
 # Input: adsl, nv, ag, suppnv
 
 library(admiral)
+library(admiralneuro)
 library(pharmaversesdtm) # Contains example datasets from the CDISC pilot project
 library(dplyr)
 library(lubridate)
@@ -31,7 +32,6 @@ adsl <- admiralneuro::adsl_neuro
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 nv <- convert_blanks_to_na(nv)
 
-
 # Combine the parental datasets with their respective supp datasets (only if exist)
 # User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
 nv <- metatools::combine_supp(nv, suppnv)
@@ -40,12 +40,12 @@ nv <- metatools::combine_supp(nv, suppnv)
 
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
-  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "SNCWCFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "SNCTFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
-  "VR", "FBP", NA, NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, NA, "VRFTP", "FTP Qualitative Visual Classification", 5
+  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 4,
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 5
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
@@ -54,20 +54,21 @@ attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
-adpet <- nv %>%
+adtpet <- nv %>%
   ## Join ADSL with NV (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
     by_vars = get_admiral_option("subject_keys")
   ) %>%
-  ## Join ADPET with AG for tracer information ----
+  ## Join ADTPET with AG for tracer information ----
   # Users can add more variables in the `new_vars` argument as needed.
   derive_vars_merged(
     dataset_add = ag,
     new_vars = exprs(AGTRT, AGCAT),
-    by_vars = exprs(USUBJID, VISIT, NVLNKID = AGLNKID)
+    by_vars = c(get_admiral_option("subject_keys"), exprs(VISIT, NVLNKID = AGLNKID))
   ) %>%
+  filter(AGCAT == "TAU TRACER") %>% # Filter nv dataset for tau records only
   ## Calculate ADT, ADY ----
   derive_vars_dt(
     new_vars_prefix = "A",
@@ -75,7 +76,7 @@ adpet <- nv %>%
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
-adpet <- adpet %>%
+adtpet <- adtpet %>%
   ## Add PARAMCD and PARAM ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
@@ -96,7 +97,7 @@ adpet <- adpet %>%
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
-adpet <- adpet %>%
+adtpet <- adtpet %>%
   mutate(
     AVISIT = case_when(
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
@@ -112,7 +113,7 @@ adpet <- adpet %>%
   )
 
 ## Calculate ONTRTFL ----
-adpet <- adpet %>%
+adtpet <- adtpet %>%
   derive_var_ontrtfl(
     start_date = ADT,
     ref_start_date = TRTSDT,
@@ -123,7 +124,7 @@ adpet <- adpet %>%
 ### Derive Baseline flags ----
 
 ### Calculate ABLFL ----
-adpet <- adpet %>%
+adtpet <- adtpet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -138,7 +139,7 @@ adpet <- adpet %>%
 ## Derive visit flags ----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
-adpet <- adpet %>%
+adtpet <- adtpet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -163,26 +164,26 @@ adpet <- adpet %>%
 
 ## Derive baseline information ----
 
-## Calculate BASE ----
-adpet <- adpet %>%
+### Calculate BASE ----
+adtpet <- adtpet %>%
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVAL,
     new_var = BASE
   ) %>%
-  ## Calculate BASEC ----
+  ### Calculate BASEC ----
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVALC,
     new_var = BASEC
   ) %>%
-  ## Calculate CHG for post-baseline records ----
+  ### Calculate CHG for post-baseline records ----
   # The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
   restrict_derivation(
     derivation = derive_var_chg,
     filter = AVISITN > 0
   ) %>%
-  ## Calculate PCHG for post-baseline records ----
+  ### Calculate PCHG for post-baseline records ----
   # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
   restrict_derivation(
     derivation = derive_var_pchg,
@@ -190,7 +191,7 @@ adpet <- adpet %>%
   )
 
 ## Assign ASEQ ----
-adpet <- adpet %>%
+adtpet <- adtpet %>%
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = get_admiral_option("subject_keys"),
@@ -203,7 +204,7 @@ adpet <- adpet %>%
 # This process will be based on your metadata, no example given for this reason
 # ...
 
-admiralneuro_adpet <- adpet
+admiralneuro_adtpet <- adtpet
 
 # Save output ----
 
@@ -213,4 +214,4 @@ if (!file.exists(dir)) {
   # Create the folder
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
-save(admiralneuro_adpet, file = file.path(dir, "admiralneuro_adpet.rda"), compress = "bzip2")
+save(admiralneuro_adtpet, file = file.path(dir, "admiralneuro_adtpet.rda"), compress = "bzip2")
