@@ -53,7 +53,6 @@ visit13_usubjid <- visit_schedule %>%
 # Create records for one USUBJID ----
 
 create_records_for_one_id <- function(usubjid = "01-701-1015", tracer = "FBP", vendor = "AVID", visitnum = 3, suvr_value = suvr_value) {
-
   tibble(
     STUDYID = rep("CDISCPILOT01", 2),
     DOMAIN = rep("NV", 2),
@@ -90,17 +89,11 @@ all_visit3_dat <- dplyr::bind_rows(
     ftp_suvr_icbgm <- round(fbp_suvr_cb - runif(1, min = 0.1, max = 0.13), 3)
 
     if (tracer == "FBP") {
-
       suvr_value <- fbp_suvr_cb
-
     } else if (tracer == "FBB") {
-
       suvr_value <- fbb_suvr_com
-
     } else if (tracer == "FTP") {
-
       suvr_value <- ftp_suvr_icbgm
-
     }
 
     # Create the dataset using create_records_for_one_id function
