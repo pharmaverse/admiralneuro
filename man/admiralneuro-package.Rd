@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A toolbox for programming Clinical Data Standards Interchange Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R. ADaM datasets are a mandatory part of any New Drug or Biologics License Application submitted to the United States Food and Drug Administration (FDA). Analysis derivations are implemented in accordance with the "Analysis Data Model Implementation Guide" (CDISC Analysis Data Model Team, 2021, \url{https://www.cdisc.org/standards/foundational/adam}). The package is an extension package of the 'admiral' package.
+A toolbox for programming neuroscience Clinical Data Standards Interchange Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R. ADaM datasets are a mandatory part of any New Drug or Biologics License Application submitted to the United States Food and Drug Administration (FDA). Analysis derivations are implemented in accordance with the "Analysis Data Model Implementation Guide" (CDISC Analysis Data Model Team, 2021, \url{https://www.cdisc.org/standards/foundational/adam}). The package is an extension package of the 'admiral' package.
 }
 \seealso{
 Useful links:
@@ -19,7 +19,25 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Open Source \email{admiralneuro@pharmaverse.com}
+\strong{Maintainer}: Jian Wang \email{wang_jian_wj@lilly.com} (\href{https://orcid.org/0009-0002-4677-3781}{ORCID})
+
+Authors:
+\itemize{
+  \item Chris Pelentrides
+  \item Edoardo Mancini (\href{https://orcid.org/0009-0006-4899-8641}{ORCID})
+  \item Eric Nantz
+  \item Fanny Gautier (\href{https://orcid.org/0009-0004-3581-0131}{ORCID})
+  \item Gayatri G.
+  \item Leena Khatri (\href{https://orcid.org/0000-0002-2268-4023}{ORCID})
+  \item Meilin Jiang (\href{https://orcid.org/0000-0003-4515-4567}{ORCID})
+  \item Miles Almond (\href{https://orcid.org/0009-0007-1784-0355}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Eli Lilly [copyright holder, funder]
+  \item F. Hoffmann-La Roche AG [copyright holder, funder]
+}
 
 }
 \concept{internal}
