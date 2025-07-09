@@ -31,7 +31,7 @@ The latest version of the package works with the latest versions of the
 packages stated in `DESCRIPTION`.
 
 If a previous version of the package should be used, it is recommended
-to use latest version of the dependencies at the point of time when the
+to use latest version of the dependencies at the point in time when the
 previous version of `{admiralneuro}` was released.
 
 ## Scope
