@@ -40,7 +40,7 @@ previous version of `{admiralneuro}` was released.
     neuroscience-specific ADaM datasets in R in a modular manner.
 -   All functions are created based upon the ADaM Implementation Guide
     and aim to facilitate the programming of ADaM dataset standards.
--   Initially the package will focus on the most common efficacy
+-   Initially the package focuses on the most common efficacy
     endpoint needs for Amyloid PET and Tau PET, but over time we will look to add extra areas such as:
     Cognitive scores, Lab biomarkers and questionnaires.
 
