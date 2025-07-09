@@ -3,7 +3,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Neuroscience extension package for ADaM in R Asset Library admiral
+Neuroscience extension package for ADaM in R Asset Library `{admiral}`
 
 ## Purpose
 
