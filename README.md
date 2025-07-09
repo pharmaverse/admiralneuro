@@ -32,7 +32,7 @@ packages stated in `DESCRIPTION`.
 
 If a previous version of the package should be used, it is recommended
 to use latest version of the dependencies at the point of time when the
-previous version of {admiralneuro} was released.
+previous version of `{admiralneuro}` was released.
 
 ## Scope
 
