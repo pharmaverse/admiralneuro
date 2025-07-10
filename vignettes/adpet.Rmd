@@ -1,0 +1,204 @@
+---
+title: "Creating ADTPET and ADAPET"
+output: 
+  rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Creating ADTPET and ADAPET}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(admiraldev)
+```
+
+# Introduction
+
+This article describes the creation of PET Scan ADaMs:
+starting with `ADTPET` (Tau PET Scan Analysis Dataset), followed by `ADAPET` (Amyloid PET Scan Analysis Dataset).
+
+We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+The programming workflow around creating the general set-up of a BDS ADaM dataset using
+`{admiral}` functions is the same. In this vignette, we focus on the neuro-specific steps only to avoid repeating
+information and maintaining the same content in two places. As such, the code in this vignette is not
+completely executable; we recommend consulting the ADTPET and ADAPET template scripts
+to view the full workflow.
+
+**Note**: *All examples assume CDISC SDTM and/or ADaM format as input
+unless otherwise specified.*
+
+## Required Packages
+
+The examples of this vignette require the following packages.
+
+```{r, warning=FALSE, message=FALSE}
+library(admiral)
+library(admiralneuro)
+library(pharmaversesdtm)
+library(dplyr)
+library(lubridate)
+library(stringr)
+library(metatools)
+```
+
+# Programming Workflow
+
+-   [Read in Data](#readdata)
+-   [Initial PET Scan Analysis Dataset Set-up](#adpet_setup)
+-   [`ADTPET` (Tau PET Scan Analysis Dataset)](#adtpet)
+    -   [Assign `PARAMCD`, `PARAM`, and `PARAMN`](#paramcd_tpet)
+    -   [Map `AVAL` and `AVALC` variables](#aval_tpet)
+-   [`ADAPET` (Amyloid PET Scan Analysis Dataset)](#adapet)
+    -   [Assign `PARAMCD`, `PARAM`, and `PARAMN`](#paramcd_apet)
+
+## Read in Data {#readdata}
+
+To start, all data frames needed for the creation of `ADTPET` or `ADAPET` should be
+loaded into the global environment. Reading data will usually be a
+company specific process, however, for the purpose of this vignette, we
+will use example data from `{admiralneuro}`. We will
+utilize `NV`, `SUPPNV`, `AG` and `ADSL` for the basis of the Pet Scan ADaM datasets.
+
+```{r, message=FALSE, warning=FALSE}
+nv_neuro <- admiralneuro::nv_neuro
+suppnv_neuro <- admiralneuro::suppnv_neuro
+ag_neuro <- admiralneuro::ag_neuro
+adsl_neuro <- admiralneuro::adsl_neuro
+
+nv <- convert_blanks_to_na(nv_neuro)
+suppnv <- convert_blanks_to_na(suppnv_neuro)
+ag <- convert_blanks_to_na(ag_neuro)
+adsl <- convert_blanks_to_na(adsl_neuro)
+```
+
+While loading our input data, we can combine the `NV` domain and the `SUPPNV` supplementary domain for easier use in the next steps. Using the `metatools::combine_supp()` function avoids the need to manually transpose and merge the supplementary dataset with the corresponding domain.
+
+```{r, message=FALSE, warning=FALSE}
+nv_suppnv <- combine_supp(nv, suppnv)
+```
+
+## Initial PET Scan Analysis Dataset Set-up {#adpet_setup}
+
+The following steps are used to merge `ADSL` variables with the source data `NV` (combined to `SUPPNV`),
+along with tracer information from the `AG` dataset, without distinguishing between
+Tau and Amyloid data at this stage. This distinction will be made later.
+Common analysis variables such as Analysis Date (`ADT`) and Relative Analysis Day (`ADY`)
+can also be derived during this process.
+Note that only the sections relevant to this vignette are included in the steps below.
+To get a detailed guidance on all the steps, refer the `{admiral}`
+[Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+
+```{r, message=FALSE, warning=FALSE}
+adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
+
+adpet <- nv_suppnv %>%
+  derive_vars_merged(
+    dataset_add = adsl,
+    new_vars = adsl_vars,
+    by_vars = exprs(STUDYID, USUBJID)
+  ) %>%
+  derive_vars_merged(
+    dataset_add = ag,
+    new_vars = exprs(AGTRT, AGCAT),
+    by_vars = exprs(STUDYID, USUBJID, VISIT, NVLNKID = AGLNKID)
+  ) %>%
+  derive_vars_dt(
+    new_vars_prefix = "A",
+    dtc = NVDTC
+  ) %>%
+  derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
+```
+
+Having established the foundation of a global PET Scan Analysis Dataset (`adpet`),
+we can now differentiate between Tau and Amyloid data.
+
+## `ADTPET` (Tau PET Scan Analysis Dataset){#adtpet}
+
+From this point forward, and throughout this section, we will focus exclusively on Tau data.
+
+```{r, message=FALSE, warning=FALSE}
+adtpet <- adpet %>%
+  filter(AGCAT == "TAU TRACER")
+```
+
+### Create `PARAMCD`, `PARAM`, and `PARAMN` variables {#paramcd_tpet}
+
+The next step is to create and assign parameter level variables such as
+`PARAMCD`, `PARAM`, and `PARAMN`. For this, a lookup can be
+created based on the SDTM `--TESTCD`, `--CAT` and `--LOC` values to join to the source data.
+
+```{r, echo=TRUE, message=FALSE}
+param_lookup <- tibble::tribble(
+  ~NVTESTCD, ~NVCAT, ~NVLOC, ~PARAMCD, ~PARAM, ~PARAMN,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "VR", "FBP", NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
+  "VR", "FTP", NA, "VRFTP", "FTP Qualitative Visual Classification", 5
+)
+```
+
+This lookup may now be joined to the Tau data and this is how the
+parameters will look like:
+
+```{r, eval=TRUE, include=TRUE, message=FALSE}
+adtpet <- adtpet %>%
+  derive_vars_merged_lookup(
+    dataset_add = param_lookup,
+    new_vars = exprs(PARAMCD, PARAM, PARAMN),
+    by_vars = exprs(NVTESTCD, NVCAT, NVLOC)
+  )
+```
+
+```{r, eval=TRUE, echo=FALSE}
+adtpet_param <- distinct(adtpet, USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN)
+dataset_vignette(adtpet_param, display_vars = exprs(USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN))
+```
+
+### Map `AVAL` and `AVALC` variables {#aval_tpet}
+
+Now that the parameter-level variables have been created, we can map the Analysis Value variables.
+For these parameters, no complex derivation is required.
+Note that `AVALC` should only be mapped if it contains non-redundant information.
+
+```{r, message=FALSE, warning=FALSE}
+adtpet <- adtpet %>%
+  mutate(
+    AVAL = NVSTRESN,
+    AVALC = if_else(
+      is.na(NVSTRESN) | as.character(NVSTRESN) != NVSTRESC,
+      NVSTRESC,
+      NA
+    )
+  )
+```
+
+## `ADAPET` (Amyloid PET Scan Analysis Dataset){#adapet}
+
+From this point forward, this section will focus exclusively on Amyloid data.
+To do so, we will select the Amyloid tracer records from the global PET Scan Analysis Dataset (`adpet`).
+
+```{r, message=FALSE, warning=FALSE}
+adapet <- adpet %>%
+  filter(AGCAT == "AMYLOID TRACER")
+```
+
+### Create `PARAMCD`, `PARAM`, and `PARAMN` variables {#paramcd_apet}
+
+Similarly to what was done for the Tau data (`ADTPET`), and following the same process,
+we can now create and assign parameter-level variables such as `PARAMCD`, `PARAM`, and `PARAMN`.
+For this, we will use the [lookup](#paramcd_tpet) table created in the Tau data section. 
+
+# Example Scripts
+
+ADaM | Sourcing Command
+---- | --------------
+ADTPET | `admiral::use_ad_template("ADTPET", package = "admiralneuro")`
+ADAPET | `admiral::use_ad_template("ADAPET", package = "admiralneuro")`
