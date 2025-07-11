@@ -51,11 +51,12 @@ library(metatools)
 
 -   [Read in Data](#readdata)
 -   [Initial PET Scan Analysis Dataset Set-up](#adpet_setup)
+-   [Assign `PARAMCD`, `PARAM`, and `PARAMN`](#paramcd)
+-   [Map `AVAL` and `AVALC` variables](#aval)
 -   [`ADTPET` (Tau PET Scan Analysis Dataset)](#adtpet)
-    -   [Assign `PARAMCD`, `PARAM`, and `PARAMN`](#paramcd_tpet)
-    -   [Map `AVAL` and `AVALC` variables](#aval_tpet)
 -   [`ADAPET` (Amyloid PET Scan Analysis Dataset)](#adapet)
-    -   [Assign `PARAMCD`, `PARAM`, and `PARAMN`](#paramcd_apet)
+    -   [Convert SUVR to Centiloid](#centiloid)
+    -   [Derive Criterion Flag Variables for Amyloid Categories](#criterionfl)
 
 ## Read in Data {#readdata}
 
@@ -116,19 +117,7 @@ adpet <- nv_suppnv %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 ```
 
-Having established the foundation of a global PET Scan Analysis Dataset (`adpet`),
-we can now differentiate between Tau and Amyloid data.
-
-## `ADTPET` (Tau PET Scan Analysis Dataset){#adtpet}
-
-From this point forward, and throughout this section, we will focus exclusively on Tau data.
-
-```{r, message=FALSE, warning=FALSE}
-adtpet <- adpet %>%
-  filter(AGCAT == "TAU TRACER")
-```
-
-### Create `PARAMCD`, `PARAM`, and `PARAMN` variables {#paramcd_tpet}
+### Create `PARAMCD`, `PARAM`, and `PARAMN` variables {#paramcd}
 
 The next step is to create and assign parameter level variables such as
 `PARAMCD`, `PARAM`, and `PARAMN`. For this, a lookup can be
@@ -145,11 +134,11 @@ param_lookup <- tibble::tribble(
 )
 ```
 
-This lookup may now be joined to the Tau data and this is how the
+This lookup may now be joined to the data and this is how the
 parameters will look like:
 
 ```{r, eval=TRUE, include=TRUE, message=FALSE}
-adtpet <- adtpet %>%
+adpet <- adpet %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM, PARAMN),
@@ -158,8 +147,8 @@ adtpet <- adtpet %>%
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-adtpet_param <- distinct(adtpet, USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN)
-dataset_vignette(adtpet_param, display_vars = exprs(USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN))
+adpet_param <- distinct(adpet, USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN)
+dataset_vignette(adpet_param, display_vars = exprs(USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN))
 ```
 
 ### Map `AVAL` and `AVALC` variables {#aval_tpet}
@@ -169,7 +158,7 @@ For these parameters, no complex derivation is required.
 Note that `AVALC` should only be mapped if it contains non-redundant information.
 
 ```{r, message=FALSE, warning=FALSE}
-adtpet <- adtpet %>%
+adpet <- adpet %>%
   mutate(
     AVAL = NVSTRESN,
     AVALC = if_else(
@@ -180,21 +169,130 @@ adtpet <- adtpet %>%
   )
 ```
 
+Having established the foundation of a global PET Scan Analysis Dataset (`adpet`),
+we can now differentiate between Tau and Amyloid data.
+
+## `ADTPET` (Tau PET Scan Analysis Dataset){#adtpet}
+
+Tau PET scan data do not require any further derivation.
+Therefore, only a selection of the corresponding Tau tracer records is necessary.
+
+```{r, message=FALSE, warning=FALSE}
+adtpet <- adpet %>%
+  filter(AGCAT == "TAU TRACER")
+```
+
 ## `ADAPET` (Amyloid PET Scan Analysis Dataset){#adapet}
 
 From this point forward, this section will focus exclusively on Amyloid data.
-To do so, we will select the Amyloid tracer records from the global PET Scan Analysis Dataset (`adpet`).
+To that end, we will select the Amyloid tracer records from the global PET Scan Analysis Dataset (`adpet`),
+for which the parameter-level and analysis value variables have already been created.
 
 ```{r, message=FALSE, warning=FALSE}
 adapet <- adpet %>%
   filter(AGCAT == "AMYLOID TRACER")
 ```
 
-### Create `PARAMCD`, `PARAM`, and `PARAMN` variables {#paramcd_apet}
+### Convert SUVR to Centiloid{#centiloid}
 
-Similarly to what was done for the Tau data (`ADTPET`), and following the same process,
-we can now create and assign parameter-level variables such as `PARAMCD`, `PARAM`, and `PARAMN`.
-For this, we will use the [lookup](#paramcd_tpet) table created in the Tau data section. 
+`SUVR` (Standardized Uptake Value Ratio) is a widely used semi-quantitative measure
+in PET imaging that estimates the level of tracer uptake (such as Amyloid) in the brain,
+relative to a reference region.
+While useful, `SUVR` has certain limitations (which we will not detail here) that affect
+its comparability across different tracers and studies.
+To address this, the **Centiloid scale** was developed to standardize Amyloid PET measurements,
+enabling consistent interpretation across imaging protocols, tracers, and clinical studies.
+
+In the following steps, we will incorporate the **conversion** from **SUVR to Centiloid** using
+the function `admiralneuro::compute_centiloid()`.
+
+For our examples, we divide the process into three main steps:
+
+**1. Define the Grouping Criteria**
+
+The first step is to specify how to group the data using `admiral::slice_derivation()`.
+In this case, we group by patient, `ADSL` variables, Analysis Date (`ADT`),
+Relative Analysis Day (`ADY`), and Visit (`VISIT`).
+We also retain records with missing Analysis Values (`AVAL = NA`) by setting `keep_nas = TRUE`.
+
+**2. Convert SUVR to Centiloid: Florbetaben (FBB)**
+
+The second step involves converting the original `SUVR` parameter for Florbetaben
+to Centiloid using `admiralneuro::compute_centiloid()`.
+We apply filtering conditions using `admiral::derivation_slice()` based on
+the tracer (`SUVRBFBB`), method (`BERKELEY FBB SUVR PIPELINE`), and reference region (`Whole Cerebellum`).
+The new parameter values which include `AVAL`, `PARAMCD`, `PARAM`, and `AVALU`,
+are assigned within the `args` argument of this function.
+
+**3. Convert SUVR to Centiloid: Florbetapir (FBP)**
+
+Similarly, the third step converts the `SUVR` parameter for Florbetapir.
+Filtering is applied to select records based on the `SUVRAFBP` tracer, the
+`AVID FBP SUVR PIPELINE` method, and the same reference region.
+As in step 2, the corresponding Centiloid values and associated metadata are set
+within the `args` argument.
+
+```{r, message=FALSE, warning=FALSE}
+adapet <- adapet %>%
+  slice_derivation(
+    derivation = derive_param_computed,
+    args = params(
+      by_vars = c(
+        get_admiral_option("subject_keys"),
+        adsl_vars,
+        exprs(ADT, ADY, VISIT)
+      ),
+      keep_nas = TRUE
+    ),
+    derivation_slice(
+      filter = (PARAMCD == "SUVRBFBB") & (NVMETHOD == "BERKELEY FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRBFBB"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetaben",
+            pipeline = "BERKELEY FBB SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          PARAMCD = "CLBFBB",
+          PARAM = "Centiloid (CL) based on BERKELEY FBB",
+          AVALU = "CL"
+        )
+      )
+    ),
+    derivation_slice(
+      filter = (PARAMCD == "SUVRAFBP") & (NVMETHOD == "AVID FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRAFBP"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetapir",
+            pipeline = "AVID FBP SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          PARAMCD = "CLAFBP",
+          PARAM = "Centiloid (CL) based on AVID FBP",
+          AVALU = "CL"
+        )
+      )
+    )
+  )
+```
+
+This is how the parameters and newly converted parameters will look like:
+
+```{r, eval=TRUE, echo=FALSE}
+adapet_param <- distinct(adapet %>% filter(NVTESTCD == "SUVR" | !is.na(AVALU)), USUBJID, PARAMCD, PARAM, AVAL, AVALU, ADT, ADY, VISIT)
+dataset_vignette(adapet_param %>% arrange(USUBJID, ADT), display_vars = exprs(USUBJID, PARAMCD, PARAM, AVAL, AVALU, ADT, ADY, VISIT))
+```
+
+### Derive Criterion Flag Variables for Amyloid Categories{#criterionfl}
+
+Having converted the Standardized Uptake Value Ratio to Centiloid, we can now derive the criterion flags for Amyloid categories.
+
+_To be continued..._
 
 # Example Scripts
 
