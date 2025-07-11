@@ -57,6 +57,7 @@ library(metatools)
 -   [`ADAPET` (Amyloid PET Scan Analysis Dataset)](#adapet)
     -   [Convert SUVR to Centiloid](#centiloid)
     -   [Derive Criterion Flag Variables for Amyloid Categories](#criterionfl)
+-   [Remaining PET Scan Analysis Dataset Set-up](#dataset_end)
 
 ## Read in Data {#readdata}
 
@@ -293,6 +294,13 @@ dataset_vignette(adapet_param %>% arrange(USUBJID, ADT), display_vars = exprs(US
 Having converted the Standardized Uptake Value Ratio to Centiloid, we can now derive the criterion flags for Amyloid categories.
 
 _To be continued..._
+
+## Remaining PET Scan Analysis Dataset Set-up{#dataset_end}
+
+The `{admiral}` [Creating a BDS Finding ADaM
+vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html)
+covers all the steps that are not shown here, such as merging the timing variables,
+analysis flags, etc.
 
 # Example Scripts
 
