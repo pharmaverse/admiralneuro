@@ -72,16 +72,16 @@ will use example data from `{admiralneuro}`. We will
 utilize `NV`, `SUPPNV`, `AG` and `ADSL` for the basis of the Pet Scan ADaM datasets.
 
 ```{r, message=FALSE, warning=FALSE}
-nv <- admiralneuro::nv_neuro %>% 
+nv <- admiralneuro::nv_neuro %>%
   convert_blanks_to_na()
 
-suppnv <- admiralneuro::suppnv_neuro %>% 
+suppnv <- admiralneuro::suppnv_neuro %>%
   convert_blanks_to_na()
 
-ag <- admiralneuro::ag_neuro %>% 
+ag <- admiralneuro::ag_neuro %>%
   convert_blanks_to_na()
 
-adsl <- admiralneuro::adsl_neuro %>% 
+adsl <- admiralneuro::adsl_neuro %>%
   convert_blanks_to_na()
 ```
 
