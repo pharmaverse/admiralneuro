@@ -176,7 +176,7 @@ we can now differentiate between Tau and Amyloid data.
 ## `ADTPET` (Tau PET Scan Analysis Dataset){#adtpet}
 
 Tau PET scan data generally do not require any further derivations.
-Therefore, only a selection of the corresponding Tau tracer records is necessary.
+Therefore, if producing an `ADTPET`, we can now filter the global PET Scan Analysis Dataset `adpet` to retain only the Tau tracer records.
 
 ```{r, message=FALSE, warning=FALSE}
 adtpet <- adpet %>%
