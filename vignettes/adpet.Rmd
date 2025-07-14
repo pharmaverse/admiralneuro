@@ -185,9 +185,7 @@ adtpet <- adpet %>%
 
 ## `ADAPET` (Amyloid PET Scan Analysis Dataset){#adapet}
 
-From this point forward, this section will focus exclusively on Amyloid data.
-To that end, we will select the Amyloid tracer records from the global PET Scan Analysis Dataset (`adpet`),
-for which the parameter-level and analysis value variables have already been created.
+If producing an `ADAPET`, we can now filter the global PET Scan Analysis Dataset `adpet` to retain only the Amyloid tracer records.
 
 ```{r, message=FALSE, warning=FALSE}
 adapet <- adpet %>%
