@@ -87,7 +87,7 @@ nv_suppnv <- combine_supp(nv, suppnv)
 
 ## Initial PET Scan Analysis Dataset Set-up {#adpet_setup}
 
-The following steps are used to merge `ADSL` variables with the source data `NV` (combined to `SUPPNV`),
+The following steps are used to merge `ADSL` variables with the source data `NV` (previously combined with `SUPPNV`),
 along with tracer information from the `AG` dataset, without distinguishing between
 Tau and Amyloid data at this stage. This distinction will be made later.
 Common analysis variables such as Analysis Date (`ADT`) and Relative Analysis Day (`ADY`)
