@@ -161,6 +161,15 @@ adapet <- adapet %>%
     )
   )
 
+## Apply the derive_vars_crit_flag function for Centiloid Threshold
+adapet <- adapet %>%
+  derive_vars_crit_flag(
+    crit_nr = 1,
+    condition = if_else(PARAMCD == "CLAFBP", AVAL < 24.1, NA),
+    description = "CENTILOID < 24.1 (for CLAFBP)",
+    values_yn = TRUE # To get "Y", "N", and NA for the flag
+  )
+
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
