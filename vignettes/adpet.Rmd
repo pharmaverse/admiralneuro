@@ -175,7 +175,7 @@ we can now differentiate between Tau and Amyloid data.
 
 ## `ADTPET` (Tau PET Scan Analysis Dataset){#adtpet}
 
-Tau PET scan data do not require any further derivation.
+Tau PET scan data generally do not require any further derivations.
 Therefore, only a selection of the corresponding Tau tracer records is necessary.
 
 ```{r, message=FALSE, warning=FALSE}
