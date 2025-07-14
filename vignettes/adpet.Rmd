@@ -19,7 +19,11 @@ library(admiraldev)
 
 # Introduction
 
-This article describes the creation of PET Scan ADaMs:
+This article describes the creation of PET Scan ADaMs.
+
+We recommend splitting out Amyloid and Tau into two distinct ADaMs datasets. The vignette presents
+a combined approach for the initial setup, parameter mapping and finals steps.
+It then splits into separate sections for each data type, as they require different processes:
 starting with `ADTPET` (Tau PET Scan Analysis Dataset), followed by `ADAPET` (Amyloid PET Scan Analysis Dataset).
 
 We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM
@@ -68,15 +72,17 @@ will use example data from `{admiralneuro}`. We will
 utilize `NV`, `SUPPNV`, `AG` and `ADSL` for the basis of the Pet Scan ADaM datasets.
 
 ```{r, message=FALSE, warning=FALSE}
-nv_neuro <- admiralneuro::nv_neuro
-suppnv_neuro <- admiralneuro::suppnv_neuro
-ag_neuro <- admiralneuro::ag_neuro
-adsl_neuro <- admiralneuro::adsl_neuro
+nv <- admiralneuro::nv_neuro %>% 
+  convert_blanks_to_na()
 
-nv <- convert_blanks_to_na(nv_neuro)
-suppnv <- convert_blanks_to_na(suppnv_neuro)
-ag <- convert_blanks_to_na(ag_neuro)
-adsl <- convert_blanks_to_na(adsl_neuro)
+suppnv <- admiralneuro::suppnv_neuro %>% 
+  convert_blanks_to_na()
+
+ag <- admiralneuro::ag_neuro %>% 
+  convert_blanks_to_na()
+
+adsl <- admiralneuro::adsl_neuro %>% 
+  convert_blanks_to_na()
 ```
 
 While loading our input data, we can combine the `NV` domain and the `SUPPNV` supplementary domain for easier use in the next steps. Using the `metatools::combine_supp()` function avoids the need to manually transpose and merge the supplementary dataset with the corresponding domain.
