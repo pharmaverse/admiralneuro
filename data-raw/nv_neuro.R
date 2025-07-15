@@ -52,22 +52,23 @@ visit13_usubjid <- visit_schedule %>%
 
 # Create records for one USUBJID ----
 
-create_records_for_one_id <- function(usubjid = "01-701-1015", tracer = "FBP", vendor = "AVID", visitnum = 3, suvr_value = suvr_value) {
+create_records_for_one_id <- function(usubjid = "01-701-1015", amy_tracer = "FBP", vendor = "AVID", visitnum = 3, amy_suvr_value, tau_suvr_value) {
   tibble(
-    STUDYID = rep("CDISCPILOT01", 2),
-    DOMAIN = rep("NV", 2),
-    USUBJID = rep(usubjid, 2),
-    SUBJID = sub(".*-", "", rep(usubjid, 2)),
-    NVTESTCD = c("VR", "SUVR"),
+    STUDYID = "CDISCPILOT01",
+    DOMAIN = "NV",
+    USUBJID = usubjid,
+    SUBJID = sub(".*-", "", usubjid),
+    NVTESTCD = c("VR", "SUVR", "SUVR"),
     NVTEST = c(
       "Qualitative Visual Classification",
+      "Standardized Uptake Value Ratio",
       "Standardized Uptake Value Ratio"
     ),
-    NVCAT = rep(tracer, 2),
-    NVORRES = c("Positive", as.character(suvr_value)),
-    NVLOC = c(NA_character_, "NEOCORTICAL COMPOSITE"),
-    NVNAM = c("IXICO", vendor),
-    NVMETHOD = c(paste(tracer, "VISIUAL CLASSIFICATION"), paste(vendor, tracer, "SUVR PIPELINE")),
+    NVCAT = c(amy_tracer, amy_tracer, "FTP"),
+    NVORRES = c("Positive", as.character(amy_suvr_value), as.character(tau_suvr_value)),
+    NVLOC = c(NA_character_, "NEOCORTICAL COMPOSITE", "NEOCORTICAL COMPOSITE"),
+    NVNAM = c("IXICO", vendor, vendor),
+    NVMETHOD = c(paste(amy_tracer, "VISIUAL CLASSIFICATION"), paste(vendor, amy_tracer, "SUVR PIPELINE"), paste(vendor, "FTP", "SUVR PIPELINE")),
     VISITNUM = visitnum
   )
 }
@@ -81,7 +82,7 @@ set.seed(2774)
 all_visit3_dat <- dplyr::bind_rows(
   lapply(dm_neuro$USUBJID, function(id) {
     # Generate random values for the parameters
-    tracer <- sample(c("FBP", "FBB", "FTP"), size = 1)
+    amy_tracer <- sample(c("FBP", "FBB"), size = 1)
     vendor <- sample(c("AVID", "BERKELEY"), size = 1)
 
     fbp_suvr_cb <- round(runif(1, 1.25, 2.5), 3)
@@ -92,17 +93,16 @@ all_visit3_dat <- dplyr::bind_rows(
       suvr_value <- fbp_suvr_cb
     } else if (tracer == "FBB") {
       suvr_value <- fbb_suvr_com
-    } else if (tracer == "FTP") {
-      suvr_value <- ftp_suvr_icbgm
     }
 
     # Create the dataset using create_records_for_one_id function
     create_records_for_one_id(
       usubjid = id,
-      tracer = tracer,
+      amy_tracer = amy_tracer,
       vendor = vendor,
       visitnum = 3,
-      suvr_value = suvr_value
+      amy_suvr_value = suvr_value,
+      tau_suvr_value = ftp_suvr_icbgm
     )
   })
 )
@@ -187,6 +187,31 @@ all_dat <- bind_rows(
     visit_schedule,
     by = c("USUBJID", "VISITNUM")
   ) %>%
+  # Differentiate Tau tracer visit dates from Amyloid tracer visit dates for realism
+  dplyr::group_by(USUBJID, VISIT) %>%
+  dplyr::mutate(
+    rand_diff = sample(2:4, 1),
+    rand_sign = sample(c(-1, 1), size = 1)
+  ) %>%
+  dplyr::mutate(
+    # Apply a random difference of between +/- 2 to 4 days to visit date for Tau tracer assessments. For baseline only subtraction is done
+    NVDTC = case_when(
+      NVCAT == "FTP" & VISIT == "BASELINE" ~ as.character(ymd(NVDTC) - days(rand_diff)),
+      NVCAT == "FTP" & VISIT != "BASELINE" ~ as.character(ymd(NVDTC) + rand_sign * days(rand_diff)),
+      TRUE ~ NVDTC
+    ),
+    VISITDY = case_when(
+      NVCAT == "FTP" & VISIT == "BASELINE" ~ VISITDY - rand_diff,
+      NVCAT == "FTP" & VISIT != "BASELINE" ~ VISITDY + rand_sign * rand_diff,
+      TRUE ~ VISITDY
+    ),
+    NVDY = case_when(
+      NVCAT == "FTP" & VISIT == "BASELINE" ~ NVDY - rand_diff,
+      NVCAT == "FTP" & VISIT != "BASELINE" ~ NVDY + rand_sign * rand_diff,
+      TRUE ~ NVDY
+    )
+  ) %>%
+  dplyr::ungroup() %>%
   dplyr::group_by(USUBJID) %>%
   dplyr::mutate(NVSEQ = row_number()) %>%
   dplyr::ungroup() %>%
