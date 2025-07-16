@@ -145,10 +145,10 @@ compute_centiloid <- function(
 
     # nolint start
     valid_combinations <- tribble(
-      ~tracer,              ~pipeline,                     ~ref_region,          ~slope,   ~intercept,
-      "18F-Florbetapir",    "AVID FBP SUVR PIPELINE",      "Whole Cerebellum",   183.07,      -177.26,
-      "18F-Florbetapir",    "BERKELEY FBP SUVR PIPELINE",  "Whole Cerebellum",   188.22,   -189.16,
-      "18F-Florbetaben",    "BERKELEY FBB SUVR PIPELINE",  "Whole Cerebellum",   157.15,   -151.87
+      ~tracer, ~pipeline, ~ref_region, ~slope, ~intercept,
+      "18F-Florbetapir", "AVID FBP SUVR PIPELINE", "Whole Cerebellum", 183.07, -177.26,
+      "18F-Florbetapir", "BERKELEY FBP SUVR PIPELINE", "Whole Cerebellum", 188.22, -189.16,
+      "18F-Florbetaben", "BERKELEY FBB SUVR PIPELINE", "Whole Cerebellum", 157.15, -151.87
     )
     # nolint end
 
