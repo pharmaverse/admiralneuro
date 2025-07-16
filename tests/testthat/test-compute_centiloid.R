@@ -8,7 +8,7 @@ test_that("Test 1: 18F-Florbetapir with AVID pipeline", {
       ref_region = "Whole Cerebellum",
       suvr = 1.25
     ),
-    183 * 1.25 - 177
+    183.07 * 1.25 - 177.26
   )
 })
 
