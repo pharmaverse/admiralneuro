@@ -75,21 +75,22 @@ the user's selections of tracer, pipeline, and reference region.
 The following combinations of tracer, pipeline, reference region, slope,
 and intercept are supported:\tabular{lllll}{
    tracer \tab pipeline \tab ref_region \tab slope \tab intercept \cr
-   18F-Florbetapir \tab AVID FBP SUVR PIPELINE¹ \tab Whole Cerebellum \tab 183.00 \tab -177.00 \cr
+   18F-Florbetapir \tab AVID FBP SUVR PIPELINE¹ \tab Whole Cerebellum \tab 183.07 \tab -177.26 \cr
    18F-Florbetapir \tab BERKELEY FBP SUVR PIPELINE² \tab Whole Cerebellum \tab 188.22 \tab -189.16 \cr
-   18F-Florbetaben \tab BERKELEY FBB SUVR PIPELINE³ \tab Whole Cerebellum \tab 157.15 \tab -151.87 \cr
+   18F-Florbetaben \tab BERKELEY FBB SUVR PIPELINE² \tab Whole Cerebellum \tab 157.15 \tab -151.87 \cr
 }
 
 
 The equation used for the conversion is based on the following references:
 
 ¹ \href{https://doi.org/10.1016/j.jalz.2018.06.1353}{Navitsky, et. al., 2018}
-² \href{https://adni.loni.usc.edu/}{ADNI Florbetapir PET Methods, login required}
-³ \href{https://adni.loni.usc.edu/}{ADNI Florbetaben PET Methods, login required}
+² \href{https://doi.org/10.1186/s13195-021-00836-1}{Royse, et. al., 2021}
 
 Alternatively, the user can override the pre-selection by specifying \code{custom_slope}
 and \code{custom_intercept} instead. If \code{custom_slope} and \code{custom_intercept} are specified,
-\code{tracer}, \code{pipeline} and \code{ref_region} are ignored.
+\code{tracer}, \code{pipeline} and \code{ref_region} are ignored. Please refer to
+\href{https://doi.org/10.1016/j.nicl.2025.103765}{Iaccarino, L. et. al., 2025} for more Centiloid
+transformation formulas.
 
 If a matching combination of tracer, pipeline and reference region is not specified and
 \code{custom_slope} and \code{custom_intercept} are not specified, a warning is issued and
