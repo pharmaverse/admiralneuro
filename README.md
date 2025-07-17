@@ -42,7 +42,7 @@ previous version of `{admiralneuro}` was released.
     and aim to facilitate the programming of ADaM dataset standards.
 -   Initially the package focuses on the most common efficacy
     endpoint needs for Amyloid PET and Tau PET, but over time we will look to add extra areas such as:
-    Cognitive scores, Lab biomarkers and questionnaires.
+    cognitive scores, lab biomarkers and questionnaires.
 
 ## Expectations
 
