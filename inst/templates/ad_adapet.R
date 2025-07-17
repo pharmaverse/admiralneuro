@@ -94,7 +94,8 @@ adapet <- adapet %>%
     )
   )
 
-## Convert SUVR to Centiloid ----
+## Amyloid-specific derivations ----
+### Convert SUVR to Centiloid ----
 adapet <- adapet %>%
   slice_derivation(
     derivation = derive_param_computed,
@@ -159,16 +160,15 @@ adapet <- adapet %>%
         )
       )
     )
-  )
-
-## Create criterion flags for Centiloid Threshold
-adapet <- adapet %>%
+  ) %>%
+  ### Derive criterion flags for Centiloid Threshold ----
   derive_vars_crit_flag(
     crit_nr = 1,
-    condition = if_else(PARAMCD == "CLAFBP", AVAL < 24.1, NA),
-    description = "CENTILOID < 24.1 (for CLAFBP)",
+    condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
+    description = "CENTILOID < 24.1",
     values_yn = TRUE # To get "Y", "N", and NA for the flag
   )
+
 
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
