@@ -161,7 +161,7 @@ adapet <- adapet %>%
     )
   )
 
-## Apply the derive_vars_crit_flag function for Centiloid Threshold
+## Create criterion flags for Centiloid Threshold
 adapet <- adapet %>%
   derive_vars_crit_flag(
     crit_nr = 1,
