@@ -7,6 +7,7 @@ library(tibble)
 library(dplyr)
 library(stringr)
 library(admiral)
+library(lubridate)
 
 # Read input data ----
 
@@ -196,8 +197,8 @@ all_dat <- bind_rows(
   dplyr::mutate(
     # Apply a random difference of between +/- 2 to 4 days to visit date for Tau tracer assessments. For baseline only subtraction is done
     NVDTC = case_when(
-      NVCAT == "FTP" & VISIT == "BASELINE" ~ as.character(ymd(NVDTC) - days(rand_diff)),
-      NVCAT == "FTP" & VISIT != "BASELINE" ~ as.character(ymd(NVDTC) + rand_sign * days(rand_diff)),
+      NVCAT == "FTP" & VISIT == "BASELINE" ~ as.character(lubridate::ymd(NVDTC) - lubridate::days(rand_diff)),
+      NVCAT == "FTP" & VISIT != "BASELINE" ~ as.character(lubridate::ymd(NVDTC) + rand_sign * lubridate::days(rand_diff)),
       TRUE ~ NVDTC
     ),
     VISITDY = case_when(
