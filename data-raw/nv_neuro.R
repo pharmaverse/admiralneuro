@@ -89,9 +89,9 @@ all_visit3_dat <- dplyr::bind_rows(
     fbb_suvr_com <- round(fbp_suvr_cb - runif(1, min = 0.005, max = 0.01), 3)
     ftp_suvr_icbgm <- round(fbp_suvr_cb - runif(1, min = 0.1, max = 0.13), 3)
 
-    if (tracer == "FBP") {
+    if (amy_tracer == "FBP") {
       suvr_value <- fbp_suvr_cb
-    } else if (tracer == "FBB") {
+    } else if (amy_tracer == "FBB") {
       suvr_value <- fbb_suvr_com
     }
 
