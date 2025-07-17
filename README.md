@@ -3,55 +3,77 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-## Table of Contents
+Neuroscience extension package for ADaM in R Asset Library `{admiral}`
 
--   [Extension Expectations](#extension-expectations)
--   [What is included in the
-    template](#what-is-included-in-the-template)
--   [Package Extension Guidance](#package-extension-guidance)
--   [Quick Start Guide for Template](#quick-start-guide-for-template)
+## Purpose
 
-## Extension Expectations
+To provide a complementary (to `{admiral}`) toolbox that enables users
+to develop neuroscience disease area specifics.
 
-To be included as an `{admiral}` package extension we expect developers
-to adhere to the following standards:
+## Installation
 
--   [Code of
-    Conduct](https://pharmaverse.github.io/admiral/CODE_OF_CONDUCT.html)
--   [Manifesto](https://pharmaverse.github.io/admiral/index.html?q=manifest#admiral-manifesto)
--   [Programming
-    Strategy](https://pharmaverse.github.io/admiraldev/articles/programming_strategy.html)
--   Follow consistent workflow checks
--   A CRAN Release means 90% or greater test coverage
+The package is available from CRAN and can be installed with:
 
-We have developed this repository template in order to reduce the burden
-on developers to follow these standards. This template will also help to
-harmonize the `{admiral}` family of R packages, to ensure a consistent
-user experience and ease of installing and adopting all the packages.
-With this in mind, we expect the same core package dependencies and
-versions as used for `{admiral}`.
+```r
+install.packages("admiralneuro")
+```
 
-## What is included in the template
+To install the latest development version of the package directly from
+GitHub use the following code:
 
-The repository template includes the following:
+```r
+pak::pkg_install("admiralneuro", dependencies = TRUE)
+```
 
--   License file (Apache 2.0 - but company co-developers need to be
-    added to copyright section)
--   Required folders (R; test; templates; vignettes; etc)
--   Set-up files (DESCRIPTION; NAMESPACE; etc)
--   Issue Templates (Bug Template; Feature Request; Documentation
-    Request/Update; Onboarding)
--   Pull Request Template
--   Workflow actions (a selection of generic and specific CI/CD
-    auto-checks)
--   Package badges (Test coverage; etc)
--   Branch protection rules
+### Dependencies
 
-## Package Extension Guidance
+The latest version of the package works with the latest versions of the
+packages stated in `DESCRIPTION`.
 
-For detailed information regarding the ethos of `{admiral}` package
-extensions and how to decide if you should set your own one up, please
-see our [Package Extension
-Guidance](https://pharmaverse.github.io/admiraldev/articles/package_extensions.html).
-You will also find details about team setup, suggested workflow and
-lessons learned from past package extensions.
+If a previous version of the package should be used, it is recommended
+to use latest version of the dependencies at the point in time when the
+previous version of `{admiralneuro}` was released.
+
+## Scope
+
+-   Build a toolbox of re-usable functions and utilities to create
+    neuroscience-specific ADaM datasets in R in a modular manner.
+-   All functions are created based upon the ADaM Implementation Guide
+    and aim to facilitate the programming of ADaM dataset standards.
+-   Initially the package focuses on the most common efficacy
+    endpoint needs for Amyloid PET and Tau PET, but over time we will look to add extra areas such as:
+    cognitive scores, lab biomarkers and questionnaires.
+
+## Expectations
+
+`{admiralneuro}` is expected to complement `{admiral}` and provide
+functions to help with the creation of the efficacy endpoints required
+for neuroscience ADaMs.
+
+## References and Documentation
+
+Please refer to the [{admiral} References and
+    Documentation](https://pharmaverse.github.io/admiral/).
+
+## R Versions
+
+Here's a summary of our strategy for this package related to R versions:
+
+-   R versions for developers and users will follow the same as
+    `{admiral}` core package.
+-   For development the `main` branch of `{admiral}` core is used as a
+    dependency. For releasing a new `{admiralneuro}` version it must run
+    using the latest released `{admiral}` core version.
+
+## Contact
+
+We use the following for support and communications between user and
+developer community:
+
+-   [Slack](https://pharmaverse.slack.com/) - for
+    informal discussions, Q&A and building our user community. If you
+    don't have access, use this
+    [link](https://join.slack.com/t/pharmaverse/shared_invite/zt-yv5atkr4-Np2ytJ6W_QKz_4Olo7Jo9A)
+    to join the pharmaverse Slack workspace
+-   [GitHub Issues](https://github.com/pharmaverse/admiralneuro/issues) -
+    for direct feedback, enhancement requests or raising bugs
