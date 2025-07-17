@@ -70,48 +70,66 @@
 </div>
 <!-- badges: start -->
 <!-- badges: end -->
+<p>Neuroscience extension package for ADaM in R Asset Library <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a></p>
 <div class="section level2">
-<h2 id="table-of-contents">Table of Contents<a class="anchor" aria-label="anchor" href="#table-of-contents"></a>
+<h2 id="purpose">Purpose<a class="anchor" aria-label="anchor" href="#purpose"></a>
+</h2>
+<p>To provide a complementary (to <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a>) toolbox that enables users to develop neuroscience disease area specifics.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>The package is available from CRAN and can be installed with:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"admiralneuro"</span><span class="op">)</span></span></code></pre></div>
+<p>To install the latest development version of the package directly from GitHub use the following code:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"admiralneuro"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="dependencies">Dependencies<a class="anchor" aria-label="anchor" href="#dependencies"></a>
+</h3>
+<p>The latest version of the package works with the latest versions of the packages stated in <code>DESCRIPTION</code>.</p>
+<p>If a previous version of the package should be used, it is recommended to use latest version of the dependencies at the point in time when the previous version of <a href="https://pharmaverse.github.io/admiralneuro">admiralneuro</a> was released.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="scope">Scope<a class="anchor" aria-label="anchor" href="#scope"></a>
 </h2>
 <ul>
-<li><a href="#extension-expectations">Extension Expectations</a></li>
-<li><a href="#what-is-included-in-the-template">What is included in the template</a></li>
-<li><a href="#package-extension-guidance">Package Extension Guidance</a></li>
-<li><a href="#quick-start-guide-for-template">Quick Start Guide for Template</a></li>
+<li>Build a toolbox of re-usable functions and utilities to create neuroscience-specific ADaM datasets in R in a modular manner.</li>
+<li>All functions are created based upon the ADaM Implementation Guide and aim to facilitate the programming of ADaM dataset standards.</li>
+<li>Initially the package focuses on the most common efficacy endpoint needs for Amyloid PET and Tau PET, but over time we will look to add extra areas such as: cognitive scores, lab biomarkers and questionnaires.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="extension-expectations">Extension Expectations<a class="anchor" aria-label="anchor" href="#extension-expectations"></a>
+<h2 id="expectations">Expectations<a class="anchor" aria-label="anchor" href="#expectations"></a>
 </h2>
-<p>To be included as an <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> package extension we expect developers to adhere to the following standards:</p>
-<ul>
-<li><a href="https://pharmaverse.github.io/admiral/CODE_OF_CONDUCT.html" class="external-link">Code of Conduct</a></li>
-<li><a href="https://pharmaverse.github.io/admiral/index.html?q=manifest#admiral-manifesto" class="external-link">Manifesto</a></li>
-<li><a href="https://pharmaverse.github.io/admiraldev/articles/programming_strategy.html" class="external-link">Programming Strategy</a></li>
-<li>Follow consistent workflow checks</li>
-<li>A CRAN Release means 90% or greater test coverage</li>
-</ul>
-<p>We have developed this repository template in order to reduce the burden on developers to follow these standards. This template will also help to harmonize the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> family of R packages, to ensure a consistent user experience and ease of installing and adopting all the packages. With this in mind, we expect the same core package dependencies and versions as used for <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a>.</p>
+<p><a href="https://pharmaverse.github.io/admiralneuro">admiralneuro</a> is expected to complement <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> and provide functions to help with the creation of the efficacy endpoints required for neuroscience ADaMs.</p>
 </div>
 <div class="section level2">
-<h2 id="what-is-included-in-the-template">What is included in the template<a class="anchor" aria-label="anchor" href="#what-is-included-in-the-template"></a>
+<h2 id="references-and-documentation">References and Documentation<a class="anchor" aria-label="anchor" href="#references-and-documentation"></a>
 </h2>
-<p>The repository template includes the following:</p>
+<p>Please refer to the <a href="https://pharmaverse.github.io/admiral/" class="external-link">{admiral} References and Documentation</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="r-versions">R Versions<a class="anchor" aria-label="anchor" href="#r-versions"></a>
+</h2>
+<p>Here’s a summary of our strategy for this package related to R versions:</p>
 <ul>
-<li>License file (Apache 2.0 - but company co-developers need to be added to copyright section)</li>
-<li>Required folders (R; test; templates; vignettes; etc)</li>
-<li>Set-up files (DESCRIPTION; NAMESPACE; etc)</li>
-<li>Issue Templates (Bug Template; Feature Request; Documentation Request/Update; Onboarding)</li>
-<li>Pull Request Template</li>
-<li>Workflow actions (a selection of generic and specific CI/CD auto-checks)</li>
-<li>Package badges (Test coverage; etc)</li>
-<li>Branch protection rules</li>
+<li>R versions for developers and users will follow the same as <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> core package.</li>
+<li>For development the <code>main</code> branch of <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> core is used as a dependency. For releasing a new <a href="https://pharmaverse.github.io/admiralneuro">admiralneuro</a> version it must run using the latest released <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> core version.</li>
 </ul>
 </div>
 <div class="section level2">
-<h2 id="package-extension-guidance">Package Extension Guidance<a class="anchor" aria-label="anchor" href="#package-extension-guidance"></a>
+<h2 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
 </h2>
-<p>For detailed information regarding the ethos of <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> package extensions and how to decide if you should set your own one up, please see our <a href="https://pharmaverse.github.io/admiraldev/articles/package_extensions.html" class="external-link">Package Extension Guidance</a>. You will also find details about team setup, suggested workflow and lessons learned from past package extensions.</p>
+<p>We use the following for support and communications between user and developer community:</p>
+<ul>
+<li>
+<a href="https://pharmaverse.slack.com/" class="external-link">Slack</a> - for informal discussions, Q&amp;A and building our user community. If you don’t have access, use this <a href="https://join.slack.com/t/pharmaverse/shared_invite/zt-yv5atkr4-Np2ytJ6W_QKz_4Olo7Jo9A" class="external-link">link</a> to join the pharmaverse Slack workspace</li>
+<li>
+<a href="https://github.com/pharmaverse/admiralneuro/issues" class="external-link">GitHub Issues</a> - for direct feedback, enhancement requests or raising bugs</li>
+</ul>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
