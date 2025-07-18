@@ -6,20 +6,55 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r, include = FALSE}
+  
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
 
-```{r eval=FALSE}
-library(admiralneuro)
+# Introduction
+
+As this is a package extension, if you are new to `{admiral}` then the best
+place to first start reading would be the [Get
+Started](https://pharmaverse.github.io/admiral/articles/admiral.html) page. This
+extension package follows the same main idea and conventions, and re-uses many
+functions from `{admiral}`, so it is important to thoroughly understand these to
+be able to use `{admiralneuro}`.
+
+# Creating Neuroscience ADaM Datasets
+
+For the neuroscience ADaM data structures, an overview of the flow and example function calls
+for the most common steps are provided by the following vignettes:
+
+- [Creating ADAPET](adpet.html)
+- [Creating ADTPET](adpet.html)
+
+
+`{admiralneuro}` also provides template R scripts as a starting point. They can be
+created by calling `use_ad_template()` from `{admiral}`, e.g.,
+
+
+```{r}
+library(admiral)
 ```
 
-Introduction to how to use the package extension...
+```r
+use_ad_template(
+  adam_name = "adapet",
+  save_path = "./ad_adapet.R",
+  package = "admiralneuro"
+)
+```
+
+A list of all available templates can be obtained by `list_all_templates()`
+from `{admiral}`:
+  
+```{r}
+list_all_templates(package = "admiralneuro")
+```
 
 # Support
 
-Support is provided via [pharmaverse Slack](https://pharmaverse.slack.com/).
+Support is provided via the [admiral Slack channel](https://pharmaverse.slack.com/).
