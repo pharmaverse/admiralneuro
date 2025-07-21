@@ -21,10 +21,10 @@ authors:
   sidebar:
     roles: [aut, fnd]
   F. Hoffmann-La Roche AG:
-    html: "<a href='https://www.roche.com/'><img src='man/figures/roche_logo.svg' height='34' alt='Roche logo' /></a>"
+    html: "<a href='https://www.roche.com/'><img src='man/figures/roche_logo.png' height='34' alt='Roche logo' /></a>"
     href: https://roche.com/
   Eli Lilly and Company:
-    html: "<a href='https://lilly.com/'><img src='man/figures/eli_lilly_and_company_logo.svg' height='20' alt='Eli Lilly and Company logo' /></a>"
+    html: "<a href='https://www.lilly.com/'><img src='man/figures/eli_lilly_and_company_logo.png' height='20' alt='Eli Lilly and Company logo' /></a>"
     href: https://lilly.com/
 
 development:
