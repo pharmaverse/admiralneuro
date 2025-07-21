@@ -295,9 +295,33 @@ dataset_vignette(adapet_param %>% arrange(USUBJID, ADT), display_vars = exprs(US
 
 ### Derive Criterion Flag Variables for Amyloid Categories{#criterionfl}
 
-Having converted the Standardized Uptake Value Ratio to Centiloid, we can now derive the criterion flags for Amyloid categories.
+Having converted the Standardized Uptake Value Ratio to Centiloid, we can now derive
+the criterion flags for the Amyloid categories.
 
-_To be continued..._
+To do this, we will use the `admiral::derive_vars_crit_flag()` function.
+Since we want to derive these flags specifically for the Centiloid parameters,
+we will apply the derivation only to those records using `admiral::restrict_derivation()`.
+
+```{r, message=FALSE, warning=FALSE}
+adapet <- adapet %>%
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      crit_nr = 1,
+      condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
+      description = "CENTILOID < 24.1",
+      values_yn = TRUE # To get "Y", "N", and NA for the flag
+    ),
+    filter = PARAMCD %in% c("CLAFBP", "CLBFBB")
+  )
+```
+
+This is how the criterion flags will look like:
+
+```{r, eval=TRUE, echo=FALSE}
+adapet_flags <- distinct(adapet %>% filter(NVTESTCD == "SUVR" | !is.na(AVALU)), USUBJID, PARAMCD, PARAM, AVAL, AVALU, ADT, ADY, VISIT, CRIT1, CRIT1FL)
+dataset_vignette(adapet_flags %>% arrange(USUBJID, ADT), display_vars = exprs(USUBJID, PARAMCD, PARAM, AVAL, AVALU, ADT, ADY, VISIT, CRIT1, CRIT1FL))
+```
 
 ## Remaining PET Scan Analysis Dataset Set-up{#dataset_end}
 
