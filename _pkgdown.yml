@@ -25,7 +25,7 @@ authors:
     href: https://roche.com/
   Eli Lilly and Company:
     html: "<a href='https://www.lilly.com/'><img src='man/figures/eli_lilly_and_company_logo.png' height='20' alt='Eli Lilly and Company logo' /></a>"
-    href: https://lilly.com/
+    href: https://www.lilly.com/
 
 development:
   mode: auto
