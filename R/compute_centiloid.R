@@ -61,19 +61,20 @@
 #'
 #' | tracer            | pipeline                        | ref_region        | slope  | intercept |
 #' |-------------------|---------------------------------|-------------------|--------|-----------|
-#' | 18F-Florbetapir   | AVID FBP SUVR PIPELINE¹         | Whole Cerebellum  | 183.00 | -177.00   |
+#' | 18F-Florbetapir   | AVID FBP SUVR PIPELINE¹         | Whole Cerebellum  | 183.07 | -177.26   |
 #' | 18F-Florbetapir   | BERKELEY FBP SUVR PIPELINE²     | Whole Cerebellum  | 188.22 | -189.16   |
-#' | 18F-Florbetaben   | BERKELEY FBB SUVR PIPELINE³     | Whole Cerebellum  | 157.15 | -151.87   |
+#' | 18F-Florbetaben   | BERKELEY FBB SUVR PIPELINE²     | Whole Cerebellum  | 157.15 | -151.87   |
 #'
 #' The equation used for the conversion is based on the following references:
 #'
 #' ¹ [Navitsky, et. al., 2018](https://doi.org/10.1016/j.jalz.2018.06.1353)
-#' ² [ADNI Florbetapir PET Methods, login required](https://adni.loni.usc.edu/)
-#' ³ [ADNI Florbetaben PET Methods, login required](https://adni.loni.usc.edu/)
+#' ² [Royse, et. al., 2021](https://doi.org/10.1186/s13195-021-00836-1)
 #'
 #' Alternatively, the user can override the pre-selection by specifying `custom_slope`
 #' and `custom_intercept` instead. If `custom_slope` and `custom_intercept` are specified,
-#' `tracer`, `pipeline` and `ref_region` are ignored.
+#' `tracer`, `pipeline` and `ref_region` are ignored. Please refer to
+#' [Iaccarino, L. et. al., 2025](https://doi.org/10.1016/j.nicl.2025.103765) for more Centiloid
+#' transformation formulas.
 #'
 #' If a matching combination of tracer, pipeline and reference region is not specified and
 #' `custom_slope` and `custom_intercept` are not specified, a warning is issued and
@@ -144,10 +145,10 @@ compute_centiloid <- function(
 
     # nolint start
     valid_combinations <- tribble(
-      ~tracer,              ~pipeline,                     ~ref_region,          ~slope,   ~intercept,
-      "18F-Florbetapir",    "AVID FBP SUVR PIPELINE",      "Whole Cerebellum",   183,      -177,
-      "18F-Florbetapir",    "BERKELEY FBP SUVR PIPELINE",  "Whole Cerebellum",   188.22,   -189.16,
-      "18F-Florbetaben",    "BERKELEY FBB SUVR PIPELINE",  "Whole Cerebellum",   157.15,   -151.87
+      ~tracer, ~pipeline, ~ref_region, ~slope, ~intercept,
+      "18F-Florbetapir", "AVID FBP SUVR PIPELINE", "Whole Cerebellum", 183.07, -177.26,
+      "18F-Florbetapir", "BERKELEY FBP SUVR PIPELINE", "Whole Cerebellum", 188.22, -189.16,
+      "18F-Florbetaben", "BERKELEY FBB SUVR PIPELINE", "Whole Cerebellum", 157.15, -151.87
     )
     # nolint end
 
