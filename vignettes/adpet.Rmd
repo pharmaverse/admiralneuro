@@ -128,16 +128,16 @@ adpet <- nv_suppnv %>%
 
 The next step is to create and assign parameter level variables such as
 `PARAMCD`, `PARAM`, and `PARAMN`. For this, a lookup can be
-created based on the SDTM `--TESTCD`, `--CAT` and `--LOC` values to join to the source data.
+created based on the SDTM `--TESTCD`, `--CAT`, `--LOC`, `--METHOD` and `REFREG` values to join to the source data.
 
 ```{r, echo=TRUE, message=FALSE}
 param_lookup <- tibble::tribble(
-  ~NVTESTCD, ~NVCAT, ~NVLOC, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
-  "VR", "FBP", NA, "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, "VRFTP", "FTP Qualitative Visual Classification", 5
+  ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 4,
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 5
 )
 ```
 
@@ -149,13 +149,13 @@ adpet <- adpet %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM, PARAMN),
-    by_vars = exprs(NVTESTCD, NVCAT, NVLOC)
+    by_vars = exprs(NVTESTCD, NVCAT, NVLOC, NVMETHOD, REFREG)
   )
 ```
 
 ```{r, eval=TRUE, echo=FALSE}
-adpet_param <- distinct(adpet, USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN)
-dataset_vignette(adpet_param, display_vars = exprs(USUBJID, NVTESTCD, NVCAT, NVLOC, PARAMCD, PARAM, PARAMN))
+adpet_param <- distinct(adpet, USUBJID, NVTESTCD, NVCAT, NVLOC, NVMETHOD, REFREG, PARAMCD, PARAM, PARAMN)
+dataset_vignette(adpet_param, display_vars = exprs(USUBJID, NVTESTCD, NVCAT, NVLOC, NVMETHOD, REFREG, PARAMCD, PARAM, PARAMN))
 ```
 
 ### Map `AVAL` and `AVALC` variables {#aval_tpet}
