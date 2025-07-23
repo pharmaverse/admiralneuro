@@ -167,6 +167,9 @@ adapet <- adapet %>%
     condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
     description = "CENTILOID < 24.1",
     values_yn = TRUE # To get "Y", "N", and NA for the flag
+  ) %>%
+  mutate(
+    CRIT1 = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), CRIT1, NA_character_)
   )
 
 
