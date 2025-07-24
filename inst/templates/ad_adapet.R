@@ -164,16 +164,16 @@ adapet <- adapet %>%
     )
   ) %>%
   ### Derive criterion flags for Centiloid Threshold ----
-restrict_derivation(
-  derivation = derive_vars_crit_flag,
-  args = params(
-    crit_nr = 1,
-    condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
-    description = "CENTILOID < 24.1",
-    values_yn = TRUE # To get "Y", "N", and NA for the flag
-  ),
-  filter = PARAMCD %in% c("CLAFBP", "CLBFBB")
-)
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      crit_nr = 1,
+      condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
+      description = "CENTILOID < 24.1",
+      values_yn = TRUE # To get "Y", "N", and NA for the flag
+    ),
+    filter = PARAMCD %in% c("CLAFBP", "CLBFBB")
+  )
 
 
 ## Get visit info ----
