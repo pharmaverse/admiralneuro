@@ -76,15 +76,17 @@ The following combinations of tracer, pipeline, reference region, slope,
 and intercept are supported:\tabular{lllll}{
    tracer \tab pipeline \tab ref_region \tab slope \tab intercept \cr
    18F-Florbetapir \tab AVID FBP SUVR PIPELINE¹ \tab Whole Cerebellum \tab 183.07 \tab -177.26 \cr
-   18F-Florbetapir \tab BERKELEY FBP SUVR PIPELINE² \tab Whole Cerebellum \tab 188.22 \tab -189.16 \cr
-   18F-Florbetaben \tab BERKELEY FBB SUVR PIPELINE² \tab Whole Cerebellum \tab 157.15 \tab -151.87 \cr
+   18F-Florbetaben \tab AVID FBB SUVR PIPELINE² \tab Whole Cerebellum \tab 156.06 \tab -148.13 \cr
+   18F-Florbetapir \tab BERKELEY FBP SUVR PIPELINE³ \tab Whole Cerebellum \tab 188.22 \tab -189.16 \cr
+   18F-Florbetaben \tab BERKELEY FBB SUVR PIPELINE³ \tab Whole Cerebellum \tab 157.15 \tab -151.87 \cr
 }
 
 
-The equation used for the conversion is based on the following references:
+The equations used for the conversions are based on the following references:
 
 ¹ \href{https://doi.org/10.1016/j.jalz.2018.06.1353}{Navitsky, et. al., 2018}
-² \href{https://doi.org/10.1186/s13195-021-00836-1}{Royse, et. al., 2021}
+² \href{https://doi.org/10.1001/jama.2023.13239}{Sims, et. al., 2024}
+³ \href{https://doi.org/10.1186/s13195-021-00836-1}{Royse, et. al., 2021}
 
 Alternatively, the user can override the pre-selection by specifying \code{custom_slope}
 and \code{custom_intercept} instead. If \code{custom_slope} and \code{custom_intercept} are specified,
