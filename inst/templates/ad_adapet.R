@@ -45,8 +45,10 @@ param_lookup <- tibble::tribble(
   "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
   "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
   "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 5
+  "VR", "FBB", NA, NA, "FBB VISUAL CLASSIFICATION", "VRFBB", "FBB Qualitative Visual Classification", 5,
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 6
 )
+
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
 # Derivations ----
@@ -94,7 +96,8 @@ adapet <- adapet %>%
     )
   )
 
-## Convert SUVR to Centiloid ----
+## Amyloid-specific derivations ----
+### Convert SUVR to Centiloid ----
 adapet <- adapet %>%
   slice_derivation(
     derivation = derive_param_computed,
@@ -159,7 +162,19 @@ adapet <- adapet %>%
         )
       )
     )
+  ) %>%
+  ### Derive criterion flags for Centiloid Threshold ----
+  restrict_derivation(
+    derivation = derive_vars_crit_flag,
+    args = params(
+      crit_nr = 1,
+      condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
+      description = "CENTILOID < 24.1",
+      values_yn = TRUE # To get "Y", "N", and NA for the flag
+    ),
+    filter = PARAMCD %in% c("CLAFBP", "CLBFBB")
   )
+
 
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
