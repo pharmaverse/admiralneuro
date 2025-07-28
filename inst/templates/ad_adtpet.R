@@ -41,11 +41,14 @@ nv <- metatools::combine_supp(nv, suppnv)
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
   ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
-  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 5
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "AVID FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBB SUVR PIPELINE", "SUVRAFBB", "AVID FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBP SUVR PIPELINE", "SUVRBFBP", "BERKELEY FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 3,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "BERKELEY FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 4,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "BERKELEY FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 5,
+  "VR", "FBP", NA, NA, "FBP VISIUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 6, # NOTE VISIUAL typo, fix in nv_neuro.R
+  "VR", "FBB", NA, NA, "FBB VISIUAL CLASSIFICATION", "VRFBB", "FBB Qualitative Visual Classification", 7, # NOTE VISIUAL typo, fix in nv_neuro.R
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 8 # FTP Visual was dropped in issue 18_nv_improve
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
@@ -54,7 +57,7 @@ attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
-adtpet <- nv %>%
+adtpet_01 <- nv %>%
   ## Join ADSL with NV (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
@@ -76,12 +79,12 @@ adtpet <- nv %>%
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
-adtpet <- adtpet %>%
+adtpet_02 <- adtpet_01 %>%
   ## Add PARAMCD and PARAM ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM),
-    by_vars = exprs(NVTESTCD, NVCAT, NVLOC)
+    by_vars = exprs(NVTESTCD, NVCAT, NVLOC, REFREG, NVMETHOD)
   ) %>%
   ## Calculate AVAL and AVALC ----
   # AVALC should only be mapped if it contains non-redundant information.
@@ -97,7 +100,7 @@ adtpet <- adtpet %>%
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
-adtpet <- adtpet %>%
+adtpet_03 <- adtpet_02 %>%
   mutate(
     AVISIT = case_when(
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
@@ -113,7 +116,7 @@ adtpet <- adtpet %>%
   )
 
 ## Calculate ONTRTFL ----
-adtpet <- adtpet %>%
+adtpet_04 <- adtpet_03 %>%
   derive_var_ontrtfl(
     start_date = ADT,
     ref_start_date = TRTSDT,
@@ -124,7 +127,7 @@ adtpet <- adtpet %>%
 ### Derive Baseline flags ----
 
 ### Calculate ABLFL ----
-adtpet <- adtpet %>%
+adtpet_05 <- adtpet_04 %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -139,7 +142,7 @@ adtpet <- adtpet %>%
 ## Derive visit flags ----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
-adtpet <- adtpet %>%
+adtpet_06 <- adtpet_05 %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -165,7 +168,7 @@ adtpet <- adtpet %>%
 ## Derive baseline information ----
 
 ### Calculate BASE ----
-adtpet <- adtpet %>%
+adtpet_07 <- adtpet_06 %>%
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVAL,
@@ -191,7 +194,7 @@ adtpet <- adtpet %>%
   )
 
 ## Assign ASEQ ----
-adtpet <- adtpet %>%
+adtpet_08 <- adtpet_07 %>%
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = get_admiral_option("subject_keys"),
@@ -204,7 +207,7 @@ adtpet <- adtpet %>%
 # This process will be based on your metadata, no example given for this reason
 # ...
 
-admiralneuro_adtpet <- adtpet
+admiralneuro_adtpet <- adtpet_08
 
 # Save output ----
 
