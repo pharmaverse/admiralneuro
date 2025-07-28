@@ -69,7 +69,7 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", amy_tracer = "FBP
     NVORRES = c("Positive", as.character(amy_suvr_value), as.character(tau_suvr_value)),
     NVLOC = c(NA_character_, "NEOCORTICAL COMPOSITE", "NEOCORTICAL COMPOSITE"),
     NVNAM = c("IXICO", vendor, vendor),
-    NVMETHOD = c(paste(amy_tracer, "VISIUAL CLASSIFICATION"), paste(vendor, amy_tracer, "SUVR PIPELINE"), paste(vendor, "FTP", "SUVR PIPELINE")),
+    NVMETHOD = c(paste(amy_tracer, "VISUAL CLASSIFICATION"), paste(vendor, amy_tracer, "SUVR PIPELINE"), paste(vendor, "FTP", "SUVR PIPELINE")),
     VISITNUM = visitnum
   )
 }
