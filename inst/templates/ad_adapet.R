@@ -83,10 +83,8 @@ adapet_02 <- adapet_01 %>%
   ## Add PARAMCD and PARAM ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
-    #filter_add = NVTESTCD == "SUVR",
     new_vars = exprs(PARAMCD, PARAM),
     by_vars = exprs(NVTESTCD, NVCAT, NVLOC, REFREG, NVMETHOD)
-    #by_vars = exprs(NVTESTCD, NVCAT, NVLOC)
   ) %>%
   ## Calculate AVAL and AVALC ----
   # AVALC should only be mapped if it contains non-redundant information.
