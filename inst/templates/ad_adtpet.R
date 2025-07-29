@@ -46,9 +46,10 @@ param_lookup <- tibble::tribble(
   "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBP SUVR PIPELINE", "SUVRBFBP", "BERKELEY FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 3,
   "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "BERKELEY FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 4,
   "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "BERKELEY FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 5,
-  "VR", "FBP", NA, NA, "FBP VISIUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 6, # NOTE VISIUAL typo, fix in nv_neuro.R
-  "VR", "FBB", NA, NA, "FBB VISIUAL CLASSIFICATION", "VRFBB", "FBB Qualitative Visual Classification", 7, # NOTE VISIUAL typo, fix in nv_neuro.R
+  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 6,
+  "VR", "FBB", NA, NA, "FBB VISUAL CLASSIFICATION", "VRFBB", "FBB Qualitative Visual Classification", 7,
   "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 8 # FTP Visual was dropped in issue 18_nv_improve
+  # leave the VR FTP hopefully it is added back into nv_neuro
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
