@@ -8,7 +8,7 @@
 
 ## Template programs
 
-- ADAPET template scripts `ad_adapet.R` which creates a Amyloid PET Scan Analysis Dataset. (#25)
+- ADAPET template scripts `ad_adapet.R` which creates an Amyloid PET Scan Analysis Dataset. (#25)
 - ADTPET template scripts `ad_adtpet.R` which creates a Tau PET Scan Analysis Dataset. (#25)
 
 ## Documentation
