@@ -1,8 +1,16 @@
 # admiralneuro 0.1.0
 
-- Initial package release focused on `<<ADD INITIAL SCOPE HERE>>`
+- Initial package release mainly focused on Alzheimer’s disease specifically for the PET scan analysis.
 
-Note that after first release you should then start maintaining this `NEWS.md` file for every user-facing update.
-You should categorize the updates under title sections for New Features, Updates of Existing Functions,
-Breaking Changes, Documentation, Various.
-Each update should also reference the original issue by adding at the end: (#ISSUE-NUMBER)
+## Functions
+
+- The function `compute_centiloid()` computes centiloid values based on Amyloid PET tracer, SUVR value and pipeline, and reference region. (#21)
+
+## Template programs
+
+- ADAPET template scripts `ad_adapet.R` which creates a Amyloid PET Scan Analysis Dataset. (#25)
+- ADTPET template scripts `ad_adtpet.R` which creates a Tau PET Scan Analysis Dataset. (#25)
+
+## Documentation
+
+- Vignette "Creating ADAPET and ADTPET". (#19)
