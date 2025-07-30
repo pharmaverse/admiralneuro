@@ -57,7 +57,7 @@ attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
-adapet_01 <- nv %>%
+adapet <- nv %>%
   ## Join ADSL with NV (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
@@ -79,7 +79,7 @@ adapet_01 <- nv %>%
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
-adapet_02 <- adapet_01 %>%
+adapet <- adapet %>%
   ## Add PARAMCD and PARAM ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
@@ -99,7 +99,7 @@ adapet_02 <- adapet_01 %>%
 
 ## Amyloid-specific derivations ----
 ### Convert SUVR to Centiloid ----
-adapet_03 <- adapet_02 %>%
+adapet <- adapet %>%
   slice_derivation(
     derivation = derive_param_computed,
     args = params(
@@ -180,7 +180,7 @@ adapet_03 <- adapet_02 %>%
     )
   )
 
-adapet_04 <- adapet_03 %>%
+adapet <- adapet %>%
   ### Derive criterion flags for Centiloid Threshold ----
   restrict_derivation(
     derivation = derive_vars_crit_flag,
@@ -197,7 +197,7 @@ adapet_04 <- adapet_03 %>%
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
-adapet_05 <- adapet_04 %>%
+adapet <- adapet %>%
   mutate(
     AVISIT = case_when(
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
@@ -213,7 +213,7 @@ adapet_05 <- adapet_04 %>%
   )
 
 ## Calculate ONTRTFL ----
-adapet_06 <- adapet_05 %>%
+adapet <- adapet %>%
   derive_var_ontrtfl(
     start_date = ADT,
     ref_start_date = TRTSDT,
@@ -224,7 +224,7 @@ adapet_06 <- adapet_05 %>%
 ### Derive Baseline flags ----
 
 ### Calculate ABLFL ----
-adapet_07 <- adapet_06 %>%
+adapet <- adapet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -239,7 +239,7 @@ adapet_07 <- adapet_06 %>%
 ## Derive visit flags ----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
-adapet_08 <- adapet_07 %>%
+adapet <- adapet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -265,7 +265,7 @@ adapet_08 <- adapet_07 %>%
 ## Derive baseline information ----
 
 ### Calculate BASE ----
-adapet_09 <- adapet_08 %>%
+adapet <- adapet %>%
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVAL,
@@ -291,7 +291,7 @@ adapet_09 <- adapet_08 %>%
   )
 
 ## Assign ASEQ ----
-adapet_10 <- adapet_09 %>%
+adapet <- adapet %>%
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = get_admiral_option("subject_keys"),
@@ -302,7 +302,7 @@ adapet_10 <- adapet_09 %>%
 # Final Steps, Select final variables and Add labels ----
 # This process will be based on your metadata, no example given for this reason
 
-admiralneuro_adapet <- adapet_10
+admiralneuro_adapet <- adapet
 
 # Save output ----
 

@@ -57,7 +57,7 @@ attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
-adtpet_01 <- nv %>%
+adtpet <- nv %>%
   ## Join ADSL with NV (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
@@ -79,7 +79,7 @@ adtpet_01 <- nv %>%
   ) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
-adtpet_02 <- adtpet_01 %>%
+adtpet <- adtpet %>%
   ## Add PARAMCD and PARAM ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
@@ -100,7 +100,7 @@ adtpet_02 <- adtpet_01 %>%
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
 # (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
-adtpet_03 <- adtpet_02 %>%
+adtpet <- adtpet %>%
   mutate(
     AVISIT = case_when(
       str_detect(VISIT, "SCREEN|UNSCHED|RETRIEVAL|AMBUL") ~ NA_character_,
@@ -116,7 +116,7 @@ adtpet_03 <- adtpet_02 %>%
   )
 
 ## Calculate ONTRTFL ----
-adtpet_04 <- adtpet_03 %>%
+adtpet <- adtpet %>%
   derive_var_ontrtfl(
     start_date = ADT,
     ref_start_date = TRTSDT,
@@ -127,7 +127,7 @@ adtpet_04 <- adtpet_03 %>%
 ### Derive Baseline flags ----
 
 ### Calculate ABLFL ----
-adtpet_05 <- adtpet_04 %>%
+adtpet <- adtpet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -142,7 +142,7 @@ adtpet_05 <- adtpet_04 %>%
 ## Derive visit flags ----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
-adtpet_06 <- adtpet_05 %>%
+adtpet <- adtpet %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
     args = params(
@@ -168,7 +168,7 @@ adtpet_06 <- adtpet_05 %>%
 ## Derive baseline information ----
 
 ### Calculate BASE ----
-adtpet_07 <- adtpet_06 %>%
+adtpet <- adtpet %>%
   derive_var_base(
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVAL,
@@ -194,7 +194,7 @@ adtpet_07 <- adtpet_06 %>%
   )
 
 ## Assign ASEQ ----
-adtpet_08 <- adtpet_07 %>%
+adtpet <- adtpet %>%
   derive_var_obs_number(
     new_var = ASEQ,
     by_vars = get_admiral_option("subject_keys"),
@@ -207,7 +207,7 @@ adtpet_08 <- adtpet_07 %>%
 # This process will be based on your metadata, no example given for this reason
 # ...
 
-admiralneuro_adtpet <- adtpet_08
+admiralneuro_adtpet <- adtpet
 
 # Save output ----
 
