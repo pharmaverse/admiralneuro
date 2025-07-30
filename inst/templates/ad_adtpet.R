@@ -41,11 +41,14 @@ nv <- metatools::combine_supp(nv, suppnv)
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
   ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
-  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 4,
-  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 5
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "AVID FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBB SUVR PIPELINE", "SUVRAFBB", "AVID FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBP SUVR PIPELINE", "SUVRBFBP", "BERKELEY FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 3,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "BERKELEY FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 4,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "BERKELEY FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 5,
+  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 6,
+  "VR", "FBB", NA, NA, "FBB VISUAL CLASSIFICATION", "VRFBB", "FBB Qualitative Visual Classification", 7,
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 8
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
@@ -81,7 +84,7 @@ adtpet <- adtpet %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM),
-    by_vars = exprs(NVTESTCD, NVCAT, NVLOC)
+    by_vars = exprs(NVTESTCD, NVCAT, NVLOC, REFREG, NVMETHOD)
   ) %>%
   ## Calculate AVAL and AVALC ----
   # AVALC should only be mapped if it contains non-redundant information.
