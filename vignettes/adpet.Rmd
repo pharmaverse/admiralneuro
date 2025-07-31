@@ -214,7 +214,7 @@ enabling consistent interpretation across imaging protocols, tracers, and clinic
 In the following steps, we will incorporate the **conversion** from **SUVR to Centiloid** using
 the function `admiralneuro::compute_centiloid()`.
 
-For our examples, we divide the process into three main steps:
+For our examples, we divide the process into two main steps:
 
 **1. Define the Grouping Criteria**
 
@@ -223,22 +223,21 @@ In this case, we group by patient, `ADSL` variables, Analysis Date (`ADT`),
 Relative Analysis Day (`ADY`), and Visit (`VISIT`).
 We also retain records with missing Analysis Values (`AVAL = NA`) by setting `keep_nas = TRUE`.
 
-**2. Convert SUVR to Centiloid: Florbetaben (FBB)**
+**2. Convert SUVR to Centiloid**
 
-The second step involves converting the original `SUVR` parameter for Florbetaben
-to Centiloid using `admiralneuro::compute_centiloid()`.
-We apply filtering conditions using `admiral::derivation_slice()` based on
-the tracer (`SUVRBFBB`), method (`BERKELEY FBB SUVR PIPELINE`), and reference region (`Whole Cerebellum`).
+The second step involves converting the original `SUVR` parameters to Centiloid using `admiralneuro::compute_centiloid()`.
+The formula is based on tracer, pipeline and reference region; therefore we apply filtering conditions using `admiral::derivation_slice()`, as following:
+
+a. Based on the (`SUVRBFBB`) tracer, the (`BERKELEY FBB SUVR PIPELINE`) method, and the (`Whole Cerebellum`) reference region.
+
+b. Based on the (`SUVRBFBP`) tracer, the (`BERKELEY FBP SUVR PIPELINE`) method, and the (`Whole Cerebellum`) reference region.
+
+c. Based on the (`SUVRAFBB`) tracer, the (`AVID FBB SUVR PIPELINE`) method, and the same reference region (`Whole Cerebellum`).
+
+d. Based on the (`SUVRAFBP`) tracer, the (`AVID FBP SUVR PIPELINE`) method, and the same reference region (`Whole Cerebellum`).
+
 The new parameter values which include `AVAL`, `PARAMCD`, `PARAM`, and `AVALU`,
 are assigned within the `args` argument of this function.
-
-**3. Convert SUVR to Centiloid: Florbetapir (FBP)**
-
-Similarly, the third step converts the `SUVR` parameter for Florbetapir.
-Filtering is applied to select records based on the `SUVRAFBP` tracer, the
-`AVID FBP SUVR PIPELINE` method, and the same reference region.
-As in step 2, the corresponding Centiloid values and associated metadata are set
-within the `args` argument.
 
 ```{r, message=FALSE, warning=FALSE}
 adapet <- adapet %>%
@@ -265,6 +264,40 @@ adapet <- adapet %>%
           ),
           PARAMCD = "CLBFBB",
           PARAM = "Centiloid (CL) based on BERKELEY FBB",
+          AVALU = "CL"
+        )
+      )
+    ),
+    derivation_slice(
+      filter = (PARAMCD == "SUVRBFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRBFBP"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetapir",
+            pipeline = "BERKELEY FBP SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          PARAMCD = "CLBFBP",
+          PARAM = "Centiloid (CL) based on BERKELEY FBP",
+          AVALU = "CL"
+        )
+      )
+    ),
+    derivation_slice(
+      filter = (PARAMCD == "SUVRAFBB") & (NVMETHOD == "AVID FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRAFBB"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetaben",
+            pipeline = "AVID FBB SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          PARAMCD = "CLAFBB",
+          PARAM = "Centiloid (CL) based on AVID FBB",
           AVALU = "CL"
         )
       )
@@ -311,11 +344,11 @@ adapet <- adapet %>%
     derivation = derive_vars_crit_flag,
     args = params(
       crit_nr = 1,
-      condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
+      condition = if_else(PARAMCD %in% c("CLBFBB", "CLBFBP", "CLAFBB", "CLAFBP"), AVAL < 24.1, NA),
       description = "CENTILOID < 24.1",
       values_yn = TRUE # To get "Y", "N", and NA for the flag
     ),
-    filter = PARAMCD %in% c("CLAFBP", "CLBFBB")
+    filter = PARAMCD %in% c("CLBFBB", "CLBFBP", "CLAFBB", "CLAFBP")
   )
 ```
 
