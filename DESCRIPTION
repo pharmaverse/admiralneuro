@@ -50,6 +50,7 @@ Suggests:
     DT,
     htmltools,
     knitr,
+    metatools,
     methods,
     pharmaversesdtm (>= 1.0.0),
     reactable,
