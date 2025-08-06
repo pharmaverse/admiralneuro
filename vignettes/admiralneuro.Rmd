@@ -37,9 +37,7 @@ created by calling `use_ad_template()` from `{admiral}`, e.g.,
 
 ```{r}
 library(admiral)
-```
 
-```r
 use_ad_template(
   adam_name = "adapet",
   save_path = "./ad_adapet.R",
