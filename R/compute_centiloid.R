@@ -56,8 +56,9 @@
 #' are not specified, this function uses pre-defined slope and intercept based on
 #' the user's selections of tracer, pipeline, and reference region.
 #'
-#' The following combinations of tracer, pipeline, reference region, slope,
-#' and intercept are supported:
+#' The combinations of tracer, pipeline and reference region in the table below are supported. The
+#' columns "slope" and "intercept" then show the values of the slope and intercept that
+#' `compute_centiloid()` will use to calculate the centiloid value in each case.
 #'
 #' | tracer            | pipeline                        | ref_region        | slope  | intercept |
 #' |-------------------|---------------------------------|-------------------|--------|-----------|
@@ -82,7 +83,7 @@
 #' `custom_slope` and `custom_intercept` are not specified, a warning is issued and
 #' `NA_real_` is returned.
 #'
-#' @return A numeric centiloid value
+#' @return A numeric centiloid value.
 #'
 #' @keywords com_bds_findings
 #' @family com_bds_findings

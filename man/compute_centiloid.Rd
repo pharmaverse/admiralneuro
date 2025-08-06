@@ -51,7 +51,7 @@ the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_re
 Default is \code{NULL}.}
 }
 \value{
-A numeric centiloid value
+A numeric centiloid value.
 }
 \description{
 Computes centiloid values based on amyloid PET tracer, SUVR value and pipeline,
@@ -72,8 +72,9 @@ where slope and intercept are formula parameters. If \code{custom_slope} and \co
 are not specified, this function uses pre-defined slope and intercept based on
 the user's selections of tracer, pipeline, and reference region.
 
-The following combinations of tracer, pipeline, reference region, slope,
-and intercept are supported:\tabular{lllll}{
+The combinations of tracer, pipeline and reference region in the table below are supported. The
+columns "slope" and "intercept" then show the values of the slope and intercept that
+\code{compute_centiloid()} will use to calculate the centiloid value in each case.\tabular{lllll}{
    tracer \tab pipeline \tab ref_region \tab slope \tab intercept \cr
    18F-Florbetapir \tab AVID FBP SUVR PIPELINE¹ \tab Whole Cerebellum \tab 183.07 \tab -177.26 \cr
    18F-Florbetaben \tab AVID FBB SUVR PIPELINE² \tab Whole Cerebellum \tab 156.06 \tab -148.13 \cr
