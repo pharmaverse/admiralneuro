@@ -21,7 +21,7 @@ library(admiraldev)
 
 This article describes the creation of PET Scan ADaMs.
 
-We recommend splitting out Amyloid and Tau into two distinct ADaMs datasets. The vignette presents
+We recommend splitting out amyloid and tau into two distinct ADaMs datasets. The vignette presents
 a combined approach for the initial setup, parameter mapping and finals steps.
 It then splits into separate sections for each data type, as they require different processes:
 starting with `ADTPET` (Tau PET Scan Analysis Dataset), followed by `ADAPET` (Amyloid PET Scan Analysis Dataset).
@@ -181,12 +181,12 @@ adpet <- adpet %>%
 ```
 
 Having established the foundation of a global PET Scan Analysis Dataset (`adpet`),
-we can now differentiate between Tau and Amyloid data.
+we can now differentiate between tau and amyloid data.
 
 ## `ADTPET` (Tau PET Scan Analysis Dataset){#adtpet}
 
 Tau PET scan data generally do not require any further derivations.
-Therefore, if producing an `ADTPET`, we can now filter the global PET Scan Analysis Dataset `adpet` to retain only the Tau tracer records.
+Therefore, if producing an `ADTPET`, we can now filter the global PET Scan Analysis Dataset `adpet` to retain only the tau tracer records.
 
 ```{r, message=FALSE, warning=FALSE}
 adtpet <- adpet %>%
@@ -195,7 +195,7 @@ adtpet <- adpet %>%
 
 ## `ADAPET` (Amyloid PET Scan Analysis Dataset){#adapet}
 
-If producing an `ADAPET`, we can now filter the global PET Scan Analysis Dataset `adpet` to retain only the Amyloid tracer records.
+If producing an `ADAPET`, we can now filter the global PET Scan Analysis Dataset `adpet` to retain only the amyloid tracer records.
 
 ```{r, message=FALSE, warning=FALSE}
 adapet <- adpet %>%
@@ -204,42 +204,44 @@ adapet <- adpet %>%
 
 ### Convert SUVR to Centiloid{#centiloid}
 
-`SUVR` (Standardized Uptake Value Ratio) is a widely used semi-quantitative measure
-in PET imaging that estimates the level of tracer uptake (such as Amyloid) in the brain,
-relative to a reference region.
-While useful, `SUVR` has certain limitations (which we will not detail here) that affect
-its comparability across different tracers and studies.
-To address this, the **Centiloid scale** was developed to standardize Amyloid PET measurements,
-enabling consistent interpretation across imaging protocols, tracers, and clinical studies.
+`SUVR` (Standardized Uptake Value Ratio) is a widely used semi-quantitative measure in PET imaging that estimates the level of tracer uptake (such as amyloid) in the brain, relative to a reference region. While useful, `SUVR` has certain limitations (which we will not detail here) that affect its comparability across different tracers and studies.
+
+To address this, the **Centiloid (CL)** scale was developed to standardize amyloid PET measurements. 
+The scale is anchored such that:
+
+a. 0 CL represents amyloid-negative individuals (usually younger, amyloid-negative individual).
+
+b. 100 CL corresponds to the amyloid burden observed in patients with Alzheimer's disease.
+
+This standardization enables consistent interpretation of amyloid burden across imaging protocols, tracers, and clinical studies.
 
 In the following steps, we will incorporate the **conversion** from **SUVR to Centiloid** using
 the function `admiralneuro::compute_centiloid()`.
 
-For our examples, we divide the process into three main steps:
+For our examples, we divide the process into two main steps:
 
 **1. Define the Grouping Criteria**
 
 The first step is to specify how to group the data using `admiral::slice_derivation()`.
 In this case, we group by patient, `ADSL` variables, Analysis Date (`ADT`),
 Relative Analysis Day (`ADY`), and Visit (`VISIT`).
-We also retain records with missing Analysis Values (`AVAL = NA`) by setting `keep_nas = TRUE`.
+We also retain records with missing Analysis Values (`is.na(AVAL)`) by setting `keep_nas = TRUE`.
 
-**2. Convert SUVR to Centiloid: Florbetaben (FBB)**
+**2. Convert SUVR to Centiloid**
 
-The second step involves converting the original `SUVR` parameter for Florbetaben
-to Centiloid using `admiralneuro::compute_centiloid()`.
-We apply filtering conditions using `admiral::derivation_slice()` based on
-the tracer (`SUVRBFBB`), method (`BERKELEY FBB SUVR PIPELINE`), and reference region (`Whole Cerebellum`).
+The second step involves converting the original `SUVR` parameters to Centiloid using `admiralneuro::compute_centiloid()`.
+The formula is based on tracer, pipeline and reference region; therefore we apply filtering conditions using `admiral::derivation_slice()`, as following:
+
+a. Based on the (`SUVRBFBB`) tracer, the (`BERKELEY FBB SUVR PIPELINE`) method, and the (`Whole Cerebellum`) reference region.
+
+b. Based on the (`SUVRBFBP`) tracer, the (`BERKELEY FBP SUVR PIPELINE`) method, and the (`Whole Cerebellum`) reference region.
+
+c. Based on the (`SUVRAFBB`) tracer, the (`AVID FBB SUVR PIPELINE`) method, and the same reference region (`Whole Cerebellum`).
+
+d. Based on the (`SUVRAFBP`) tracer, the (`AVID FBP SUVR PIPELINE`) method, and the same reference region (`Whole Cerebellum`).
+
 The new parameter values which include `AVAL`, `PARAMCD`, `PARAM`, and `AVALU`,
 are assigned within the `args` argument of this function.
-
-**3. Convert SUVR to Centiloid: Florbetapir (FBP)**
-
-Similarly, the third step converts the `SUVR` parameter for Florbetapir.
-Filtering is applied to select records based on the `SUVRAFBP` tracer, the
-`AVID FBP SUVR PIPELINE` method, and the same reference region.
-As in step 2, the corresponding Centiloid values and associated metadata are set
-within the `args` argument.
 
 ```{r, message=FALSE, warning=FALSE}
 adapet <- adapet %>%
@@ -266,6 +268,40 @@ adapet <- adapet %>%
           ),
           PARAMCD = "CLBFBB",
           PARAM = "Centiloid (CL) based on BERKELEY FBB",
+          AVALU = "CL"
+        )
+      )
+    ),
+    derivation_slice(
+      filter = (PARAMCD == "SUVRBFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRBFBP"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetapir",
+            pipeline = "BERKELEY FBP SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          PARAMCD = "CLBFBP",
+          PARAM = "Centiloid (CL) based on BERKELEY FBP",
+          AVALU = "CL"
+        )
+      )
+    ),
+    derivation_slice(
+      filter = (PARAMCD == "SUVRAFBB") & (NVMETHOD == "AVID FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
+      args = params(
+        parameters = c("SUVRAFBB"),
+        set_values_to = exprs(
+          AVAL = compute_centiloid(
+            tracer = "18F-Florbetaben",
+            pipeline = "AVID FBB SUVR PIPELINE",
+            ref_region = "Whole Cerebellum",
+            suvr = AVAL
+          ),
+          PARAMCD = "CLAFBB",
+          PARAM = "Centiloid (CL) based on AVID FBB",
           AVALU = "CL"
         )
       )
@@ -299,8 +335,7 @@ dataset_vignette(adapet_param %>% arrange(USUBJID, ADT), display_vars = exprs(US
 
 ### Derive Criterion Flag Variables for Amyloid Categories{#criterionfl}
 
-Having converted the Standardized Uptake Value Ratio to Centiloid, we can now derive
-the criterion flags for the Amyloid categories.
+Having converted the `SUVR` to Centiloid, we can now derive the criterion flags for the amyloid categories.
 
 To do this, we will use the `admiral::derive_vars_crit_flag()` function.
 Since we want to derive these flags specifically for the Centiloid parameters,
@@ -312,11 +347,11 @@ adapet <- adapet %>%
     derivation = derive_vars_crit_flag,
     args = params(
       crit_nr = 1,
-      condition = if_else(PARAMCD %in% c("CLAFBP", "CLBFBB"), AVAL < 24.1, NA),
+      condition = if_else(PARAMCD %in% c("CLBFBB", "CLBFBP", "CLAFBB", "CLAFBP"), AVAL < 24.1, NA),
       description = "CENTILOID < 24.1",
       values_yn = TRUE # To get "Y", "N", and NA for the flag
     ),
-    filter = PARAMCD %in% c("CLAFBP", "CLBFBB")
+    filter = PARAMCD %in% c("CLBFBB", "CLBFBP", "CLAFBB", "CLAFBP")
   )
 ```
 
