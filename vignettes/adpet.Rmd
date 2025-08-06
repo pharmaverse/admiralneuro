@@ -135,12 +135,13 @@ param_lookup <- tibble::tribble(
   ~NVTESTCD, ~NVCAT, ~NVLOC, ~REFREG, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
   "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBP SUVR PIPELINE", "SUVRAFBP", "AVID FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 1,
   "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "AVID FBB SUVR PIPELINE", "SUVRAFBB", "AVID FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 2,
-  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBP SUVR PIPELINE", "SUVRBFBP", "BERKELEY FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 3,
-  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "BERKELEY FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 4,
-  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "BERKELEY FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 5,
-  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 6,
-  "VR", "FBB", NA, NA, "FBB VISUAL CLASSIFICATION", "VRFBB", "FBB Qualitative Visual Classification", 7,
-  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 8
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "AVID FTP SUVR PIPELINE", "SUVRAFTP", "AVID FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 3,
+  "SUVR", "FBP", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBP SUVR PIPELINE", "SUVRBFBP", "BERKELEY FBP Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 4,
+  "SUVR", "FBB", "NEOCORTICAL COMPOSITE", "Whole Cerebellum", "BERKELEY FBB SUVR PIPELINE", "SUVRBFBB", "BERKELEY FBB Standard Uptake Ratio Neocortical Composite Whole Cerebellum", 5,
+  "SUVR", "FTP", "NEOCORTICAL COMPOSITE", "Inferior Cerebellar Gray Matter", "BERKELEY FTP SUVR PIPELINE", "SUVRBFTP", "BERKELEY FTP Standard Uptake Ratio Neocortical Composite Inferior Cerebellar Gray Matter", 6,
+  "VR", "FBP", NA, NA, "FBP VISUAL CLASSIFICATION", "VRFBP", "FBP Qualitative Visual Classification", 7,
+  "VR", "FBB", NA, NA, "FBB VISUAL CLASSIFICATION", "VRFBB", "FBB Qualitative Visual Classification", 8,
+  "VR", "FTP", NA, NA, "FTP VISUAL CLASSIFICATION", "VRFTP", "FTP Qualitative Visual Classification", 9
 )
 ```
 
