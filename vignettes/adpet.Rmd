@@ -224,7 +224,7 @@ For our examples, we divide the process into two main steps:
 The first step is to specify how to group the data using `admiral::slice_derivation()`.
 In this case, we group by patient, `ADSL` variables, Analysis Date (`ADT`),
 Relative Analysis Day (`ADY`), and Visit (`VISIT`).
-We also retain records with missing Analysis Values (`AVAL = NA`) by setting `keep_nas = TRUE`.
+We also retain records with missing Analysis Values (`is.na(AVAL)`) by setting `keep_nas = TRUE`.
 
 **2. Convert SUVR to Centiloid**
 
