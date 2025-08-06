@@ -205,7 +205,7 @@ adapet <- adpet %>%
 
 `SUVR` (Standardized Uptake Value Ratio) is a widely used semi-quantitative measure in PET imaging that estimates the level of tracer uptake (such as amyloid) in the brain, relative to a reference region. While useful, `SUVR` has certain limitations (which we will not detail here) that affect its comparability across different tracers and studies.
 
-To address this, the **Centiloid(CL)** scale was developed to standardize amyloid PET measurements. 
+To address this, the **Centiloid (CL)** scale was developed to standardize amyloid PET measurements. 
 The scale is anchored such that:
 
 a. 0 CL represents amyloid-negative individuals (usually younger, amyloid-negative individual).
