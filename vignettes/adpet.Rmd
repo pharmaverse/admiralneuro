@@ -59,7 +59,7 @@ library(metatools)
 -   [Map `AVAL` and `AVALC` variables](#aval)
 -   [`ADTPET` (Tau PET Scan Analysis Dataset)](#adtpet)
 -   [`ADAPET` (Amyloid PET Scan Analysis Dataset)](#adapet)
-    -   [Convert SUVR to Centiloid](#centiloid)
+    -   [Convert amyloid SUVR to Centiloid](#centiloid)
     -   [Derive Criterion Flag Variables for Amyloid Categories](#criterionfl)
 -   [Remaining PET Scan Analysis Dataset Set-up](#dataset_end)
 
@@ -185,7 +185,7 @@ we can now differentiate between tau and amyloid data.
 
 ## `ADTPET` (Tau PET Scan Analysis Dataset){#adtpet}
 
-Tau PET scan data generally do not require any further derivations.
+Tau PET scan data generally do not require any further derivations, and the conversion of tau SUVR to CenTauR will be available in the next release (0.2.0) of this package.
 Therefore, if producing an `ADTPET`, we can now filter the global PET Scan Analysis Dataset `adpet` to retain only the tau tracer records.
 
 ```{r, message=FALSE, warning=FALSE}
@@ -202,7 +202,7 @@ adapet <- adpet %>%
   filter(AGCAT == "AMYLOID TRACER")
 ```
 
-### Convert SUVR to Centiloid{#centiloid}
+### Convert amyloid SUVR to Centiloid{#centiloid}
 
 `SUVR` (Standardized Uptake Value Ratio) is a widely used semi-quantitative measure in PET imaging that estimates the level of tracer uptake (such as amyloid) in the brain, relative to a reference region. While useful, `SUVR` has certain limitations (which we will not detail here) that affect its comparability across different tracers and studies.
 
@@ -215,7 +215,7 @@ b. 100 CL corresponds to the amyloid burden observed in patients with Alzheimer'
 
 This standardization enables consistent interpretation of amyloid burden across imaging protocols, tracers, and clinical studies.
 
-In the following steps, we will incorporate the **conversion** from **SUVR to Centiloid** using
+In the following steps, we will incorporate the **conversion** from **amyloid SUVR to Centiloid** using
 the function `admiralneuro::compute_centiloid()`.
 
 For our examples, we divide the process into two main steps:
