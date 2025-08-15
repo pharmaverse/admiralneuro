@@ -31,6 +31,9 @@ adsl <- admiralneuro::adsl_neuro
 # as NA values. Further details can be obtained via the following link:
 # https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
 nv <- convert_blanks_to_na(nv)
+ag <- convert_blanks_to_na(ag)
+suppnv <- convert_blanks_to_na(suppnv)
+adsl <- convert_blanks_to_na(adsl)
 
 # Combine the parental datasets with their respective supp datasets (only if exist)
 # User can use `combine_supp()` from {metatools} to combine the parental with supp dataset.
