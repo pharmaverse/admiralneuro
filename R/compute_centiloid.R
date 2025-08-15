@@ -121,9 +121,9 @@ compute_centiloid <- function(
     suvr,
     custom_slope = NULL,
     custom_intercept = NULL) {
-    # Check custom_slope and custom_intercept
-    has_custom_slope <- !is.null(custom_slope)
-    has_custom_intercept <- !is.null(custom_intercept)
+  # Check custom_slope and custom_intercept
+  has_custom_slope <- !is.null(custom_slope)
+  has_custom_intercept <- !is.null(custom_intercept)
 
   if (has_custom_slope != has_custom_intercept) {
     cli_abort("Both {.code custom_slope} and {.code custom_intercept}
