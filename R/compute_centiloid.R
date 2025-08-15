@@ -1,6 +1,7 @@
 #' Compute Centiloid Value
 #'
-#' Computes centiloid values based on amyloid PET tracer, SUVR value and pipeline,
+#' Computes the Centiloid value based on an amyloid Positron Emission Tomography (PET)
+#' scan radioactive tracer, Standardized Uptake Value Ratio (SUVR) value, pipeline,
 #' and reference region.
 #' Also allows for custom formula parameters.
 #'
@@ -28,7 +29,7 @@
 #'
 #'   A numeric value is expected.
 #'
-#' @param custom_slope Optional slope parameter for custom centiloid calculation formula
+#' @param custom_slope Optional slope parameter for custom Centiloid calculation formula
 #'
 #'   A numeric value is expected when provided.
 #'   When `custom_slope` is specified (along with `custom_intercept`), this overrides
@@ -43,9 +44,9 @@
 #'   Default is `NULL`.
 #'
 #' @details
-#' The centiloid scale is a standardized quantitative measure for amyloid PET imaging
+#' The Centiloid scale is a standardized quantitative measure for amyloid PET imaging
 #' that allows comparison between different tracers and analysis methods. This function
-#' converts SUVR values to the centiloid scale based on published conversion
+#' converts SUVR values to the Centiloid scale based on published conversion
 #' equations for specific tracer, pipeline, and reference region combinations.
 #'
 #' Centiloid is calculated as:
@@ -73,17 +74,22 @@
 #' ² [Sims, et. al., 2024](https://doi.org/10.1001/jama.2023.13239)
 #' ³ [Royse, et. al., 2021](https://doi.org/10.1186/s13195-021-00836-1)
 #'
-#' Alternatively, the user can override the pre-selection by specifying `custom_slope`
-#' and `custom_intercept` instead. If `custom_slope` and `custom_intercept` are specified,
-#' `tracer`, `pipeline` and `ref_region` are ignored. Please refer to
+#' Alternatively, the user can override the pre-selection by specifying both `custom_slope`
+#' and `custom_intercept` instead. When `custom_slope` and `custom_intercept` are specified,
+#' the function ignores `tracer`, `pipeline` and `ref_region` for calculation purposes. However,
+#' this function **always requires** specification of `tracer`, `pipeline`, and `ref_region`
+#' parameters, even when using custom slope and intercept values. This design choice ensures
+#' that users remain cognizant of the imaging context and analysis methodology when computing
+#' Centiloid values.
+#'
+#' Please refer to
 #' [Iaccarino, L. et. al., 2025](https://doi.org/10.1016/j.nicl.2025.103765) for more Centiloid
 #' transformation formulas.
 #'
-#' If a matching combination of tracer, pipeline and reference region is not specified and
-#' `custom_slope` and `custom_intercept` are not specified, a warning is issued and
-#' `NA_real_` is returned.
+#' If a matching combination of tracer, pipeline, and reference region is not specified and both
+#' `custom_slope` and `custom_intercept` are not specified, the function aborts with an error.
 #'
-#' @return A numeric centiloid value.
+#' @return A numeric Centiloid value.
 #'
 #' @keywords com_bds_findings
 #' @family com_bds_findings
@@ -115,9 +121,9 @@ compute_centiloid <- function(
     suvr,
     custom_slope = NULL,
     custom_intercept = NULL) {
-  # Check custom_slope and custom_intercept
-  has_custom_slope <- !is.null(custom_slope)
-  has_custom_intercept <- !is.null(custom_intercept)
+    # Check custom_slope and custom_intercept
+    has_custom_slope <- !is.null(custom_slope)
+    has_custom_intercept <- !is.null(custom_intercept)
 
   if (has_custom_slope != has_custom_intercept) {
     cli_abort("Both {.code custom_slope} and {.code custom_intercept}
@@ -143,8 +149,7 @@ compute_centiloid <- function(
       "BERKELEY FBB SUVR PIPELINE"
     ))
     assert_character_scalar(ref_region, values = c(
-      "Whole Cerebellum",
-      "Composite Reference Region"
+      "Whole Cerebellum"
     ))
 
     # nolint start
@@ -172,14 +177,12 @@ compute_centiloid <- function(
         "*" = "pipeline = {.val {pipeline}}",
         "*" = "ref_region = {.val {ref_region}}"
       ))
-      return(NA_real_)
     } else {
       slope <- check$slope
       intercept <- check$intercept
     }
   }
 
-  # Calculate centiloid value
-  centiloid <- slope * suvr + intercept
-  return(centiloid)
+  # Calculate and return the computed Centiloid value
+  slope * suvr + intercept
 }

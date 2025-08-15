@@ -36,7 +36,7 @@ See Details section for accepted values in combination with \code{tracer} and \c
 
 A numeric value is expected.}
 
-\item{custom_slope}{Optional slope parameter for custom centiloid calculation formula
+\item{custom_slope}{Optional slope parameter for custom Centiloid calculation formula
 
 A numeric value is expected when provided.
 When \code{custom_slope} is specified (along with \code{custom_intercept}), this overrides
@@ -51,17 +51,18 @@ the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_re
 Default is \code{NULL}.}
 }
 \value{
-A numeric centiloid value.
+A numeric Centiloid value.
 }
 \description{
-Computes centiloid values based on amyloid PET tracer, SUVR value and pipeline,
+Computes the Centiloid value based on an amyloid Positron Emission Tomography (PET)
+scan radioactive tracer, Standardized Uptake Value Ratio (SUVR) value, pipeline,
 and reference region.
 Also allows for custom formula parameters.
 }
 \details{
-The centiloid scale is a standardized quantitative measure for amyloid PET imaging
+The Centiloid scale is a standardized quantitative measure for amyloid PET imaging
 that allows comparison between different tracers and analysis methods. This function
-converts SUVR values to the centiloid scale based on published conversion
+converts SUVR values to the Centiloid scale based on published conversion
 equations for specific tracer, pipeline, and reference region combinations.
 
 Centiloid is calculated as:
@@ -89,15 +90,20 @@ The equations used for the conversions are based on the following references:
 ² \href{https://doi.org/10.1001/jama.2023.13239}{Sims, et. al., 2024}
 ³ \href{https://doi.org/10.1186/s13195-021-00836-1}{Royse, et. al., 2021}
 
-Alternatively, the user can override the pre-selection by specifying \code{custom_slope}
-and \code{custom_intercept} instead. If \code{custom_slope} and \code{custom_intercept} are specified,
-\code{tracer}, \code{pipeline} and \code{ref_region} are ignored. Please refer to
+Alternatively, the user can override the pre-selection by specifying both \code{custom_slope}
+and \code{custom_intercept} instead. When \code{custom_slope} and \code{custom_intercept} are specified,
+the function ignores \code{tracer}, \code{pipeline} and \code{ref_region} for calculation purposes. However,
+this function \strong{always requires} specification of \code{tracer}, \code{pipeline}, and \code{ref_region}
+parameters, even when using custom slope and intercept values. This design choice ensures
+that users remain cognizant of the imaging context and analysis methodology when computing
+Centiloid values.
+
+Please refer to
 \href{https://doi.org/10.1016/j.nicl.2025.103765}{Iaccarino, L. et. al., 2025} for more Centiloid
 transformation formulas.
 
-If a matching combination of tracer, pipeline and reference region is not specified and
-\code{custom_slope} and \code{custom_intercept} are not specified, a warning is issued and
-\code{NA_real_} is returned.
+If a matching combination of tracer, pipeline, and reference region is not specified and both
+\code{custom_slope} and \code{custom_intercept} are not specified, the function aborts with an error.
 }
 \examples{
 # Using standard parameters
