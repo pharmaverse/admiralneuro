@@ -137,7 +137,7 @@ adpet_param <- distinct(adpet, USUBJID, NVTESTCD, NVCAT, NVLOC, NVMETHOD, REFREG
 dataset_vignette(adpet_param, display_vars = exprs(USUBJID, NVTESTCD, NVCAT, NVLOC, NVMETHOD, REFREG, PARAMCD, PARAM, PARAMN))
 ```
 
-### Map `AVAL` and `AVALC` variables {#aval_tpet}
+### Map `AVAL` and `AVALC` variables {#aval}
 
 Now that the parameter-level variables have been created, we can map the Analysis Value variables. For these parameters, no complex derivation is required. Note that `AVALC` should only be mapped if it contains non-redundant information.
 
