@@ -47,7 +47,7 @@ test_that("Test 4: 18F-Florbetaben with BERKELEY FBB pipeline and whole cerebell
   )
 })
 
-test_that("Test 5: Unrecognized combination returns NA with error", {
+test_that("Test 5: Unrecognized combination triggers error", {
   expect_snapshot_error(
     compute_centiloid(
       tracer = "18F-Florbetapir",
@@ -178,7 +178,7 @@ test_that("Test 13: Custom parameters with missing values triggers error", {
   )
 })
 
-test_that("Test 14: Custom parameters non numeric inputs", {
+test_that("Test 14: Custom parameters non numeric inputs trigger error", {
   expect_snapshot_error(
     compute_centiloid(
       tracer = "Tracer",
