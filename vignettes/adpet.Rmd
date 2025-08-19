@@ -21,7 +21,7 @@ library(admiraldev)
 
 This article describes the creation of PET Scan ADaMs.
 
-We recommend splitting out amyloid and tau into two distinct ADaMs datasets. The vignette presents a combined approach for the initial setup, parameter mapping and finals steps. It then splits into separate sections for each data type, as they require different processes: starting with `ADTPET` (Tau PET Scan Analysis Dataset), followed by `ADAPET` (Amyloid PET Scan Analysis Dataset).
+We recommend splitting out amyloid and tau into two distinct ADaM datasets. The vignette presents a combined approach for the initial setup, parameter mapping and finals steps. It then splits into separate sections for each data type, as they require different processes: starting with `ADTPET` (Tau PET Scan Analysis Dataset), followed by `ADAPET` (Amyloid PET Scan Analysis Dataset).
 
 We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html). The programming workflow around creating the general set-up of a BDS ADaM dataset using `{admiral}` functions is the same. In this vignette, we focus on the neuro-specific steps to avoid repeating information and maintaining the same content in two places. As such, the code in this vignette is not completely executable; we recommend consulting the `ADTPET` and `ADAPET` template scripts to view the full workflow.
 
@@ -175,7 +175,7 @@ adapet <- adpet %>%
 
 ### Convert amyloid SUVR to Centiloid {#centiloid}
 
-`SUVR` (Standardized Uptake Value Ratio) is a widely used semi-quantitative measure in PET imaging that estimates the level of radioactive tracer uptake (such as amyloid) in the brain, relative to a reference region. While useful, `SUVR` has certain limitations (which we will not detail here) that affect its comparability across different tracers and studies.
+`SUVR` (Standardized Uptake Value Ratio) is a widely used semi-quantitative measure in PET imaging that estimates the level of radiopharmaceutical tracer uptake (such as amyloid) in the brain, relative to a reference region. While useful, `SUVR` has certain limitations (which we will not detail here) that affect its comparability across different tracers and studies.
 
 To address this, the **Centiloid (CL)** scale was developed to standardize amyloid PET measurements. The scale is anchored such that:
 
@@ -301,7 +301,7 @@ dataset_vignette(adapet_param %>% arrange(USUBJID, ADT), display_vars = exprs(US
 
 Having converted the `SUVR` to Centiloid, we can now derive the criterion flags for the amyloid categories.
 
-We will use Centiloid cutoff of **24.1** to define amyloid negative and positive categories. The 24.1 Centiloid cutoff comes from an autopsy-validated study in which amyloid PET SUVR values were compared with post-mortem brain amyloid plaque counts. The SUVR threshold corresponding to moderate-to-frequent neuritic plaques under the Consortium to Establish a Registry for Alzheimer’s Disease (CERAD) criteria was mapped to the Centiloid scale, yielding 24.1 CL as the pathology-based definition of amyloid positivity. Centiloid \>= 24.1 is considered amyloid positive, while Centiloid \< 24.1 is considered amyloid negative.
+We will use Centiloid cutoff of **24.1** to define amyloid negative and positive categories. The 24.1 Centiloid cutoff comes from an autopsy-validated study in which amyloid PET SUVR values were compared with post-mortem brain amyloid plaque counts [Clark et al., 2012](https://doi.org/10.1016/S1474-4422(12)70142-4). The SUVR threshold corresponding to moderate-to-frequent neuritic plaques under the Consortium to Establish a Registry for Alzheimer’s Disease (CERAD) criteria was mapped to the Centiloid scale, yielding 24.1 CL as the pathology-based definition of amyloid positivity [Navitsky et al., 2018](https://doi.org/10.1016/j.jalz.2018.06.1353). Centiloid \>= 24.1 is considered amyloid positive, while Centiloid \< 24.1 is considered amyloid negative.
 
 To do this, we will use the `admiral::derive_vars_crit_flag()` function. Since we want to derive these flags specifically for the Centiloid parameters, we will apply the derivation only to those records using `admiral::restrict_derivation()`.
 
