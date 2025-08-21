@@ -208,86 +208,61 @@ d.  Based on the (`SUVRAFBP`) tracer, the (`AVID FBP SUVR PIPELINE`) method, and
 The new parameter values which include `AVAL`, `PARAMCD`, `PARAM`, and `AVALU`, are assigned within the `args` argument of this function.
 
 ```{r, message=FALSE, warning=FALSE}
-adapet <- adapet %>%
-  slice_derivation(
-    derivation = derive_param_computed,
-    args = params(
-      by_vars = c(
-        get_admiral_option("subject_keys"),
-        adsl_vars,
-        exprs(ADT, ADY, VISIT)
+adapet <- bind_rows(
+  adapet,
+  adapet %>%
+    filter(PARAMCD == "SUVRBFBB" & NVMETHOD == "BERKELEY FBB SUVR PIPELINE" & REFREG == "Whole Cerebellum") %>%
+    mutate(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetaben",
+        pipeline = "BERKELEY FBB SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
       ),
-      keep_nas = TRUE
+      PARAMCD = "CLBFBB",
+      PARAM = "Centiloid (CL) based on BERKELEY FBB",
+      AVALU = "CL"
     ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRBFBB") & (NVMETHOD == "BERKELEY FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRBFBB"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetaben",
-            pipeline = "BERKELEY FBB SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLBFBB",
-          PARAM = "Centiloid (CL) based on BERKELEY FBB",
-          AVALU = "CL"
-        )
-      )
+  adapet %>%
+    filter(PARAMCD == "SUVRBFBP" & NVMETHOD == "BERKELEY FBP SUVR PIPELINE" & REFREG == "Whole Cerebellum") %>%
+    mutate(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetapir",
+        pipeline = "BERKELEY FBP SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
+      ),
+      PARAMCD = "CLBFBP",
+      PARAM = "Centiloid (CL) based on BERKELEY FBP",
+      AVALU = "CL"
     ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRBFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRBFBP"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetapir",
-            pipeline = "BERKELEY FBP SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLBFBP",
-          PARAM = "Centiloid (CL) based on BERKELEY FBP",
-          AVALU = "CL"
-        )
-      )
+  adapet %>%
+    filter(PARAMCD == "SUVRAFBB" & NVMETHOD == "AVID FBB SUVR PIPELINE" & REFREG == "Whole Cerebellum") %>%
+    mutate(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetaben",
+        pipeline = "AVID FBB SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
+      ),
+      PARAMCD = "CLAFBP",
+      PARAM = "Centiloid (CL) based on AVID FBB",
+      AVALU = "CL"
     ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRAFBB") & (NVMETHOD == "AVID FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRAFBB"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetaben",
-            pipeline = "AVID FBB SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLAFBB",
-          PARAM = "Centiloid (CL) based on AVID FBB",
-          AVALU = "CL"
-        )
-      )
-    ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRAFBP") & (NVMETHOD == "AVID FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRAFBP"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetapir",
-            pipeline = "AVID FBP SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLAFBP",
-          PARAM = "Centiloid (CL) based on AVID FBP",
-          AVALU = "CL"
-        )
-      )
+  adapet %>%
+    filter(PARAMCD == "SUVRAFBP" & NVMETHOD == "AVID FBP SUVR PIPELINE" & REFREG == "Whole Cerebellum") %>%
+    mutate(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetapir",
+        pipeline = "AVID FBP SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
+      ),
+      PARAMCD = "CLAFBP",
+      PARAM = "Centiloid (CL) based on AVID FBP",
+      AVALU = "CL"
     )
-  )
+)
 ```
 
 This is how the parameters and newly converted parameters will look like:
