@@ -314,4 +314,3 @@ if (!file.exists(dir)) {
   dir.create(dir, recursive = TRUE, showWarnings = FALSE)
 }
 save(admiralneuro_adapet, file = file.path(dir, "admiralneuro_adapet.rda"), compress = "bzip2")
-
