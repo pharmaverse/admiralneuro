@@ -191,11 +191,11 @@ For our examples, we divide the process into two main steps:
 
 **1. Define the Grouping Criteria**
 
-The first step is to specify how to group the data using `admiral::slice_derivation()`. In this case, we group by patient, `ADSL` variables, Analysis Date (`ADT`), Relative Analysis Day (`ADY`), and Visit (`VISIT`). We also retain records with missing Analysis Values (`is.na(AVAL)`) by setting `keep_nas = TRUE`.
+The first step is to define the patient- and analysis-level variables that should be kept with `keep_vars`. In this case, we group by patient, `ADSL` variables, Analysis Date (`ADT`), Relative Analysis Day (`ADY`), and Visit (`VISIT`).
 
 **2. Convert SUVR to Centiloid**
 
-The second step involves converting the original `SUVR` parameters to Centiloid using `admiralneuro::compute_centiloid()`. The formula is based on tracer, pipeline and reference region; therefore we apply filtering conditions using `admiral::derivation_slice()`, as following:
+The second step uses `admiral::derive_extreme_records()` to add new analysis records in which the original `SUVR` values are converted into Centiloid using `admiralneuro::compute_centiloid()`. The formula is based on tracer, pipeline and reference region; therefore we apply filtering conditions using the argument `filter_add`, as following:
 
 a.  Based on the (`SUVRBFBB`) tracer, the (`BERKELEY FBB SUVR PIPELINE`) method, and the (`Whole Cerebellum`) reference region.
 
@@ -205,7 +205,7 @@ c.  Based on the (`SUVRAFBB`) tracer, the (`AVID FBB SUVR PIPELINE`) method, and
 
 d.  Based on the (`SUVRAFBP`) tracer, the (`AVID FBP SUVR PIPELINE`) method, and the same reference region (`Whole Cerebellum`).
 
-The new parameter values which include `AVAL`, `PARAMCD`, `PARAM`, and `AVALU`, are assigned within the `args` argument of this function.
+The new parameter values which include `AVAL`, `PARAMCD`, `PARAM`, and `AVALU`, are assigned within the `set_values_to` argument of this function.
 
 ```{r, message=FALSE, warning=FALSE}
 keep_vars <- c(
