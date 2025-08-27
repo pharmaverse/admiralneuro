@@ -189,13 +189,13 @@ In the following steps, we will incorporate the **conversion** from **amyloid SU
 
 For our examples, we divide the process into two main steps:
 
-**1. Define the Grouping Criteria**
+**1. Define the Source Variables** 
 
-The first step is to define the patient- and analysis-level variables that should be kept with `keep_vars`. In this case, we group by patient, `ADSL` variables, Analysis Date (`ADT`), Relative Analysis Day (`ADY`), and Visit (`VISIT`).
+The first step is to define `keep_vars`, which lists the source variables to retain and copy into newly derived records in the next step; all other variables will remain in the dataset but will be set to `NA` in those derived rows.
 
 **2. Convert SUVR to Centiloid**
 
-The second step uses `admiral::derive_extreme_records()` to add new analysis records in which the original `SUVR` values are converted into Centiloid using `admiralneuro::compute_centiloid()`. The formula is based on tracer, pipeline and reference region; therefore we apply filtering conditions using the argument `filter_add`, as following:
+The second step uses `admiral::derive_extreme_records()` to add new analysis records in which the original `SUVR` values are converted into Centiloid using `admiralneuro::compute_centiloid()`. The formula is based on tracer, pipeline and reference region; therefore we apply filtering conditions using the argument `filter_add`, as follows:
 
 a.  Based on the (`SUVRBFBB`) tracer, the (`BERKELEY FBB SUVR PIPELINE`) method, and the (`Whole Cerebellum`) reference region.
 
@@ -206,6 +206,8 @@ c.  Based on the (`SUVRAFBB`) tracer, the (`AVID FBB SUVR PIPELINE`) method, and
 d.  Based on the (`SUVRAFBP`) tracer, the (`AVID FBP SUVR PIPELINE`) method, and the same reference region (`Whole Cerebellum`).
 
 The new parameter values which include `AVAL`, `PARAMCD`, `PARAM`, and `AVALU`, are assigned within the `set_values_to` argument of this function.
+
+In this step, centiloid values are derived independently for each row that meets the specified filtering condition, with separate derivations performed for the four defined filtering conditions.
 
 ```{r, message=FALSE, warning=FALSE}
 keep_vars <- c(
