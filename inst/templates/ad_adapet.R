@@ -103,85 +103,80 @@ adapet <- adapet %>%
 
 ## Amyloid-specific derivations ----
 ### Convert SUVR to Centiloid ----
+keep_vars <- c(
+  get_admiral_option("subject_keys"),
+  adsl_vars,
+  exprs(ADT, ADY, VISIT)
+)
+
 adapet <- adapet %>%
-  slice_derivation(
-    derivation = derive_param_computed,
-    args = params(
-      by_vars = c(
-        get_admiral_option("subject_keys"),
-        adsl_vars,
-        exprs(ADT, ADY, VISIT)
+  derive_extreme_records(
+    dataset = .,
+    dataset_add = .,
+    filter_add = (PARAMCD == "SUVRBFBB" & NVMETHOD == "BERKELEY FBB SUVR PIPELINE" & REFREG == "Whole Cerebellum"),
+    set_values_to = exprs(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetaben",
+        pipeline = "BERKELEY FBB SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
       ),
-      keep_nas = TRUE
+      PARAMCD = "CLBFBB",
+      PARAM = "Centiloid (CL) based on BERKELEY FBB",
+      AVALU = "CL"
     ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRBFBB") & (NVMETHOD == "BERKELEY FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRBFBB"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetaben",
-            pipeline = "BERKELEY FBB SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLBFBB",
-          PARAM = "Centiloid (CL) based on BERKELEY FBB",
-          AVALU = "CL"
-        )
-      )
+    keep_source_vars = exprs(!!!keep_vars)
+  ) %>%
+  derive_extreme_records(
+    dataset = .,
+    dataset_add = .,
+    filter_add = (PARAMCD == "SUVRBFBP" & NVMETHOD == "BERKELEY FBP SUVR PIPELINE" & REFREG == "Whole Cerebellum"),
+    set_values_to = exprs(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetapir",
+        pipeline = "BERKELEY FBP SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
+      ),
+      PARAMCD = "CLBFBP",
+      PARAM = "Centiloid (CL) based on BERKELEY FBP",
+      AVALU = "CL"
     ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRBFBP") & (NVMETHOD == "BERKELEY FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRBFBP"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetapir",
-            pipeline = "BERKELEY FBP SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLBFBP",
-          PARAM = "Centiloid (CL) based on BERKELEY FBP",
-          AVALU = "CL"
-        )
-      )
+    keep_source_vars = exprs(!!!keep_vars)
+  ) %>%
+  derive_extreme_records(
+    dataset = .,
+    dataset_add = .,
+    filter_add = (PARAMCD == "SUVRAFBB" & NVMETHOD == "AVID FBB SUVR PIPELINE" & REFREG == "Whole Cerebellum"),
+    set_values_to = exprs(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetaben",
+        pipeline = "AVID FBB SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
+      ),
+      PARAMCD = "CLAFBB",
+      PARAM = "Centiloid (CL) based on AVID FBB",
+      AVALU = "CL"
     ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRAFBB") & (NVMETHOD == "AVID FBB SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRAFBB"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetaben",
-            pipeline = "AVID FBB SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLAFBB",
-          PARAM = "Centiloid (CL) based on AVID FBB",
-          AVALU = "CL"
-        )
-      )
+    keep_source_vars = exprs(!!!keep_vars)
+  ) %>%
+  derive_extreme_records(
+    dataset = .,
+    dataset_add = .,
+    filter_add = (PARAMCD == "SUVRAFBP" & NVMETHOD == "AVID FBP SUVR PIPELINE" & REFREG == "Whole Cerebellum"),
+    set_values_to = exprs(
+      AVAL = compute_centiloid(
+        tracer = "18F-Florbetapir",
+        pipeline = "AVID FBP SUVR PIPELINE",
+        ref_region = "Whole Cerebellum",
+        suvr = AVAL
+      ),
+      PARAMCD = "CLAFBP",
+      PARAM = "Centiloid (CL) based on AVID FBP",
+      AVALU = "CL"
     ),
-    derivation_slice(
-      filter = (PARAMCD == "SUVRAFBP") & (NVMETHOD == "AVID FBP SUVR PIPELINE") & (REFREG == "Whole Cerebellum"),
-      args = params(
-        parameters = c("SUVRAFBP"),
-        set_values_to = exprs(
-          AVAL = compute_centiloid(
-            tracer = "18F-Florbetapir",
-            pipeline = "AVID FBP SUVR PIPELINE",
-            ref_region = "Whole Cerebellum",
-            suvr = AVAL
-          ),
-          PARAMCD = "CLAFBP",
-          PARAM = "Centiloid (CL) based on AVID FBP",
-          AVALU = "CL"
-        )
-      )
-    )
+    keep_source_vars = exprs(!!!keep_vars)
   )
 
 # The 24.1 Centiloid cutoff represents the autopsy-validated threshold for amyloid positivity
