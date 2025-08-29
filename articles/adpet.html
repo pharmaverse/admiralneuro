@@ -312,21 +312,18 @@ burden across imaging protocols, tracers, and clinical studies.</p>
 Centiloid</strong> using the function
 <code><a href="../reference/compute_centiloid.html">admiralneuro::compute_centiloid()</a></code>.</p>
 <p>For our examples, we divide the process into two main steps:</p>
-<p><strong>1. Define the Grouping Criteria</strong></p>
-<p>The first step is to specify how to group the data using
-<code><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/slice_derivation.html">admiral::slice_derivation()</a></code>. In this case, we group by
-patient, <code>ADSL</code> variables, Analysis Date (<code>ADT</code>),
-Relative Analysis Day (<code>ADY</code>), and Visit
-(<code>VISIT</code>). We also retain records with missing Analysis
-Values (<code>is.na(AVAL)</code>) by setting
-<code>keep_nas = TRUE</code>.</p>
+<p><strong>1. Define the Source Variables</strong></p>
+<p>The first step is to define <code>keep_vars</code>, which lists the
+source variables to retain and copy into newly derived records in the
+next step; all other variables will remain in the dataset but will be
+set to <code>NA</code> in those derived rows.</p>
 <p><strong>2. Convert SUVR to Centiloid</strong></p>
-<p>The second step involves converting the original <code>SUVR</code>
-parameters to Centiloid using
+<p>The second step uses <code><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_extreme_records.html">admiral::derive_extreme_records()</a></code>
+to add new analysis records in which the original <code>SUVR</code>
+values are converted into Centiloid using
 <code><a href="../reference/compute_centiloid.html">admiralneuro::compute_centiloid()</a></code>. The formula is based on
 tracer, pipeline and reference region; therefore we apply filtering
-conditions using <code><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derivation_slice.html">admiral::derivation_slice()</a></code>, as
-following:</p>
+conditions using the argument <code>filter_add</code>, as follows:</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Based on the (<code>SUVRBFBB</code>) tracer, the
 (<code>BERKELEY FBB SUVR PIPELINE</code>) method, and the
@@ -343,87 +340,86 @@ region (<code>Whole Cerebellum</code>).</p></li>
 </ol>
 <p>The new parameter values which include <code>AVAL</code>,
 <code>PARAMCD</code>, <code>PARAM</code>, and <code>AVALU</code>, are
-assigned within the <code>args</code> argument of this function.</p>
+assigned within the <code>set_values_to</code> argument of this
+function.</p>
+<p>In this step, centiloid values are derived independently for each row
+that meets the specified filtering condition, with separate derivations
+performed for the four defined filtering conditions.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">adapet</span> <span class="op">&lt;-</span> <span class="va">adapet</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/slice_derivation.html">slice_derivation</a></span><span class="op">(</span></span>
-<span>    derivation <span class="op">=</span> <span class="va">derive_param_computed</span>,</span>
-<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
-<span>      by_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>        <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
-<span>        <span class="va">adsl_vars</span>,</span>
-<span>        <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span>, <span class="va">ADY</span>, <span class="va">VISIT</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">keep_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
+<span>  <span class="va">adsl_vars</span>,</span>
+<span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span>, <span class="va">ADY</span>, <span class="va">VISIT</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">adapet</span> <span class="op">&lt;-</span> <span class="va">adapet</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRBFBB"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"BERKELEY FBB SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
+<span>    set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
+<span>      AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
+<span>        tracer <span class="op">=</span> <span class="st">"18F-Florbetaben"</span>,</span>
+<span>        pipeline <span class="op">=</span> <span class="st">"BERKELEY FBB SUVR PIPELINE"</span>,</span>
+<span>        ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
+<span>        suvr <span class="op">=</span> <span class="va">AVAL</span></span>
 <span>      <span class="op">)</span>,</span>
-<span>      keep_nas <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>      PARAMCD <span class="op">=</span> <span class="st">"CLBFBB"</span>,</span>
+<span>      PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on BERKELEY FBB"</span>,</span>
+<span>      AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derivation_slice.html">derivation_slice</a></span><span class="op">(</span></span>
-<span>      filter <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRBFBB"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"BERKELEY FBB SUVR PIPELINE"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
-<span>      args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
-<span>        parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SUVRBFBB"</span><span class="op">)</span>,</span>
-<span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
-<span>          AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
-<span>            tracer <span class="op">=</span> <span class="st">"18F-Florbetaben"</span>,</span>
-<span>            pipeline <span class="op">=</span> <span class="st">"BERKELEY FBB SUVR PIPELINE"</span>,</span>
-<span>            ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
-<span>            suvr <span class="op">=</span> <span class="va">AVAL</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>          PARAMCD <span class="op">=</span> <span class="st">"CLBFBB"</span>,</span>
-<span>          PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on BERKELEY FBB"</span>,</span>
-<span>          AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
+<span>    keep_source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">keep_vars</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRBFBP"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"BERKELEY FBP SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
+<span>    set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
+<span>      AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
+<span>        tracer <span class="op">=</span> <span class="st">"18F-Florbetapir"</span>,</span>
+<span>        pipeline <span class="op">=</span> <span class="st">"BERKELEY FBP SUVR PIPELINE"</span>,</span>
+<span>        ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
+<span>        suvr <span class="op">=</span> <span class="va">AVAL</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      PARAMCD <span class="op">=</span> <span class="st">"CLBFBP"</span>,</span>
+<span>      PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on BERKELEY FBP"</span>,</span>
+<span>      AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derivation_slice.html">derivation_slice</a></span><span class="op">(</span></span>
-<span>      filter <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRBFBP"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"BERKELEY FBP SUVR PIPELINE"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
-<span>      args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
-<span>        parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SUVRBFBP"</span><span class="op">)</span>,</span>
-<span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
-<span>          AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
-<span>            tracer <span class="op">=</span> <span class="st">"18F-Florbetapir"</span>,</span>
-<span>            pipeline <span class="op">=</span> <span class="st">"BERKELEY FBP SUVR PIPELINE"</span>,</span>
-<span>            ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
-<span>            suvr <span class="op">=</span> <span class="va">AVAL</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>          PARAMCD <span class="op">=</span> <span class="st">"CLBFBP"</span>,</span>
-<span>          PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on BERKELEY FBP"</span>,</span>
-<span>          AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
+<span>    keep_source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">keep_vars</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRAFBB"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"AVID FBB SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
+<span>    set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
+<span>      AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
+<span>        tracer <span class="op">=</span> <span class="st">"18F-Florbetaben"</span>,</span>
+<span>        pipeline <span class="op">=</span> <span class="st">"AVID FBB SUVR PIPELINE"</span>,</span>
+<span>        ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
+<span>        suvr <span class="op">=</span> <span class="va">AVAL</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      PARAMCD <span class="op">=</span> <span class="st">"CLAFBB"</span>,</span>
+<span>      PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on AVID FBB"</span>,</span>
+<span>      AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derivation_slice.html">derivation_slice</a></span><span class="op">(</span></span>
-<span>      filter <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRAFBB"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"AVID FBB SUVR PIPELINE"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
-<span>      args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
-<span>        parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SUVRAFBB"</span><span class="op">)</span>,</span>
-<span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
-<span>          AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
-<span>            tracer <span class="op">=</span> <span class="st">"18F-Florbetaben"</span>,</span>
-<span>            pipeline <span class="op">=</span> <span class="st">"AVID FBB SUVR PIPELINE"</span>,</span>
-<span>            ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
-<span>            suvr <span class="op">=</span> <span class="va">AVAL</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>          PARAMCD <span class="op">=</span> <span class="st">"CLAFBB"</span>,</span>
-<span>          PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on AVID FBB"</span>,</span>
-<span>          AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
+<span>    keep_source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">keep_vars</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
+<span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRAFBP"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"AVID FBP SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
+<span>    set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
+<span>      AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
+<span>        tracer <span class="op">=</span> <span class="st">"18F-Florbetapir"</span>,</span>
+<span>        pipeline <span class="op">=</span> <span class="st">"AVID FBP SUVR PIPELINE"</span>,</span>
+<span>        ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
+<span>        suvr <span class="op">=</span> <span class="va">AVAL</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      PARAMCD <span class="op">=</span> <span class="st">"CLAFBP"</span>,</span>
+<span>      PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on AVID FBP"</span>,</span>
+<span>      AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/derivation_slice.html">derivation_slice</a></span><span class="op">(</span></span>
-<span>      filter <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRAFBP"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"AVID FBP SUVR PIPELINE"</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
-<span>      args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
-<span>        parameters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SUVRAFBP"</span><span class="op">)</span>,</span>
-<span>        set_values_to <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span></span>
-<span>          AVAL <span class="op">=</span> <span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
-<span>            tracer <span class="op">=</span> <span class="st">"18F-Florbetapir"</span>,</span>
-<span>            pipeline <span class="op">=</span> <span class="st">"AVID FBP SUVR PIPELINE"</span>,</span>
-<span>            ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
-<span>            suvr <span class="op">=</span> <span class="va">AVAL</span></span>
-<span>          <span class="op">)</span>,</span>
-<span>          PARAMCD <span class="op">=</span> <span class="st">"CLAFBP"</span>,</span>
-<span>          PARAM <span class="op">=</span> <span class="st">"Centiloid (CL) based on AVID FBP"</span>,</span>
-<span>          AVALU <span class="op">=</span> <span class="st">"CL"</span></span>
-<span>        <span class="op">)</span></span>
-<span>      <span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
+<span>    keep_source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">keep_vars</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 <p>This is how the parameters and newly converted parameters will look
 like:</p>
