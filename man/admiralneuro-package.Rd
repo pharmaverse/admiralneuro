@@ -23,20 +23,22 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Chris Pelentrides
-  \item Edoardo Mancini (\href{https://orcid.org/0009-0006-4899-8641}{ORCID})
-  \item Eric Nantz
+  \item Miles Almond (\href{https://orcid.org/0009-0007-1784-0355}{ORCID})
+  \item Xiao Chen (\href{https://orcid.org/0009-0000-6959-5151}{ORCID})
   \item Fanny Gautier (\href{https://orcid.org/0009-0004-3581-0131}{ORCID})
   \item Gayatri G.
-  \item Leena Khatri (\href{https://orcid.org/0000-0002-2268-4023}{ORCID})
-  \item Lina Patil
   \item Meilin Jiang (\href{https://orcid.org/0000-0003-4515-4567}{ORCID})
-  \item Miles Almond (\href{https://orcid.org/0009-0007-1784-0355}{ORCID})
+  \item Leena Khatri (\href{https://orcid.org/0000-0002-2268-4023}{ORCID})
+  \item Edoardo Mancini (\href{https://orcid.org/0009-0006-4899-8641}{ORCID})
+  \item Eric Nantz
+  \item Chris Pelentrides
+  \item Lina Patil
 }
 
 Other contributors:
 \itemize{
   \item Eli Lilly and Company [copyright holder, funder]
+  \item Cytel Inc. [copyright holder, funder]
   \item F. Hoffmann-La Roche AG [copyright holder, funder]
 }
 
