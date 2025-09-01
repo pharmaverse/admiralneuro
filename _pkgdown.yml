@@ -17,7 +17,7 @@ news:
 authors:
   footer:
     roles: [aut]
-    text: "Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company, "
+    text: "Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company and Cytel Inc., "
   sidebar:
     roles: [aut, fnd]
   F. Hoffmann-La Roche AG:
@@ -26,6 +26,9 @@ authors:
   Eli Lilly and Company:
     html: "<a href='https://www.lilly.com/'><img src='man/figures/eli_lilly_and_company_logo.png' height='30' alt='Eli Lilly and Company logo' /></a>"
     href: https://www.lilly.com/
+  Cytel Inc.:
+    html: "<a href='https://www.cytel.com/'><img src='man/figures/cytel_logo.png' height='30' alt='Cytel Inc. logo' /></a>"
+    href: https://www.cytel.com/
 
 development:
   mode: auto
