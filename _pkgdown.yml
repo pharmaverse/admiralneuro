@@ -17,7 +17,7 @@ news:
 authors:
   footer:
     roles: [aut]
-    text: "Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company and Cytel Inc., "
+    text: "Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company, Cytel Inc., "
   sidebar:
     roles: [aut, fnd]
   F. Hoffmann-La Roche AG:
