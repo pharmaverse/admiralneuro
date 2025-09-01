@@ -31,8 +31,8 @@ Authors:
   \item Leena Khatri (\href{https://orcid.org/0000-0002-2268-4023}{ORCID})
   \item Edoardo Mancini (\href{https://orcid.org/0009-0006-4899-8641}{ORCID})
   \item Eric Nantz
-  \item Chris Pelentrides
   \item Lina Patil
+  \item Chris Pelentrides
 }
 
 Other contributors:
