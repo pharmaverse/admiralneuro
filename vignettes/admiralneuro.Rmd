@@ -35,7 +35,7 @@ for the most common steps are provided by the following vignette:
 created by calling `use_ad_template()` from `{admiral}`, e.g.,
 
 
-```{r}
+```{r, eval = FALSE}
 library(admiral)
 
 use_ad_template(
@@ -48,7 +48,7 @@ use_ad_template(
 A list of all available templates can be obtained by `list_all_templates()`
 from `{admiral}`:
   
-```{r}
+```{r, eval = FALSE}
 list_all_templates(package = "admiralneuro")
 ```
 
