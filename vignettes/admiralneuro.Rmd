@@ -48,8 +48,8 @@ use_ad_template(
 A list of all available templates can be obtained by `list_all_templates()`
 from `{admiral}`:
   
-```{r, eval = FALSE}
-list_all_templates(package = "admiralneuro")
+```{r, eval = TRUE}
+admiral::list_all_templates(package = "admiralneuro")
 ```
 
 # Support
