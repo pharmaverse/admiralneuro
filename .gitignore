@@ -50,3 +50,6 @@ admiraltemplate*.tgz
 
 # Docs
 docs/
+
+# CRAN release help file
+CRAN-SUBMISSION
