@@ -28,7 +28,7 @@ Description: A toolbox for programming neuroscience Clinical Data Standards Inte
     <https://www.cdisc.org/standards/foundational/adam>). The package is
     an extension package of the 'admiral' package.
 License: Apache License (>= 2)
-URL: https://pharmaverse.github.io/admiralneuro,
+URL: https://pharmaverse.github.io/admiralneuro/,
     https://github.com/pharmaverse/admiralneuro
 Depends: 
     R (>= 4.1)
