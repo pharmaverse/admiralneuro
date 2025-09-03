@@ -121,8 +121,8 @@ adapet <- adapet %>%
         ref_region = "Whole Cerebellum",
         suvr = AVAL
       ),
-      PARAMCD = "CLBFBB",
-      PARAM = "Centiloid (CL) based on BERKELEY FBB",
+      PARAMCD = "CENTLD",
+      PARAM = "Centiloid value derived from SUVR pipeline",
       AVALU = "CL"
     ),
     keep_source_vars = exprs(!!!keep_vars)
@@ -138,8 +138,8 @@ adapet <- adapet %>%
         ref_region = "Whole Cerebellum",
         suvr = AVAL
       ),
-      PARAMCD = "CLBFBP",
-      PARAM = "Centiloid (CL) based on BERKELEY FBP",
+      PARAMCD = "CENTLD",
+      PARAM = "Centiloid value derived from SUVR pipeline",
       AVALU = "CL"
     ),
     keep_source_vars = exprs(!!!keep_vars)
@@ -155,8 +155,8 @@ adapet <- adapet %>%
         ref_region = "Whole Cerebellum",
         suvr = AVAL
       ),
-      PARAMCD = "CLAFBB",
-      PARAM = "Centiloid (CL) based on AVID FBB",
+      PARAMCD = "CENTLD",
+      PARAM = "Centiloid value derived from SUVR pipeline",
       AVALU = "CL"
     ),
     keep_source_vars = exprs(!!!keep_vars)
@@ -172,8 +172,8 @@ adapet <- adapet %>%
         ref_region = "Whole Cerebellum",
         suvr = AVAL
       ),
-      PARAMCD = "CLAFBP",
-      PARAM = "Centiloid (CL) based on AVID FBP",
+      PARAMCD = "CENTLD",
+      PARAM = "Centiloid value derived from SUVR pipeline",
       AVALU = "CL"
     ),
     keep_source_vars = exprs(!!!keep_vars)
@@ -187,11 +187,11 @@ adapet <- adapet %>%
     derivation = derive_vars_crit_flag,
     args = params(
       crit_nr = 1,
-      condition = if_else(PARAMCD %in% c("CLBFBB", "CLBFBP", "CLAFBB", "CLAFBP"), AVAL < 24.1, NA),
+      condition = if_else(PARAMCD == "CENTLD", AVAL < 24.1, NA),
       description = "CENTILOID < 24.1",
       values_yn = TRUE # To get "Y", "N", and NA for the flag
     ),
-    filter = PARAMCD %in% c("CLBFBB", "CLBFBP", "CLAFBB", "CLAFBP")
+    filter = PARAMCD == "CENTLD"
   )
 
 
