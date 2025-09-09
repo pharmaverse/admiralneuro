@@ -86,9 +86,9 @@ columns "slope" and "intercept" then show the values of the slope and intercept 
 
 The equations used for the conversions are based on the following references:
 
-¹ \href{https://doi.org/10.1016/j.jalz.2018.06.1353}{Navitsky, et. al., 2018}
-² \href{https://doi.org/10.1001/jama.2023.13239}{Sims, et. al., 2024}
-³ \href{https://doi.org/10.1186/s13195-021-00836-1}{Royse, et. al., 2021}
+¹ Navitsky, et al. (2018). \doi{10.1016/j.jalz.2018.06.1353}
+² Sims, et al. (2024). \doi{10.1001/jama.2023.13239}
+³ Royse, et al. (2021). \doi{10.1186/s13195-021-00836-1}
 
 Alternatively, the user can override the pre-selection by specifying both \code{custom_slope}
 and \code{custom_intercept} instead. When \code{custom_slope} and \code{custom_intercept} are specified,
@@ -98,9 +98,8 @@ parameters, even when using custom slope and intercept values. This design choic
 that users remain cognizant of the imaging context and analysis methodology when computing
 Centiloid values.
 
-Please refer to
-\href{https://doi.org/10.1016/j.nicl.2025.103765}{Iaccarino, L. et. al., 2025} for more Centiloid
-transformation formulas.
+For additional Centiloid transformation formulas, see:
+Iaccarino, L. et al. (2025). \doi{10.1016/j.nicl.2025.103765}
 
 If a matching combination of tracer, pipeline, and reference region is not specified and both
 \code{custom_slope} and \code{custom_intercept} are not specified, the function aborts with an error.
