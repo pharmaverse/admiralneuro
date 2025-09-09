@@ -25,8 +25,8 @@ Description: Programming neuroscience Clinical Data Standards Interchange
     Administration (FDA). Analysis derivations are implemented in
     accordance with the "Analysis Data Model Implementation Guide" (CDISC
     Analysis Data Model Team, 2021,
-    <https://www.cdisc.org/standards/foundational/adam>). The package is
-    an extension package of the 'admiral' package.
+    <https://www.cdisc.org/standards/foundational/adam>). This package extends 
+    the 'admiral' package.
 License: Apache License (>= 2)
 URL: https://pharmaverse.github.io/admiralneuro/,
     https://github.com/pharmaverse/admiralneuro
