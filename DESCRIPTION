@@ -18,8 +18,8 @@ Authors@R: c(
   person("Cytel Inc.", role = c("cph", "fnd")),
   person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: A toolbox for programming neuroscience Clinical Data Standards Interchange
-    Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R.
+Description: Programming neuroscience Clinical Data Standards Interchange
+    Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets.
     ADaM datasets are a mandatory part of any New Drug or Biologics
     License Application submitted to the United States Food and Drug
     Administration (FDA). Analysis derivations are implemented in
