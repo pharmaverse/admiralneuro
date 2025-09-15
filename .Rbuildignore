@@ -18,3 +18,5 @@
 ^README.Rmd$
 ^\.devcontainer$
 ^data-raw$
+^CRAN-SUBMISSION$
+^cran-comments.md$

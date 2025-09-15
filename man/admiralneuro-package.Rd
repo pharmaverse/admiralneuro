@@ -8,12 +8,12 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-A toolbox for programming neuroscience Clinical Data Standards Interchange Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in R. ADaM datasets are a mandatory part of any New Drug or Biologics License Application submitted to the United States Food and Drug Administration (FDA). Analysis derivations are implemented in accordance with the "Analysis Data Model Implementation Guide" (CDISC Analysis Data Model Team, 2021, \url{https://www.cdisc.org/standards/foundational/adam}). The package is an extension package of the 'admiral' package.
+Programming neuroscience Clinical Data Standards Interchange Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets. ADaM datasets are a mandatory part of any New Drug or Biologics License Application submitted to the United States Food and Drug Administration (FDA). Analysis derivations are implemented in accordance with the "Analysis Data Model Implementation Guide" (CDISC Analysis Data Model Team, 2021, \url{https://www.cdisc.org/standards/foundational/adam}). This package extends the 'admiral' package.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://pharmaverse.github.io/admiralneuro}
+  \item \url{https://pharmaverse.github.io/admiralneuro/}
   \item \url{https://github.com/pharmaverse/admiralneuro}
 }
 

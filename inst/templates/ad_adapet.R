@@ -308,9 +308,5 @@ admiralneuro_adapet <- adapet
 # Save output ----
 
 # Change to whichever directory you want to save the dataset in
-dir <- tools::R_user_dir("admiraltemplate_templates_data", which = "cache")
-if (!file.exists(dir)) {
-  # Create the folder
-  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
-}
-save(admiralneuro_adapet, file = file.path(dir, "admiralneuro_adapet.rda"), compress = "bzip2")
+tmp_file <- file.path(tempdir(), "admiralneuro_adapet.rda")
+save(admiralneuro_adapet, file = tmp_file, compress = "bzip2")

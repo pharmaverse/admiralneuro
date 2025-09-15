@@ -70,9 +70,9 @@
 #'
 #' The equations used for the conversions are based on the following references:
 #'
-#' ¹ [Navitsky, et. al., 2018](https://doi.org/10.1016/j.jalz.2018.06.1353)
-#' ² [Sims, et. al., 2024](https://doi.org/10.1001/jama.2023.13239)
-#' ³ [Royse, et. al., 2021](https://doi.org/10.1186/s13195-021-00836-1)
+#' ¹ Navitsky, et al. (2018). \doi{10.1016/j.jalz.2018.06.1353}
+#' ² Sims, et al. (2024). \doi{10.1001/jama.2023.13239}
+#' ³ Royse, et al. (2021). \doi{10.1186/s13195-021-00836-1}
 #'
 #' Alternatively, the user can override the pre-selection by specifying both `custom_slope`
 #' and `custom_intercept` instead. When `custom_slope` and `custom_intercept` are specified,
@@ -82,9 +82,8 @@
 #' that users remain cognizant of the imaging context and analysis methodology when computing
 #' Centiloid values.
 #'
-#' Please refer to
-#' [Iaccarino, L. et. al., 2025](https://doi.org/10.1016/j.nicl.2025.103765) for more Centiloid
-#' transformation formulas.
+#' For additional Centiloid transformation formulas, see:
+#' Iaccarino, L. et al. (2025). \doi{10.1016/j.nicl.2025.103765}
 #'
 #' If a matching combination of tracer, pipeline, and reference region is not specified and both
 #' `custom_slope` and `custom_intercept` are not specified, the function aborts with an error.
