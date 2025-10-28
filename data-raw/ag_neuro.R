@@ -1,12 +1,10 @@
 # Dataset: ag_neuro
 # Description: Create AG test SDTM dataset for Alzheimer's Disease (neuro studies)
 
-# Load libraries ----
-
-library(tibble)
-library(dplyr)
-library(stringr)
-library(admiral)
+#' @importFrom dplyr select mutate group_by ungroup distinct
+#' @importFrom admiral convert_blanks_to_na
+#' @importFrom usethis use_data
+#' @noRd
 
 # Read input data ----
 
@@ -14,11 +12,11 @@ data("nv_neuro")
 
 # Convert blank to NA ----
 
-nv_neuro <- convert_blanks_to_na(nv_neuro)
+nv_neuro <- admiral::convert_blanks_to_na(nv_neuro)
 
 ag_neuro <- nv_neuro %>%
   dplyr::select(STUDYID, USUBJID, NVLNKID, NVDTC, NVCAT, VISITNUM, VISIT) %>%
-  distinct() %>%
+  dplyr::distinct() %>%
   dplyr::mutate(DOMAIN = "AG", AGLNKID = NVLNKID, AGSTDTC = NVDTC) %>%
   dplyr::mutate(AGTRT = case_when(
     NVCAT == "FBP" ~ "18F-Florbetapir",

@@ -1,12 +1,10 @@
 # Dataset: suppnv_neuro
 # Description: Create SUPPNV test SDTM dataset for Alzheimer's Disease (neuro studies)
 
-# Load libraries ----
-
-library(tibble)
-library(dplyr)
-library(stringr)
-library(admiral)
+#' @importFrom dplyr filter mutate select case_when
+#' @importFrom admiral convert_blanks_to_na
+#' @importFrom usethis use_data
+#' @noRd
 
 # Read input data ----
 
@@ -14,11 +12,12 @@ data("nv_neuro")
 
 # Convert blank to NA ----
 
-nv_neuro <- convert_blanks_to_na(nv_neuro)
+nv_neuro <- admiral::convert_blanks_to_na(nv_neuro)
 
 suppnv_neuro <- nv_neuro %>%
   dplyr::filter(!is.na(NVLOC)) %>%
-  dplyr::mutate(RDOMAIN = "NV", IDVAR = "NVSEQ", IDVARVAL = NVSEQ, QNAM = "REFREG", QLABEL = "Reference Region") %>%
+  dplyr::mutate(RDOMAIN = "NV", IDVAR = "NVSEQ", IDVARVAL = NVSEQ, QNAM = "REFREG",
+                QLABEL = "Reference Region") %>%
   dplyr::mutate(QVAL = case_when(
     NVCAT %in% c("FBP", "FBB") ~ "Whole Cerebellum",
     NVCAT == "FTP" ~ "Inferior Cerebellar Gray Matter",

@@ -1,36 +1,38 @@
 # Dataset: adsl_neuro
 # Description: Create ADSL test Analysis Dataset for Alzheimer's Disease (Neuro)
 
-# Load libraries -----
-library(admiral)
-library(pharmaversesdtm) # Contains example datasets from the CDISC pilot project
-library(dplyr)
-library(lubridate)
-library(stringr)
+#' @importFrom admiral convert_blanks_to_na derive_vars_dtm derive_vars_dtm_to_dt
+#' derive_vars_dtm_to_tm derive_var_trtdurd derive_vars_cat derive_var_merged_exist_flag
+#' derive_vars_duration
+#' @importFrom dplyr filter mutate select pull if_else case_when left_join
+#' @importFrom pharmaversesdtm ex dm_neuro
+#' @importFrom lubridate days
+#' @importFrom usethis use_data
+#' @noRd
 
 # Read input test data from pharmaversesdtm ----
 data(dm_neuro)
 ex <- pharmaversesdtm::ex
 
 # Convert blank to NA ----
-dm_neuro <- convert_blanks_to_na(dm_neuro)
-ex <- convert_blanks_to_na(ex)
+dm_neuro <- admiral::convert_blanks_to_na(dm_neuro)
+ex <- admiral::convert_blanks_to_na(ex)
 
 # Select patients from DM Neuro only
 dm_neuro_pat <- dm_neuro %>%
-  pull(unique(USUBJID))
+  dplyr::pull(unique(USUBJID))
 
 ex <- ex %>%
-  filter(USUBJID %in% dm_neuro_pat)
+  dplyr::filter(USUBJID %in% dm_neuro_pat)
 
 # Derive Treatment Variables ----
 adsl <- dm_neuro %>%
   # Select all necessary variables only
-  select(
+  dplyr::select(
     STUDYID, USUBJID, SUBJID, SITEID, COUNTRY, AGE, AGEU, SEX, RACE, ETHNIC, ARM,
     ARMCD, ACTARM, ACTARMCD, ARMNRS, DTHDTC, DTHFL
   ) %>%
-  mutate(
+  dplyr::mutate(
     TRT01P = if_else(!is.na(ARMNRS), "No Treatment", ARM),
     TRT01PN = case_when(
       TRT01P == "No Treatment" ~ 3,
@@ -47,21 +49,21 @@ adsl <- dm_neuro %>%
 
 # Treatment Start and End Dates ----
 ex_ext <- ex %>%
-  derive_vars_dtm(
+  admiral::derive_vars_dtm(
     dtc = EXSTDTC,
     new_vars_prefix = "EXST"
   ) %>%
-  derive_vars_dtm(
+  admiral::derive_vars_dtm(
     dtc = EXENDTC,
     new_vars_prefix = "EXEN",
     time_imputation = "last"
   ) %>%
   # Merge DM.ARMNRS to not derive treatment dates for these patients
-  left_join(dm_neuro %>% select(USUBJID, ARMNRS), by = "USUBJID")
+  dplyr::left_join(dm_neuro %>% select(USUBJID, ARMNRS), by = "USUBJID")
 
 adsl <- adsl %>%
   # Treatment Start Datetime
-  derive_vars_merged(
+  admiral::derive_vars_merged(
     dataset_add = ex_ext,
     filter_add = (is.na(ARMNRS)),
     new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
@@ -70,7 +72,7 @@ adsl <- adsl %>%
     by_vars = exprs(STUDYID, USUBJID)
   ) %>%
   # Treatment End Datetime
-  derive_vars_merged(
+  admiral::derive_vars_merged(
     dataset_add = ex_ext,
     filter_add = (is.na(ARMNRS)),
     new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
@@ -79,11 +81,11 @@ adsl <- adsl %>%
     by_vars = exprs(STUDYID, USUBJID)
   ) %>%
   # Convert Datetime variables to date
-  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
+  admiral::derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
   # Treatment Start Time
-  derive_vars_dtm_to_tm(source_vars = exprs(TRTSDTM)) %>%
+  admiral::derive_vars_dtm_to_tm(source_vars = exprs(TRTSDTM)) %>%
   # Treatment Duration
-  derive_var_trtdurd()
+  admiral::derive_var_trtdurd()
 
 # Derive Age Grouping ----
 agegr1_lookup <- exprs(
@@ -100,8 +102,8 @@ adsl <- derive_vars_cat(
 
 # Derive Intent-To-Treat and Safety Population Flags ----
 adsl <- adsl %>%
-  mutate(ITTFL = "Y") %>%
-  derive_var_merged_exist_flag(
+  dplyr::mutate(ITTFL = "Y") %>%
+  admiral::derive_var_merged_exist_flag(
     dataset_add = adsl,
     by_vars = exprs(STUDYID, USUBJID),
     new_var = SAFFL,
@@ -111,13 +113,13 @@ adsl <- adsl %>%
 
 # Derive DTHDT & DTHADY ----
 adsl <- adsl %>%
-  derive_vars_dt(
+  admiral::derive_vars_dt(
     new_vars_prefix = "DTH",
     dtc = DTHDTC,
     highest_imputation = "M",
     date_imputation = "first"
   ) %>%
-  derive_vars_duration(
+  admiral::derive_vars_duration(
     new_var = DTHADY,
     start_date = TRTSDT,
     end_date = DTHDT
