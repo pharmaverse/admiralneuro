@@ -130,7 +130,7 @@ treat_visit9_dat <- all_visit3_dat %>%
   dplyr::filter(NVTESTCD == "SUVR") %>%
   dplyr::mutate(
     VISITNUM = 9,
-    NVORRES = if_else(NVCAT %in% c("FBP", "FBB"),
+    NVORRES = dplyr::if_else(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
       dplyr::if_else(NVCAT == "FTP",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.005, max = 0.01), 3)), NVORRES
