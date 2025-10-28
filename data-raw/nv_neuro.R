@@ -7,7 +7,6 @@
 #' @importFrom admiral convert_blanks_to_na
 #' @importFrom lubridate days ymd
 #' @importFrom usethis use_data
-#' @importFrom pharmaversesdtm vs
 #' @noRd
 
 # Read input data ----

@@ -5,7 +5,6 @@
 #' derive_vars_dtm_to_tm derive_var_trtdurd derive_vars_cat derive_var_merged_exist_flag
 #' derive_vars_duration
 #' @importFrom dplyr filter mutate select pull if_else case_when left_join
-#' @importFrom pharmaversesdtm ex dm_neuro
 #' @importFrom lubridate days
 #' @importFrom usethis use_data
 #' @noRd
