@@ -1,13 +1,13 @@
 # Dataset: nv_neuro
 # Description: Create NV test SDTM dataset for Alzheimer's Disease (neuro studies)
 
-#' @importFrom tibble tibble function
+#' @importFrom tibble tibble
 #' @importFrom dplyr filter rename select distinct group_by ungroup mutate arrange
 #' left_join case_when if_else
 #' @importFrom admiral convert_blanks_to_na
 #' @importFrom lubridate days ymd
-#' @importFrom usethis data function
-#' @pharmaversesdtm vs
+#' @importFrom usethis use_data
+#' @importFrom pharmaversesdtm vs
 #' @noRd
 
 # Read input data ----
@@ -132,7 +132,7 @@ treat_visit9_dat <- all_visit3_dat %>%
     VISITNUM = 9,
     NVORRES = if_else(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
-      if_else(NVCAT == "FTP",
+      dplyr::if_else(NVCAT == "FTP",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.005, max = 0.01), 3)), NVORRES
       )
     )

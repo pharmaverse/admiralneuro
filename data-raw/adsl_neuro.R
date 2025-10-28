@@ -33,14 +33,14 @@ adsl <- dm_neuro %>%
     ARMCD, ACTARM, ACTARMCD, ARMNRS, DTHDTC, DTHFL
   ) %>%
   dplyr::mutate(
-    TRT01P = if_else(!is.na(ARMNRS), "No Treatment", ARM),
-    TRT01PN = case_when(
+    TRT01P = dplyr::if_else(!is.na(ARMNRS), "No Treatment", ARM),
+    TRT01PN = dplyr::case_when(
       TRT01P == "No Treatment" ~ 3,
       TRT01P == "Placebo" ~ 2,
       TRUE ~ 1
     ),
-    TRT01A = if_else(!is.na(ARMNRS), "No Treatment", ACTARM),
-    TRT01AN = case_when(
+    TRT01A = dplyr::if_else(!is.na(ARMNRS), "No Treatment", ACTARM),
+    TRT01AN = dplyr::case_when(
       TRT01A == "No Treatment" ~ 3,
       TRT01A == "Placebo" ~ 2,
       TRUE ~ 1
@@ -59,7 +59,7 @@ ex_ext <- ex %>%
     time_imputation = "last"
   ) %>%
   # Merge DM.ARMNRS to not derive treatment dates for these patients
-  dplyr::left_join(dm_neuro %>% select(USUBJID, ARMNRS), by = "USUBJID")
+  dplyr::left_join(dm_neuro %>% dplyr::select(USUBJID, ARMNRS), by = "USUBJID")
 
 adsl <- adsl %>%
   # Treatment Start Datetime
