@@ -54,7 +54,6 @@
 #'   Default is `NULL`.
 #'
 #' @permitted numeric scalar
-#' @default NULL
 #'
 #' @details
 #' The Centiloid scale is a standardized quantitative measure for amyloid PET imaging
@@ -130,12 +129,13 @@
 #'   custom_intercept = -187
 #' )
 compute_centiloid <- function(
-    tracer,
-    pipeline,
-    ref_region,
-    suvr,
-    custom_slope = NULL,
-    custom_intercept = NULL) {
+  tracer,
+  pipeline,
+  ref_region,
+  suvr,
+  custom_slope = NULL,
+  custom_intercept = NULL
+) {
   # Check custom_slope and custom_intercept
   has_custom_slope <- !is.null(custom_slope)
   has_custom_intercept <- !is.null(custom_intercept)

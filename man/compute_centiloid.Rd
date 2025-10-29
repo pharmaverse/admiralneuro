@@ -77,7 +77,7 @@ Default is \code{NULL}.
 
 \describe{
 \item{Permitted values}{numeric scalar}
-\item{Default value}{NULL}
+\item{Default value}{\code{NULL}}
 }}
 }
 \value{
