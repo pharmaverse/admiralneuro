@@ -5,8 +5,6 @@
 library(tibble)
 library(dplyr)
 library(admiral)
-library(lubridate)
-
 # Read input data
 data("dm_neuro")
 data("nv_neuro")
