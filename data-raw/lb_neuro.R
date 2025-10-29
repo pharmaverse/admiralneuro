@@ -19,7 +19,8 @@ ex <- convert_blanks_to_na(ex)
 
 # Select patients from DM Neuro only (following adsl_neuro.R pattern)
 dm_neuro_pat <- dm_neuro %>%
-  pull(unique(USUBJID))
+  pull(USUBJID) %>%
+  unique()
 
 ex <- ex %>%
   filter(USUBJID %in% dm_neuro_pat)
