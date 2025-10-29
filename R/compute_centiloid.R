@@ -13,11 +13,15 @@
 #'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
 #'   See Details section for accepted values in combination with `pipeline` and `ref_region`.
 #'
+#' @permitted character scalar
+#'
 #' @param pipeline SUVR pipeline
 #'
 #'   A character string is expected.
 #'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
 #'   See Details section for accepted values in combination with `tracer` and `ref_region`.
+#'
+#' @permitted character scalar
 #'
 #' @param ref_region Reference region
 #'
@@ -25,9 +29,13 @@
 #'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
 #'   See Details section for accepted values in combination with `tracer` and `ref_region`.
 #'
+#' @permitted character scalar
+#'
 #' @param suvr SUVR value
 #'
 #'   A numeric value is expected.
+#'
+#' @permitted numeric scalar
 #'
 #' @param custom_slope Optional slope parameter for custom Centiloid calculation formula
 #'
@@ -36,12 +44,18 @@
 #'   the standard formula parameters `tracer`, `pipeline`, and `ref_region`.
 #'   Default is `NULL`.
 #'
+#' @permitted numeric scalar
+#' @default NULL
+#'
 #' @param custom_intercept Optional intercept parameter for custom centiloid calculation formula
 #'
 #'   A numeric value is expected when provided.
 #'   When `custom_intercept` is specified (along with `custom_slope`), this overrides
 #'   the standard formula parameters `tracer`, `pipeline`, and `ref_region`.
 #'   Default is `NULL`.
+#'
+#' @permitted numeric scalar
+#' @default NULL
 #'
 #' @details
 #' The Centiloid scale is a standardized quantitative measure for amyloid PET imaging
@@ -95,17 +109,20 @@
 #'
 #' @export
 #'
-#' @examples
-#' # Using standard parameters
-#' compute_centiloid(
+#' @examplesx
+#' @caption Using standard parameters
+#' @info Computes Centiloid with predefined slope/intercept for supported
+#' tracer/pipeline/ref_region combinations
+#' @code compute_centiloid(
 #'   tracer = "18F-Florbetapir",
 #'   pipeline = "AVID FBP SUVR PIPELINE",
 #'   ref_region = "Whole Cerebellum",
 #'   suvr = 1.25
 #' )
 #'
-#' # Using custom parameters
-#' compute_centiloid(
+#' @caption Using custom parameters
+#' @info Computes Centiloid by overriding slope/intercept using custom values
+#' @code compute_centiloid(
 #'   tracer = "MyTracer",
 #'   pipeline = "MyPipeline",
 #'   ref_region = "MyRegion",
