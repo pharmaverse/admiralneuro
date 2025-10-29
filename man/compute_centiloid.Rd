@@ -21,7 +21,7 @@ If \code{custom_slope} and \code{custom_intercept} are specified, this parameter
 See Details section for accepted values in combination with \code{pipeline} and \code{ref_region}.
 
 \describe{
-\item{Permitted values}{character scalar}
+\item{Permitted values}{a character scalar, i.e., a character vector of length one}
 \item{Default value}{none}
 }}
 
@@ -32,7 +32,7 @@ If \code{custom_slope} and \code{custom_intercept} are specified, this parameter
 See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.
 
 \describe{
-\item{Permitted values}{character scalar}
+\item{Permitted values}{a character scalar, i.e., a character vector of length one}
 \item{Default value}{none}
 }}
 
@@ -43,7 +43,7 @@ If \code{custom_slope} and \code{custom_intercept} are specified, this parameter
 See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.
 
 \describe{
-\item{Permitted values}{character scalar}
+\item{Permitted values}{a character scalar, i.e., a character vector of length one}
 \item{Default value}{none}
 }}
 
@@ -65,7 +65,7 @@ Default is \code{NULL}.
 
 \describe{
 \item{Permitted values}{numeric scalar}
-\item{Default value}{NULL}
+\item{Default value}{\code{NULL}}
 }}
 
 \item{custom_intercept}{Optional intercept parameter for custom centiloid calculation formula
