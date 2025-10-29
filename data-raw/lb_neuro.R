@@ -25,7 +25,7 @@ ex <- ex %>%
 
 # Get visit schedule from NV data for all visits
 visit_schedule <- nv_neuro %>%
-  dplyr::filter(VISIT %in% c("BASELINE")) %>%
+  dplyr::filter(VISIT == "BASELINE") %>%
   dplyr::select(USUBJID, VISITNUM, VISIT, NVDTC, NVDY) %>%
   dplyr::group_by(USUBJID, VISIT) %>%
   dplyr::arrange(as.Date(NVDTC)) %>%
