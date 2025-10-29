@@ -85,9 +85,9 @@ subject_chars <- dm_neuro %>%
 create_lb_record <- function(usubjid, visitnum, visit, visitdy, lbdtc, lbdy, trtgrp) {
   # Define positive rates based on treatment group and visit
   pos_rate <- case_when(
-    trtgrp == "PLACEBO_CONTROL" ~ 0.30,  # 30% positive for placebo/control at all visits
-    trtgrp == "TREATMENT" & visit == "BASELINE" ~ 0.30,  # Assume baseline similar for all
-    TRUE ~ 0.00  # Default
+    trtgrp == "PLACEBO_CONTROL" ~ 0.30, # 30% positive for placebo/control at all visits
+    trtgrp == "TREATMENT" & visit == "BASELINE" ~ 0.30, # Assume baseline similar for all
+    TRUE ~ 0.00 # Default
   )
 
   # Generate SAA result based on positive rate
