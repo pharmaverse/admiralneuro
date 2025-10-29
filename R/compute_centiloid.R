@@ -13,7 +13,7 @@
 #'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
 #'   See Details section for accepted values in combination with `pipeline` and `ref_region`.
 #'
-#' @permitted character scalar
+#' @permitted [char_scalar]
 #'
 #' @param pipeline SUVR pipeline
 #'
@@ -21,7 +21,7 @@
 #'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
 #'   See Details section for accepted values in combination with `tracer` and `ref_region`.
 #'
-#' @permitted character scalar
+#' @permitted [char_scalar]
 #'
 #' @param ref_region Reference region
 #'
@@ -29,7 +29,7 @@
 #'   If `custom_slope` and `custom_intercept` are specified, this parameter is ignored.
 #'   See Details section for accepted values in combination with `tracer` and `ref_region`.
 #'
-#' @permitted character scalar
+#' @permitted [char_scalar]
 #'
 #' @param suvr SUVR value
 #'
@@ -45,7 +45,6 @@
 #'   Default is `NULL`.
 #'
 #' @permitted numeric scalar
-#' @default NULL
 #'
 #' @param custom_intercept Optional intercept parameter for custom centiloid calculation formula
 #'
