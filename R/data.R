@@ -107,6 +107,48 @@
 #' @source Constructed using `nv_neuro` from `{admiralneuro}` package
 "ag_neuro"
 
+#' @name lb_neuro
+#' @title Laboratory Test Results for Nervous System Dataset
+#' @description A SDTM LB domain dataset containing laboratory test results for Alzheimer's Disease studies,
+#' specifically Alpha-synuclein Seed Amplification Assay (SAA) results from cerebrospinal fluid (CSF) samples.
+#' The dataset includes baseline assessments with positive rates varying by treatment group.
+#' @docType data
+#' @format A data frame with 23 columns:
+#' \describe{
+#'  \item{STUDYID}{Study Identifier}
+#'  \item{DOMAIN}{Domain Abbreviation}
+#'  \item{USUBJID}{Unique Subject Identifier}
+#'  \item{LBSEQ}{Sequence Number}
+#'  \item{LBTESTCD}{Lab Test or Examination Short Name}
+#'  \item{LBTEST}{Lab Test or Examination Name}
+#'  \item{LBCAT}{Category for Lab Test}
+#'  \item{LBORRES}{Result or Finding in Original Units}
+#'  \item{LBORRESU}{Original Units}
+#'  \item{LBORNRLO}{Reference Range Lower Limit in Orig Unit}
+#'  \item{LBORNRHI}{Reference Range Upper Limit in Orig Unit}
+#'  \item{LBSTRESC}{Character Result/Finding in Std Format}
+#'  \item{LBSTRESN}{Numeric Result/Finding in Standard Units}
+#'  \item{LBSTRESU}{Standard Units}
+#'  \item{LBSTNRLO}{Reference Range Lower Limit-Std Units}
+#'  \item{LBSTNRHI}{Reference Range Upper Limit-Std Units}
+#'  \item{LBNRIND}{Reference Range Indicator}
+#'  \item{LBBLFL}{Baseline Flag}
+#'  \item{VISITNUM}{Visit Number}
+#'  \item{VISIT}{Visit Name}
+#'  \item{VISITDY}{Planned Study Day of Visit}
+#'  \item{LBDTC}{Date/Time of Specimen Collection}
+#'  \item{LBDY}{Study Day of Specimen Collection}
+#'  }
+#' @details
+#' The dataset contains Alpha-synuclein Seed Amplification Assay (ASYNASAA) results
+#' categorized as "Positive" or "Negative". Results are generated with treatment-specific
+#' positive rates: 30% for placebo/control group across all visits, and 30% at baseline
+#' for treatment group. The dataset is structured to support analysis of biomarker status
+#' in Alzheimer's Disease clinical trials.
+#' @source Constructed using `dm_neuro`, `nv_neuro`, and `adsl_neuro` from `{admiralneuro}` package,
+#' along with `ex` from `{pharmaversesdtm}` package
+"lb_neuro"
+
 #' Amyloid PET Scan Analysis Dataset - Neuro
 #'
 #' An updated ADaM ADAPET dataset using NV, AG, SUPPNV, ADSL
