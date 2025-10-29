@@ -1,7 +1,7 @@
 # Dataset: ag_neuro
 # Description: Create AG test SDTM dataset for Alzheimer's Disease (neuro studies)
 
-#' @importFrom dplyr select mutate group_by ungroup distinct
+#' @importFrom dplyr select mutate group_by ungroup distinct case_when row_number
 #' @importFrom admiral convert_blanks_to_na
 #' @importFrom usethis use_data
 #' @noRd
@@ -14,30 +14,30 @@ data("nv_neuro")
 
 nv_neuro <- admiral::convert_blanks_to_na(nv_neuro)
 
-ag_neuro <- nv_neuro %>%
-  dplyr::select(STUDYID, USUBJID, NVLNKID, NVDTC, NVCAT, VISITNUM, VISIT) %>%
-  dplyr::distinct() %>%
-  dplyr::mutate(DOMAIN = "AG", AGLNKID = NVLNKID, AGSTDTC = NVDTC) %>%
-  dplyr::mutate(AGTRT = case_when(
+ag_neuro <- nv_neuro |>
+  dplyr::select(STUDYID, USUBJID, NVLNKID, NVDTC, NVCAT, VISITNUM, VISIT) |>
+  dplyr::distinct() |>
+  dplyr::mutate(DOMAIN = "AG", AGLNKID = NVLNKID, AGSTDTC = NVDTC) |>
+  dplyr::mutate(AGTRT = dplyr::case_when(
     NVCAT == "FBP" ~ "18F-Florbetapir",
     NVCAT == "FBB" ~ "18F-Florbetaben",
     NVCAT == "FTP" ~ "18F-Flortaucipir"
-  )) %>%
-  dplyr::mutate(AGCAT = case_when(
+  )) |>
+  dplyr::mutate(AGCAT = dplyr::case_when(
     NVCAT == "FBP" ~ "AMYLOID TRACER",
     NVCAT == "FBB" ~ "AMYLOID TRACER",
     NVCAT == "FTP" ~ "TAU TRACER"
-  )) %>%
-  dplyr::mutate(AGDOSE = case_when(
+  )) |>
+  dplyr::mutate(AGDOSE = dplyr::case_when(
     NVCAT == "FBP" ~ "370",
     NVCAT == "FBB" ~ "300",
     NVCAT == "FTP" ~ "370"
-  )) %>%
-  dplyr::group_by(USUBJID) %>%
-  dplyr::mutate(AGSEQ = row_number()) %>%
-  dplyr::ungroup() %>%
-  dplyr::mutate(AGDOSEU = "MBq") %>%
-  dplyr::mutate(AGROUTE = "Intravenous") %>%
+  )) |>
+  dplyr::group_by(USUBJID) |>
+  dplyr::mutate(AGSEQ = dplyr::row_number()) |>
+  dplyr::ungroup() |>
+  dplyr::mutate(AGDOSEU = "MBq") |>
+  dplyr::mutate(AGROUTE = "Intravenous") |>
   dplyr::select(
     STUDYID, DOMAIN, USUBJID, AGSEQ, AGTRT, AGCAT,
     AGDOSE, AGDOSEU, AGROUTE, AGLNKID,

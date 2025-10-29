@@ -14,16 +14,16 @@ data("nv_neuro")
 
 nv_neuro <- admiral::convert_blanks_to_na(nv_neuro)
 
-suppnv_neuro <- nv_neuro %>%
-  dplyr::filter(!is.na(NVLOC)) %>%
+suppnv_neuro <- nv_neuro |>
+  dplyr::filter(!is.na(NVLOC)) |>
   dplyr::mutate(RDOMAIN = "NV", IDVAR = "NVSEQ", IDVARVAL = NVSEQ, QNAM = "REFREG",
-                QLABEL = "Reference Region") %>%
-  dplyr::mutate(QVAL = case_when(
+                QLABEL = "Reference Region") |>
+  dplyr::mutate(QVAL = dplyr::case_when(
     NVCAT %in% c("FBP", "FBB") ~ "Whole Cerebellum",
     NVCAT == "FTP" ~ "Inferior Cerebellar Gray Matter",
     TRUE ~ NA_character_
-  )) %>%
-  dplyr::mutate(QORIG = "Assigned", QEVAL = "STATISTICIAN") %>%
+  )) |>
+  dplyr::mutate(QORIG = "Assigned", QEVAL = "STATISTICIAN") |>
   dplyr::select(STUDYID, RDOMAIN, USUBJID, IDVAR, IDVARVAL, QNAM, QLABEL, QVAL, QORIG, QEVAL)
 
 # Add labels to variables ----
