@@ -11,32 +11,32 @@ data(dm_neuro)
 ex <- pharmaversesdtm::ex
 
 # Convert blank to NA ----
-dm_neuro <- admiral::convert_blanks_to_na(dm_neuro)
-ex <- admiral::convert_blanks_to_na(ex)
+dm_neuro <- convert_blanks_to_na(dm_neuro)
+ex <- convert_blanks_to_na(ex)
 
 # Select patients from DM Neuro only
 dm_neuro_pat <- dm_neuro |>
-  dplyr::pull(unique(USUBJID))
+  pull(unique(USUBJID))
 
 ex <- ex |>
-  dplyr::filter(USUBJID %in% dm_neuro_pat)
+  filter(USUBJID %in% dm_neuro_pat)
 
 # Derive Treatment Variables ----
 adsl <- dm_neuro |>
   # Select all necessary variables only
-  dplyr::select(
+  select(
     STUDYID, USUBJID, SUBJID, SITEID, COUNTRY, AGE, AGEU, SEX, RACE, ETHNIC, ARM,
     ARMCD, ACTARM, ACTARMCD, ARMNRS, DTHDTC, DTHFL
   ) |>
-  dplyr::mutate(
-    TRT01P = dplyr::if_else(!is.na(ARMNRS), "No Treatment", ARM),
-    TRT01PN = dplyr::case_when(
+  mutate(
+    TRT01P = if_else(!is.na(ARMNRS), "No Treatment", ARM),
+    TRT01PN = case_when(
       TRT01P == "No Treatment" ~ 3,
       TRT01P == "Placebo" ~ 2,
       TRUE ~ 1
     ),
-    TRT01A = dplyr::if_else(!is.na(ARMNRS), "No Treatment", ACTARM),
-    TRT01AN = dplyr::case_when(
+    TRT01A = if_else(!is.na(ARMNRS), "No Treatment", ACTARM),
+    TRT01AN = case_when(
       TRT01A == "No Treatment" ~ 3,
       TRT01A == "Placebo" ~ 2,
       TRUE ~ 1
@@ -45,63 +45,63 @@ adsl <- dm_neuro |>
 
 # Treatment Start and End Dates ----
 ex_ext <- ex |>
-  admiral::derive_vars_dtm(
+  derive_vars_dtm(
     dtc = EXSTDTC,
     new_vars_prefix = "EXST"
   ) |>
-  admiral::derive_vars_dtm(
+  derive_vars_dtm(
     dtc = EXENDTC,
     new_vars_prefix = "EXEN",
     time_imputation = "last"
   ) |>
   # Merge DM.ARMNRS to not derive treatment dates for these patients
-  dplyr::left_join(dm_neuro |> dplyr::select(USUBJID, ARMNRS), by = "USUBJID")
+  left_join(dm_neuro |> select(USUBJID, ARMNRS), by = "USUBJID")
 
 adsl <- adsl |>
   # Treatment Start Datetime
-  admiral::derive_vars_merged(
+  derive_vars_merged(
     dataset_add = ex_ext,
     filter_add = (is.na(ARMNRS)),
-    new_vars = rlang::exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
-    order = rlang::exprs(EXSTDTM, EXSEQ),
+    new_vars = exprs(TRTSDTM = EXSTDTM, TRTSTMF = EXSTTMF),
+    order = exprs(EXSTDTM, EXSEQ),
     mode = "first",
-    by_vars = rlang::exprs(STUDYID, USUBJID)
+    by_vars = exprs(STUDYID, USUBJID)
   ) |>
   # Treatment End Datetime
-  admiral::derive_vars_merged(
+  derive_vars_merged(
     dataset_add = ex_ext,
     filter_add = (is.na(ARMNRS)),
-    new_vars = rlang::exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
-    order = rlang::exprs(EXENDTM, EXSEQ),
+    new_vars = exprs(TRTEDTM = EXENDTM, TRTETMF = EXENTMF),
+    order = exprs(EXENDTM, EXSEQ),
     mode = "last",
-    by_vars = rlang::exprs(STUDYID, USUBJID)
+    by_vars = exprs(STUDYID, USUBJID)
   ) |>
   # Convert Datetime variables to date
-  admiral::derive_vars_dtm_to_dt(source_vars = rlang::exprs(TRTSDTM, TRTEDTM)) |>
+  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) |>
   # Treatment Start Time
-  admiral::derive_vars_dtm_to_tm(source_vars = rlang::exprs(TRTSDTM)) |>
+  derive_vars_dtm_to_tm(source_vars = exprs(TRTSDTM)) |>
   # Treatment Duration
-  admiral::derive_var_trtdurd()
+  derive_var_trtdurd()
 
 # Derive Age Grouping ----
-agegr1_lookup <- rlang::exprs(
+agegr1_lookup <- exprs(
   ~condition,   ~AGEGR1, ~AGEGR1N,
   is.na(AGE), "Missing",        3,
   AGE < 65,       "<65",        1,
   !is.na(AGE),   ">=65",        2
 )
 
-adsl <- admiral::derive_vars_cat(
+adsl <- derive_vars_cat(
   dataset = adsl,
   definition = agegr1_lookup
 )
 
 # Derive Intent-To-Treat and Safety Population Flags ----
 adsl <- adsl |>
-  dplyr::mutate(ITTFL = "Y") |>
-  admiral::derive_var_merged_exist_flag(
+  mutate(ITTFL = "Y") |>
+  derive_var_merged_exist_flag(
     dataset_add = adsl,
-    by_vars = rlang::exprs(STUDYID, USUBJID),
+    by_vars = exprs(STUDYID, USUBJID),
     new_var = SAFFL,
     false_value = "N",
     condition = (!is.na(TRTSDT))
@@ -109,13 +109,13 @@ adsl <- adsl |>
 
 # Derive DTHDT & DTHADY ----
 adsl <- adsl |>
-  admiral::derive_vars_dt(
+  derive_vars_dt(
     new_vars_prefix = "DTH",
     dtc = DTHDTC,
     highest_imputation = "M",
     date_imputation = "first"
   ) |>
-  admiral::derive_vars_duration(
+  derive_vars_duration(
     new_var = DTHADY,
     start_date = TRTSDT,
     end_date = DTHDT
