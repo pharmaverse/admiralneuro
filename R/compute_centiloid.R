@@ -35,7 +35,7 @@
 #'
 #'   A numeric value is expected.
 #'
-#' @permitted numeric scalar
+#' @permitted [num_scalar]
 #'
 #' @param custom_slope Optional slope parameter for custom Centiloid calculation formula
 #'
@@ -44,7 +44,7 @@
 #'   the standard formula parameters `tracer`, `pipeline`, and `ref_region`.
 #'   Default is `NULL`.
 #'
-#' @permitted numeric scalar
+#' @permitted [num_scalar]
 #'
 #' @param custom_intercept Optional intercept parameter for custom centiloid calculation formula
 #'
@@ -53,7 +53,7 @@
 #'   the standard formula parameters `tracer`, `pipeline`, and `ref_region`.
 #'   Default is `NULL`.
 #'
-#' @permitted numeric scalar
+#' @permitted [num_scalar]
 #'
 #' @details
 #' The Centiloid scale is a standardized quantitative measure for amyloid PET imaging
@@ -110,7 +110,7 @@
 #' @examplesx
 #' @caption Using standard parameters
 #' @info Computes Centiloid with predefined slope/intercept for supported
-#' tracer/pipeline/ref_region combinations
+#' tracer/pipeline/ref_region combinations:
 #' @code compute_centiloid(
 #'   tracer = "18F-Florbetapir",
 #'   pipeline = "AVID FBP SUVR PIPELINE",
@@ -119,7 +119,7 @@
 #' )
 #'
 #' @caption Using custom parameters
-#' @info Computes Centiloid by overriding slope/intercept using custom values
+#' @info Computes Centiloid by overriding slope/intercept using custom values:
 #' @code compute_centiloid(
 #'   tracer = "MyTracer",
 #'   pipeline = "MyPipeline",
@@ -134,8 +134,7 @@ compute_centiloid <- function(
   ref_region,
   suvr,
   custom_slope = NULL,
-  custom_intercept = NULL
-) {
+  custom_intercept = NULL) {
   # Check custom_slope and custom_intercept
   has_custom_slope <- !is.null(custom_slope)
   has_custom_intercept <- !is.null(custom_intercept)

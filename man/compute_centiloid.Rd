@@ -52,7 +52,7 @@ See Details section for accepted values in combination with \code{tracer} and \c
 A numeric value is expected.
 
 \describe{
-\item{Permitted values}{numeric scalar}
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
 \item{Default value}{none}
 }}
 
@@ -64,7 +64,7 @@ the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_re
 Default is \code{NULL}.
 
 \describe{
-\item{Permitted values}{numeric scalar}
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
 \item{Default value}{\code{NULL}}
 }}
 
@@ -76,7 +76,7 @@ the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_re
 Default is \code{NULL}.
 
 \describe{
-\item{Permitted values}{numeric scalar}
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
 \item{Default value}{\code{NULL}}
 }}
 }
@@ -140,7 +140,7 @@ If a matching combination of tracer, pipeline, and reference region is not speci
 \subsection{Using standard parameters}{
 
 Computes Centiloid with predefined slope/intercept for supported
-tracer/pipeline/ref_region combinations
+tracer/pipeline/ref_region combinations:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{compute_centiloid(
   tracer = "18F-Florbetapir",
@@ -151,7 +151,7 @@ tracer/pipeline/ref_region combinations
 #> [1] 51.5775}\if{html}{\out{</div>}}}
 \subsection{Using custom parameters}{
 
-Computes Centiloid by overriding slope/intercept using custom values
+Computes Centiloid by overriding slope/intercept using custom values:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{compute_centiloid(
   tracer = "MyTracer",
