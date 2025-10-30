@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralneuro
 Title: Neuroscience Extension Package for ADaM in 'R' Asset Library
-Version: 0.1.0.9001
+Version: 0.1.0.9002
 Authors@R: c(
     person("Jian", "Wang", , "wang_jian_wj@lilly.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-4677-3781")),
@@ -25,11 +25,11 @@ Authors@R: c(
     person("Cytel Inc.", role = c("cph", "fnd")),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
   )
-Description: Programming neuroscience specific Clinical Data Standards Interchange
-    Consortium (CDISC) compliant Analysis Data Model (ADaM) datasets in 'R'.
-    ADaM datasets are a mandatory part of any New Drug or Biologics
-    License Application submitted to the United States Food and Drug
-    Administration (FDA). Analysis derivations are implemented in
+Description: Programming neuroscience specific Clinical Data Standards
+    Interchange Consortium (CDISC) compliant Analysis Data Model (ADaM)
+    datasets in 'R'.  ADaM datasets are a mandatory part of any New Drug
+    or Biologics License Application submitted to the United States Food
+    and Drug Administration (FDA). Analysis derivations are implemented in
     accordance with the "Analysis Data Model Implementation Guide" (CDISC
     Analysis Data Model Team, 2021,
     <https://www.cdisc.org/standards/foundational/adam>). This package
