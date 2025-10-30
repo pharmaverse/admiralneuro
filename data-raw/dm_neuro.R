@@ -1,11 +1,9 @@
 # Dataset: dm_neuro
 # Description: Create DM test SDTM dataset for Alzheimer's Disease (Neuro)
 
-#' @importFrom dplyr filter mutate across case_when if_else
-#' @importFrom admiral convert_blanks_to_na
-#' @importFrom lubridate days
-#' @importFrom usethis use_data
-#' @noRd
+library(admiral)
+library(dplyr)
+library(lubridate)
 
 # Read input test data from pharmaversesdtm ----
 dm <- pharmaversesdtm::dm
