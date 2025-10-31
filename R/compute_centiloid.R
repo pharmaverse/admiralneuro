@@ -134,7 +134,8 @@ compute_centiloid <- function(
   ref_region,
   suvr,
   custom_slope = NULL,
-  custom_intercept = NULL) {
+  custom_intercept = NULL
+) {
   # Check custom_slope and custom_intercept
   has_custom_slope <- !is.null(custom_slope)
   has_custom_intercept <- !is.null(custom_intercept)
