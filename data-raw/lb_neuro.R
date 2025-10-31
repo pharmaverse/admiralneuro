@@ -9,7 +9,6 @@ library(admiral)
 data("dm_neuro")
 data("nv_neuro")
 data("adsl_neuro")
-ex <- pharmaversesdtm::ex
 
 # Convert blank to NA
 dm_neuro <- convert_blanks_to_na(dm_neuro)
@@ -20,8 +19,11 @@ dm_neuro_pat <- dm_neuro %>%
   pull(USUBJID) %>%
   unique()
 
-ex <- ex %>%
-  filter(USUBJID %in% dm_neuro_pat)
+# Separate randomized group to identify which subjects don't have planned study days
+randomized_group <- dm_neuro %>%
+  dplyr::filter(is.na(ARMNRS)) %>%
+  dplyr::select(USUBJID) %>%
+  pull()
 
 # Get visit schedule from NV data for all visits
 visit_schedule <- nv_neuro %>%
@@ -32,37 +34,13 @@ visit_schedule <- nv_neuro %>%
   dplyr::slice(1) %>%
   dplyr::ungroup() %>%
   dplyr::rename(LBDTC = NVDTC, LBDY = NVDY) %>%
+  dplyr::mutate(
+    VISITDY = if_else(
+      USUBJID %in% randomized_group,
+      as.numeric(LBDY),
+      NA_real_),
+    LBDTC = as.character(LBDTC)) %>%
   distinct()
-
-# Derive treatment start date to calculate VISITDY (following adsl_neuro.R pattern)
-ex_ext <- ex %>%
-  derive_vars_dtm(
-    dtc = EXSTDTC,
-    new_vars_prefix = "EXST"
-  ) %>%
-  # Merge DM.ARMNRS to not derive treatment dates for these patients
-  left_join(dm_neuro %>% select(USUBJID, ARMNRS), by = "USUBJID")
-
-# Get treatment start dates per subject
-trtsdt_lookup <- ex_ext %>%
-  filter(is.na(ARMNRS)) %>%
-  group_by(USUBJID) %>%
-  arrange(EXSTDTM, EXSEQ) %>%
-  slice(1) %>%
-  ungroup() %>%
-  derive_vars_dtm_to_dt(source_vars = exprs(EXSTDTM)) %>%
-  select(USUBJID, TRTSDT = EXSTDT)
-
-# Add VISITDY calculation to visit schedule
-visit_schedule <- visit_schedule %>%
-  left_join(trtsdt_lookup, by = "USUBJID") %>%
-  mutate(
-    VISITDY = case_when(
-      !is.na(TRTSDT) ~ as.numeric(as.Date(LBDTC) - TRTSDT + 1),
-      TRUE ~ NA_real_
-    )
-  ) %>%
-  select(-TRTSDT)
 
 # Get subject characteristics with treatment information from adsl_neuro ----
 subject_chars <- dm_neuro %>%
