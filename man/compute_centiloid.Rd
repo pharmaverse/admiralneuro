@@ -18,37 +18,67 @@ compute_centiloid(
 
 A character string is expected.
 If \code{custom_slope} and \code{custom_intercept} are specified, this parameter is ignored.
-See Details section for accepted values in combination with \code{pipeline} and \code{ref_region}.}
+See Details section for accepted values in combination with \code{pipeline} and \code{ref_region}.
+
+\describe{
+\item{Permitted values}{a character scalar, i.e., a character vector of length one}
+\item{Default value}{none}
+}}
 
 \item{pipeline}{SUVR pipeline
 
 A character string is expected.
 If \code{custom_slope} and \code{custom_intercept} are specified, this parameter is ignored.
-See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.}
+See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.
+
+\describe{
+\item{Permitted values}{a character scalar, i.e., a character vector of length one}
+\item{Default value}{none}
+}}
 
 \item{ref_region}{Reference region
 
 A character string is expected.
 If \code{custom_slope} and \code{custom_intercept} are specified, this parameter is ignored.
-See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.}
+See Details section for accepted values in combination with \code{tracer} and \code{ref_region}.
+
+\describe{
+\item{Permitted values}{a character scalar, i.e., a character vector of length one}
+\item{Default value}{none}
+}}
 
 \item{suvr}{SUVR value
 
-A numeric value is expected.}
+A numeric value is expected.
+
+\describe{
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
+\item{Default value}{none}
+}}
 
 \item{custom_slope}{Optional slope parameter for custom Centiloid calculation formula
 
 A numeric value is expected when provided.
 When \code{custom_slope} is specified (along with \code{custom_intercept}), this overrides
 the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_region}.
-Default is \code{NULL}.}
+Default is \code{NULL}.
+
+\describe{
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
+\item{Default value}{\code{NULL}}
+}}
 
 \item{custom_intercept}{Optional intercept parameter for custom centiloid calculation formula
 
 A numeric value is expected when provided.
 When \code{custom_intercept} is specified (along with \code{custom_slope}), this overrides
 the standard formula parameters \code{tracer}, \code{pipeline}, and \code{ref_region}.
-Default is \code{NULL}.}
+Default is \code{NULL}.
+
+\describe{
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
+\item{Default value}{\code{NULL}}
+}}
 }
 \value{
 A numeric Centiloid value.
@@ -104,17 +134,26 @@ Iaccarino, L. et al. (2025). \doi{10.1016/j.nicl.2025.103765}
 If a matching combination of tracer, pipeline, and reference region is not specified and both
 \code{custom_slope} and \code{custom_intercept} are not specified, the function aborts with an error.
 }
-\examples{
-# Using standard parameters
-compute_centiloid(
+\concept{com_bds_findings}
+\keyword{com_bds_findings}
+\section{Examples}{
+\subsection{Using standard parameters}{
+
+Computes Centiloid with predefined slope/intercept for supported
+tracer/pipeline/ref_region combinations:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{compute_centiloid(
   tracer = "18F-Florbetapir",
   pipeline = "AVID FBP SUVR PIPELINE",
   ref_region = "Whole Cerebellum",
   suvr = 1.25
 )
+#> [1] 51.5775}\if{html}{\out{</div>}}}
+\subsection{Using custom parameters}{
 
-# Using custom parameters
-compute_centiloid(
+Computes Centiloid by overriding slope/intercept using custom values:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{compute_centiloid(
   tracer = "MyTracer",
   pipeline = "MyPipeline",
   ref_region = "MyRegion",
@@ -122,6 +161,5 @@ compute_centiloid(
   custom_slope = 193,
   custom_intercept = -187
 )
-}
-\concept{com_bds_findings}
-\keyword{com_bds_findings}
+#> [1] 54.25}\if{html}{\out{</div>}}}}
+
