@@ -1,12 +1,8 @@
 # Dataset: ag_neuro
 # Description: Create AG test SDTM dataset for Alzheimer's Disease (neuro studies)
 
-# Load libraries ----
-
-library(tibble)
-library(dplyr)
-library(stringr)
 library(admiral)
+library(dplyr)
 
 # Read input data ----
 
@@ -16,31 +12,31 @@ data("nv_neuro")
 
 nv_neuro <- convert_blanks_to_na(nv_neuro)
 
-ag_neuro <- nv_neuro %>%
-  dplyr::select(STUDYID, USUBJID, NVLNKID, NVDTC, NVCAT, VISITNUM, VISIT) %>%
-  distinct() %>%
-  dplyr::mutate(DOMAIN = "AG", AGLNKID = NVLNKID, AGSTDTC = NVDTC) %>%
-  dplyr::mutate(AGTRT = case_when(
+ag_neuro <- nv_neuro |>
+  select(STUDYID, USUBJID, NVLNKID, NVDTC, NVCAT, VISITNUM, VISIT) |>
+  distinct() |>
+  mutate(DOMAIN = "AG", AGLNKID = NVLNKID, AGSTDTC = NVDTC) |>
+  mutate(AGTRT = case_when(
     NVCAT == "FBP" ~ "18F-Florbetapir",
     NVCAT == "FBB" ~ "18F-Florbetaben",
     NVCAT == "FTP" ~ "18F-Flortaucipir"
-  )) %>%
-  dplyr::mutate(AGCAT = case_when(
+  )) |>
+  mutate(AGCAT = case_when(
     NVCAT == "FBP" ~ "AMYLOID TRACER",
     NVCAT == "FBB" ~ "AMYLOID TRACER",
     NVCAT == "FTP" ~ "TAU TRACER"
-  )) %>%
-  dplyr::mutate(AGDOSE = case_when(
+  )) |>
+  mutate(AGDOSE = case_when(
     NVCAT == "FBP" ~ "370",
     NVCAT == "FBB" ~ "300",
     NVCAT == "FTP" ~ "370"
-  )) %>%
-  dplyr::group_by(USUBJID) %>%
-  dplyr::mutate(AGSEQ = row_number()) %>%
-  dplyr::ungroup() %>%
-  dplyr::mutate(AGDOSEU = "MBq") %>%
-  dplyr::mutate(AGROUTE = "Intravenous") %>%
-  dplyr::select(
+  )) |>
+  group_by(USUBJID) |>
+  mutate(AGSEQ = row_number()) |>
+  ungroup() |>
+  mutate(AGDOSEU = "MBq") |>
+  mutate(AGROUTE = "Intravenous") |>
+  select(
     STUDYID, DOMAIN, USUBJID, AGSEQ, AGTRT, AGCAT,
     AGDOSE, AGDOSEU, AGROUTE, AGLNKID,
     VISITNUM, VISIT, AGSTDTC

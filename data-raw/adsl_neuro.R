@@ -1,12 +1,10 @@
 # Dataset: adsl_neuro
 # Description: Create ADSL test Analysis Dataset for Alzheimer's Disease (Neuro)
 
-# Load libraries -----
 library(admiral)
-library(pharmaversesdtm) # Contains example datasets from the CDISC pilot project
 library(dplyr)
+library(rlang)
 library(lubridate)
-library(stringr)
 
 # Read input test data from pharmaversesdtm ----
 data(dm_neuro)
@@ -17,19 +15,19 @@ dm_neuro <- convert_blanks_to_na(dm_neuro)
 ex <- convert_blanks_to_na(ex)
 
 # Select patients from DM Neuro only
-dm_neuro_pat <- dm_neuro %>%
+dm_neuro_pat <- dm_neuro |>
   pull(unique(USUBJID))
 
-ex <- ex %>%
+ex <- ex |>
   filter(USUBJID %in% dm_neuro_pat)
 
 # Derive Treatment Variables ----
-adsl <- dm_neuro %>%
+adsl <- dm_neuro |>
   # Select all necessary variables only
   select(
     STUDYID, USUBJID, SUBJID, SITEID, COUNTRY, AGE, AGEU, SEX, RACE, ETHNIC, ARM,
     ARMCD, ACTARM, ACTARMCD, ARMNRS, DTHDTC, DTHFL
-  ) %>%
+  ) |>
   mutate(
     TRT01P = if_else(!is.na(ARMNRS), "No Treatment", ARM),
     TRT01PN = case_when(
@@ -46,20 +44,20 @@ adsl <- dm_neuro %>%
   )
 
 # Treatment Start and End Dates ----
-ex_ext <- ex %>%
+ex_ext <- ex |>
   derive_vars_dtm(
     dtc = EXSTDTC,
     new_vars_prefix = "EXST"
-  ) %>%
+  ) |>
   derive_vars_dtm(
     dtc = EXENDTC,
     new_vars_prefix = "EXEN",
     time_imputation = "last"
-  ) %>%
+  ) |>
   # Merge DM.ARMNRS to not derive treatment dates for these patients
-  left_join(dm_neuro %>% select(USUBJID, ARMNRS), by = "USUBJID")
+  left_join(dm_neuro |> select(USUBJID, ARMNRS), by = "USUBJID")
 
-adsl <- adsl %>%
+adsl <- adsl |>
   # Treatment Start Datetime
   derive_vars_merged(
     dataset_add = ex_ext,
@@ -68,7 +66,7 @@ adsl <- adsl %>%
     order = exprs(EXSTDTM, EXSEQ),
     mode = "first",
     by_vars = exprs(STUDYID, USUBJID)
-  ) %>%
+  ) |>
   # Treatment End Datetime
   derive_vars_merged(
     dataset_add = ex_ext,
@@ -77,11 +75,11 @@ adsl <- adsl %>%
     order = exprs(EXENDTM, EXSEQ),
     mode = "last",
     by_vars = exprs(STUDYID, USUBJID)
-  ) %>%
+  ) |>
   # Convert Datetime variables to date
-  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) %>%
+  derive_vars_dtm_to_dt(source_vars = exprs(TRTSDTM, TRTEDTM)) |>
   # Treatment Start Time
-  derive_vars_dtm_to_tm(source_vars = exprs(TRTSDTM)) %>%
+  derive_vars_dtm_to_tm(source_vars = exprs(TRTSDTM)) |>
   # Treatment Duration
   derive_var_trtdurd()
 
@@ -99,8 +97,8 @@ adsl <- derive_vars_cat(
 )
 
 # Derive Intent-To-Treat and Safety Population Flags ----
-adsl <- adsl %>%
-  mutate(ITTFL = "Y") %>%
+adsl <- adsl |>
+  mutate(ITTFL = "Y") |>
   derive_var_merged_exist_flag(
     dataset_add = adsl,
     by_vars = exprs(STUDYID, USUBJID),
@@ -110,13 +108,13 @@ adsl <- adsl %>%
   )
 
 # Derive DTHDT & DTHADY ----
-adsl <- adsl %>%
+adsl <- adsl |>
   derive_vars_dt(
     new_vars_prefix = "DTH",
     dtc = DTHDTC,
     highest_imputation = "M",
     date_imputation = "first"
-  ) %>%
+  ) |>
   derive_vars_duration(
     new_var = DTHADY,
     start_date = TRTSDT,
