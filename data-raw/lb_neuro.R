@@ -134,7 +134,7 @@ lb_neuro <- all_lb_records %>%
   )
 
 # Validation checks
-expected_visits <- c("BASELINE", "WEEK 12", "WEEK 26")
+expected_visits <- c("BASELINE")
 stopifnot(all(lb_neuro$VISIT %in% expected_visits))
 stopifnot(all(lb_neuro$LBORRES %in% c("Positive", "Negative")))
 stopifnot(all(nchar(lb_neuro$LBTESTCD) <= 8))
