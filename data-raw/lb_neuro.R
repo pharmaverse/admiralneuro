@@ -155,19 +155,6 @@ lb_neuro <- all_lb_records %>%
     VISITNUM, VISIT, VISITDY, LBDTC, LBDY
   )
 
-# Create subject-level SAA flags for ADSL
-saa_flags <- lb_neuro %>%
-  dplyr::group_by(STUDYID, USUBJID) %>%
-  dplyr::summarize(
-    SAAFL = ifelse(any(LBSTRESC == "Positive"), "Y", "N"),
-    SAAPOSDT = suppressWarnings(min(as.Date(LBDTC[LBSTRESC == "Positive"]), na.rm = TRUE)),
-    .groups = "drop"
-  ) %>%
-  dplyr::mutate(
-    SAAPOSDT = ifelse(is.infinite(SAAPOSDT), NA, SAAPOSDT),
-    SAAPOSDT = as.character(SAAPOSDT)
-  )
-
 # Validation checks
 expected_visits <- c("BASELINE", "WEEK 12", "WEEK 26")
 stopifnot(all(lb_neuro$VISIT %in% expected_visits))
