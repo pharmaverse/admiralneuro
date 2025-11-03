@@ -19,7 +19,7 @@ Also allows for custom formula parameters."><meta property="og:image" content="h
 
     <a class="navbar-brand me-2" href="../index.html">admiralneuro</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,26 +79,58 @@ Also allows for custom formula parameters.</p>
 <dd><p>Amyloid PET tracer</p>
 <p>A character string is expected.
 If <code>custom_slope</code> and <code>custom_intercept</code> are specified, this parameter is ignored.
-See Details section for accepted values in combination with <code>pipeline</code> and <code>ref_region</code>.</p></dd>
+See Details section for accepted values in combination with <code>pipeline</code> and <code>ref_region</code>.</p>
+<dl><dt>Permitted values</dt>
+<dd><p>a character scalar, i.e., a character vector of length one</p></dd>
+
+<dt>Default value</dt>
+<dd><p>none</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-pipeline">pipeline<a class="anchor" aria-label="anchor" href="#arg-pipeline"></a></dt>
 <dd><p>SUVR pipeline</p>
 <p>A character string is expected.
 If <code>custom_slope</code> and <code>custom_intercept</code> are specified, this parameter is ignored.
-See Details section for accepted values in combination with <code>tracer</code> and <code>ref_region</code>.</p></dd>
+See Details section for accepted values in combination with <code>tracer</code> and <code>ref_region</code>.</p>
+<dl><dt>Permitted values</dt>
+<dd><p>a character scalar, i.e., a character vector of length one</p></dd>
+
+<dt>Default value</dt>
+<dd><p>none</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-ref-region">ref_region<a class="anchor" aria-label="anchor" href="#arg-ref-region"></a></dt>
 <dd><p>Reference region</p>
 <p>A character string is expected.
 If <code>custom_slope</code> and <code>custom_intercept</code> are specified, this parameter is ignored.
-See Details section for accepted values in combination with <code>tracer</code> and <code>ref_region</code>.</p></dd>
+See Details section for accepted values in combination with <code>tracer</code> and <code>ref_region</code>.</p>
+<dl><dt>Permitted values</dt>
+<dd><p>a character scalar, i.e., a character vector of length one</p></dd>
+
+<dt>Default value</dt>
+<dd><p>none</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-suvr">suvr<a class="anchor" aria-label="anchor" href="#arg-suvr"></a></dt>
 <dd><p>SUVR value</p>
-<p>A numeric value is expected.</p></dd>
+<p>A numeric value is expected.</p>
+<dl><dt>Permitted values</dt>
+<dd><p>a numeric scalar, i.e., a numeric vector of length one</p></dd>
+
+<dt>Default value</dt>
+<dd><p>none</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-custom-slope">custom_slope<a class="anchor" aria-label="anchor" href="#arg-custom-slope"></a></dt>
@@ -106,7 +138,15 @@ See Details section for accepted values in combination with <code>tracer</code> 
 <p>A numeric value is expected when provided.
 When <code>custom_slope</code> is specified (along with <code>custom_intercept</code>), this overrides
 the standard formula parameters <code>tracer</code>, <code>pipeline</code>, and <code>ref_region</code>.
-Default is <code>NULL</code>.</p></dd>
+Default is <code>NULL</code>.</p>
+<dl><dt>Permitted values</dt>
+<dd><p>a numeric scalar, i.e., a numeric vector of length one</p></dd>
+
+<dt>Default value</dt>
+<dd><p><code>NULL</code></p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-custom-intercept">custom_intercept<a class="anchor" aria-label="anchor" href="#arg-custom-intercept"></a></dt>
@@ -114,7 +154,15 @@ Default is <code>NULL</code>.</p></dd>
 <p>A numeric value is expected when provided.
 When <code>custom_intercept</code> is specified (along with <code>custom_slope</code>), this overrides
 the standard formula parameters <code>tracer</code>, <code>pipeline</code>, and <code>ref_region</code>.
-Default is <code>NULL</code>.</p></dd>
+Default is <code>NULL</code>.</p>
+<dl><dt>Permitted values</dt>
+<dd><p>a numeric scalar, i.e., a numeric vector of length one</p></dd>
+
+<dt>Default value</dt>
+<dd><p><code>NULL</code></p></dd>
+
+
+</dl></dd>
 
 </dl></div>
     <div class="section level2">
@@ -152,30 +200,40 @@ Iaccarino, L. et al. (2025). <a href="https://doi.org/10.1016/j.nicl.2025.103765
 <p>If a matching combination of tracer, pipeline, and reference region is not specified and both
 <code>custom_slope</code> and <code>custom_intercept</code> are not specified, the function aborts with an error.</p>
     </div>
-
     <div class="section level2">
-    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Using standard parameters</span></span></span>
-<span class="r-in"><span><span class="fu">compute_centiloid</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  tracer <span class="op">=</span> <span class="st">"18F-Florbetapir"</span>,</span></span>
-<span class="r-in"><span>  pipeline <span class="op">=</span> <span class="st">"AVID FBP SUVR PIPELINE"</span>,</span></span>
-<span class="r-in"><span>  ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span></span>
-<span class="r-in"><span>  suvr <span class="op">=</span> <span class="fl">1.25</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 51.5775</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using custom parameters</span></span></span>
-<span class="r-in"><span><span class="fu">compute_centiloid</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  tracer <span class="op">=</span> <span class="st">"MyTracer"</span>,</span></span>
-<span class="r-in"><span>  pipeline <span class="op">=</span> <span class="st">"MyPipeline"</span>,</span></span>
-<span class="r-in"><span>  ref_region <span class="op">=</span> <span class="st">"MyRegion"</span>,</span></span>
-<span class="r-in"><span>  suvr <span class="op">=</span> <span class="fl">1.25</span>,</span></span>
-<span class="r-in"><span>  custom_slope <span class="op">=</span> <span class="fl">193</span>,</span></span>
-<span class="r-in"><span>  custom_intercept <span class="op">=</span> <span class="op">-</span><span class="fl">187</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 54.25</span>
-</code></pre></div>
+    <h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a></h2>
+
+<div class="section">
+<h3 id="using-standard-parameters">Using standard parameters<a class="anchor" aria-label="anchor" href="#using-standard-parameters"></a></h3>
+
+
+<p>Computes Centiloid with predefined slope/intercept for supported
+tracer/pipeline/ref_region combinations:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
+<span>  tracer <span class="op">=</span> <span class="st">"18F-Florbetapir"</span>,</span>
+<span>  pipeline <span class="op">=</span> <span class="st">"AVID FBP SUVR PIPELINE"</span>,</span>
+<span>  ref_region <span class="op">=</span> <span class="st">"Whole Cerebellum"</span>,</span>
+<span>  suvr <span class="op">=</span> <span class="fl">1.25</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 51.5775</span></span></code></pre><p></p></div>
+</div>
+<div class="section">
+<h3 id="using-custom-parameters">Using custom parameters<a class="anchor" aria-label="anchor" href="#using-custom-parameters"></a></h3>
+
+
+<p>Computes Centiloid by overriding slope/intercept using custom values:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="fu"><a href="../reference/compute_centiloid.html">compute_centiloid</a></span><span class="op">(</span></span>
+<span>  tracer <span class="op">=</span> <span class="st">"MyTracer"</span>,</span>
+<span>  pipeline <span class="op">=</span> <span class="st">"MyPipeline"</span>,</span>
+<span>  ref_region <span class="op">=</span> <span class="st">"MyRegion"</span>,</span>
+<span>  suvr <span class="op">=</span> <span class="fl">1.25</span>,</span>
+<span>  custom_slope <span class="op">=</span> <span class="fl">193</span>,</span>
+<span>  custom_intercept <span class="op">=</span> <span class="op">-</span><span class="fl">187</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 54.25</span></span></code></pre><p></p></div>
+</div>
     </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
