@@ -3,7 +3,7 @@ temp_env <- new.env(parent = globalenv())
 
 source(system.file("lintr/linters.R", package = "admiraldev"), local = temp_env)
 
-linters <- admiral_linters()
+linters <- temp_env$admiral_linters()
 
 # remove temporary environment to avoid lintr warning regarding "unused settings"
 rm(temp_env)
