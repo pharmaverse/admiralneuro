@@ -7,29 +7,32 @@
 compute_upsit_percentile(sex, age, upsit_score)
 }
 \arguments{
-\item{sex}{Character. Sex of the subject. Must be either "M" (male) or
-"F" (female).
+\item{sex}{Sex of the subject. Must be either "M" or "F"
+A character string of either "M" or "F" is expected
 
 \describe{
+\item{Permitted values}{a character scalar, i.e., a character vector of length one}
 \item{Default value}{none}
 }}
 
-\item{age}{Numeric. Age of the subject in years. The function handles
-age ranges including "80+" for subjects aged 80 and above.
+\item{age}{Age of the subject in years.
 
 \describe{
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
 \item{Default value}{none}
 }}
 
-\item{upsit_score}{Numeric. The UPSIT score, which ranges from 0 to 40.
+\item{upsit_score}{The UPSIT ranging from 0 to 40.
 Higher scores indicate better olfactory function.
 
 \describe{
+\item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
 \item{Default value}{none}
 }}
 }
 \value{
-Numeric. The UPSIT percentile value corresponding to the input
+A numeric percentile value.
+The UPSIT percentile value corresponding to the input
 parameters. Returns \code{NA_real_} if no matching entry is found in the
 lookup table.
 }
@@ -58,54 +61,35 @@ Age ranges in the lookup table include:
 The function is designed to work efficiently in vectorized operations
 within data processing pipelines (e.g., with \code{dplyr::mutate()})
 }
-\examples{
-# Single value computation
-compute_upsit_percentile(sex = "M", age = 52, upsit_score = 25)
-
-# Female subject aged 81 (in the 80+ category)
-compute_upsit_percentile(sex = "F", age = 81, upsit_score = 30)
-
-# Returns NA if no match found (e.g., age out of range)
-compute_upsit_percentile(sex = "M", age = 45, upsit_score = 25)
-
-\dontrun{
-# Usage in admiral workflow with derive_extreme_records
-library(admiral)
-library(dplyr)
-
-adapet <- adapet \%>\%
-  derive_extreme_records(
-    dataset = .,
-    dataset_add = .,
-    filter_add = (PARAMCD == "UPSIT"),
-    set_values_to = exprs(
-      AVAL = compute_upsit_percentile(
-        sex = SEX,
-        age = AGE,
-        upsit_score = AVAL
-      ),
-      PARAMCD = "UPSITPCT",
-      PARAM = "UPSIT Percentile",
-      AVALU = "Percentile"
-    ),
-    keep_source_vars = exprs(USUBJID, VISIT, VISITNUM)
-  )
-
-# Usage with dplyr
-df <- df \%>\%
-  mutate(
-    upsit_percentile = compute_upsit_percentile(
-      sex = SEX,
-      age = AGE,
-      upsit_score = UPSIT_SCORE
-    )
-  )
-}
-
-}
 \references{
 Brumm MC, Pierz KA, Lafontant DE, Caspell-Garcia C, Coffey CS,
 Siderowf A, Marek K. Updated Percentiles for the University of
 Pennsylvania Smell Identification Test in Adults 50 Years of Age and Older.
 \doi{10.1212/WNL.0000000000201463}
 }
+\seealso{
+Other com_bds_findings: 
+\code{\link{compute_centiloid}()}
+}
+\concept{com_bds_findings}
+\keyword{com_bds_findings}
+\section{Examples}{
+\subsection{Look up for male percentile}{
+
+A 52 years old male with upsit raw score of 25
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{compute_upsit_percentile(sex = "M", age = 52, upsit_score = 25)
+#> [1] 5}\if{html}{\out{</div>}}}
+\subsection{Look up for female percentile}{
+
+A 81 years old female with upsit raw score of 30
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{compute_upsit_percentile(sex = "F", age = 81, upsit_score = 30)
+#> [1] 39}\if{html}{\out{</div>}}}
+\subsection{Returns NA}{
+
+Minimal age is 50 and score of 0 and 40, return NA if no match found
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{compute_upsit_percentile(sex = "M", age = 45, upsit_score = 25)
+#> [1] NA}\if{html}{\out{</div>}}}}
+
