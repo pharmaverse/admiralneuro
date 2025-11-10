@@ -91,5 +91,5 @@ compute_upsit_percentile <- function(sex, age, upsit_score) {
     }
   }
 
-  return(result)
+  result
 }

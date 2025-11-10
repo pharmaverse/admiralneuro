@@ -5,25 +5,25 @@ test_that("compute_upsit_percentile returns exact correct percentiles", {
   # Male, age 52 (50-54 range), score 25
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 52, upsit_score = 25),
-    5  # Expected percentile value
+    5 # Expected percentile value
   )
 
   # Female, age 67 (65-69 range), score 30
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 67, upsit_score = 30),
-    22.5  # Expected percentile value
+    22.5 # Expected percentile value
   )
 
   # Male, age 58 (55-59 range), score 35
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 58, upsit_score = 35),
-    62  # Expected percentile value
+    62 # Expected percentile value
   )
 
   # Female, age 72 (70-74 range), score 22
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 72, upsit_score = 22),
-    9  # Expected percentile value
+    9 # Expected percentile value
   )
 })
 
@@ -32,26 +32,26 @@ test_that("compute_upsit_percentile handles age range boundaries correctly", {
   # Lower boundary: age 50 (start of 50-54 range)
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 50, upsit_score = 28),
-    7  # Expected percentile value
+    7 # Expected percentile value
   )
 
   # Upper boundary: age 54 (end of 50-54 range)
   # Should return same value as age 50 if same score
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 54, upsit_score = 28),
-    7  # Expected percentile value (same as age 50)
+    7 # Expected percentile value (same as age 50)
   )
 
   # Boundary between ranges: age 55 (start of 55-59 range)
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 55, upsit_score = 28),
-    4  # Expected percentile value
+    4 # Expected percentile value
   )
 
   # Upper boundary: age 79 (end of 75-79 range)
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 79, upsit_score = 25),
-    24  # Expected percentile value
+    24 # Expected percentile value
   )
 })
 
@@ -60,19 +60,19 @@ test_that("compute_upsit_percentile handles 80+ age group correctly", {
   # Age 80 (lower boundary of 80+ range)
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 80, upsit_score = 20),
-    20  # Expected percentile value
+    20 # Expected percentile value
   )
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 85, upsit_score = 20),
-    20  # Expected percentile value (same as age 80)
+    20 # Expected percentile value (same as age 80)
   )
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 95, upsit_score = 18),
-    8  # Expected percentile value (TODO: Replace FF)
+    8 # Expected percentile value (TODO: Replace FF)
   )
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 100, upsit_score = 18),
-    8  # Expected percentile value (same as age 95)
+    8 # Expected percentile value (same as age 95)
   )
 })
 
@@ -92,19 +92,19 @@ test_that("compute_upsit_percentile handles extreme UPSIT scores", {
   # Minimum possible score: 0
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 55, upsit_score = 0),
-    1  # Expected percentile value (likely very low, e.g., 1)
+    1 # Expected percentile value (likely very low, e.g., 1)
   )
 
   # Maximum possible score: 40
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 65, upsit_score = 40),
-    100  # Expected percentile value (likely very high, e.g., 99)
+    100 # Expected percentile value (likely very high, e.g., 99)
   )
 
   # Low score in older age group
   expect_equal(
     compute_upsit_percentile(sex = "M", age = 82, upsit_score = 10),
-    2.5  # Expected percentile value
+    2.5 # Expected percentile value
   )
 })
 
@@ -139,7 +139,7 @@ test_that("compute_upsit_percentile handles NA inputs appropriately", {
   # NA sex
   result <- compute_upsit_percentile(sex = NA_character_, age = 55, upsit_score = 25)
   expect_true(is.na(result))
-  expect_type(result, "double")  # Should still return numeric NA
+  expect_type(result, "double") # Should still return numeric NA
 
   # NA age
   result <- compute_upsit_percentile(sex = "M", age = NA_real_, upsit_score = 25)
@@ -178,11 +178,11 @@ test_that("compute_upsit_percentile works correctly with vectorized inputs", {
   expect_equal(length(test_df$percentile), 5)
 
   # Check specific values
-  expect_equal(test_df$percentile[1], 5)  # M, 52, 25
-  expect_equal(test_df$percentile[2], 22.5)  # F, 67, 30
-  expect_equal(test_df$percentile[3], 62)  # M, 58, 35
-  expect_equal(test_df$percentile[4], 11)  # F, 82, 20
-  expect_equal(test_df$percentile[5], 36)  # M, 75, 28
+  expect_equal(test_df$percentile[1], 5) # M, 52, 25
+  expect_equal(test_df$percentile[2], 22.5) # F, 67, 30
+  expect_equal(test_df$percentile[3], 62) # M, 58, 35
+  expect_equal(test_df$percentile[4], 11) # F, 82, 20
+  expect_equal(test_df$percentile[5], 36) # M, 75, 28
 })
 
 # Test 9: Vectorization with some NA inputs ----
@@ -200,12 +200,12 @@ test_that("compute_upsit_percentile handles mixed valid and NA inputs in vectors
   )
 
   # First should have valid result
-  expect_equal(result[1], 5)  # M, 52, 25
+  expect_equal(result[1], 5) # M, 52, 25
 
   # Second, third, fourth should be NA (due to NA inputs)
-  expect_true(is.na(result[2]))  # NA sex
-  expect_true(is.na(result[3]))  # NA age
-  expect_true(is.na(result[4]))  # NA score
+  expect_true(is.na(result[2])) # NA sex
+  expect_true(is.na(result[3])) # NA age
+  expect_true(is.na(result[4])) # NA score
 
   # All should be numeric type
   expect_type(result, "double")
