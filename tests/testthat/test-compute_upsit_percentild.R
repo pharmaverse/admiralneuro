@@ -68,7 +68,7 @@ test_that("compute_upsit_percentile handles 80+ age group correctly", {
   )
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 95, upsit_score = 18),
-    8 # Expected percentile value (TODO: Replace FF)
+    8 # Expected percentile value
   )
   expect_equal(
     compute_upsit_percentile(sex = "F", age = 100, upsit_score = 18),

@@ -1,5 +1,5 @@
 # Dataset: upsit_lookup
-# Description: Prepare UPSIT lookup table for compute_upsite_percentile function
+# Description: Prepare UPSIT lookup table for compute_upsit_percentile function
 
 library(readxl)
 library(dplyr)
