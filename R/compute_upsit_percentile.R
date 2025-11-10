@@ -87,8 +87,7 @@
 #'
 #' @export
 compute_upsit_percentile <- function(sex, age, upsit_score) {
-
-  # Vectorized implementation - handle multiple inputs at once
+  # Vectorized implementation
   n <- length(sex)
   result <- rep(NA_real_, n)
 
