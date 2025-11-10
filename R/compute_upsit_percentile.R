@@ -41,8 +41,7 @@
 #' within data processing pipelines (e.g., with `dplyr::mutate()`)
 #'
 #' @references
-#' Brumm MC, Pierz KA, Lafontant DE, Caspell-Garcia C, Coffey CS,
-#' Siderowf A, Marek K. Updated Percentiles for the University of
+#' Brumm MC, et. al., Updated Percentiles for the University of
 #' Pennsylvania Smell Identification Test in Adults 50 Years of Age and Older.
 #' \doi{10.1212/WNL.0000000000201463}
 #'
