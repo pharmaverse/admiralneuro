@@ -13,6 +13,7 @@ data("nv_neuro")
 nv_neuro <- convert_blanks_to_na(nv_neuro)
 
 ag_neuro <- nv_neuro |>
+  filter(NVTESTCD %in% c("VR", "SUVR")) |>
   select(STUDYID, USUBJID, NVLNKID, NVDTC, NVCAT, VISITNUM, VISIT) |>
   distinct() |>
   mutate(DOMAIN = "AG", AGLNKID = NVLNKID, AGSTDTC = NVDTC) |>
