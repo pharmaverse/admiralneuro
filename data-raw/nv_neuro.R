@@ -86,7 +86,6 @@ set.seed(2774)
 # Generate the data using lapply
 all_visit3_dat <- bind_rows(
   lapply(seq_len(nrow(dm_neuro)), function(i) {
-
     id <- dm_neuro$USUBJID[i]
     sex <- dm_neuro$SEX[i]
 
@@ -107,49 +106,27 @@ all_visit3_dat <- bind_rows(
     upsit_cat <- runif(1, 0, 1)
 
     if (upsit_cat <= 0.05) {
-
       if (sex == "F") {
-
         upsit_value <- sample(35:40, 1, replace = TRUE)
-
       } else if (sex == "M") {
-
         upsit_value <- sample(34:40, 1, replace = TRUE)
-
       }
-
     } else if (upsit_cat <= 0.1) {
-
       if (sex == "F") {
-
         upsit_value <- sample(31:34, 1, replace = TRUE)
-
       } else if (sex == "M") {
-
         upsit_value <- sample(30:33, 1, replace = TRUE)
-
       }
-
     } else if (upsit_cat <= 0.2) {
-
       if (sex == "F") {
-
         upsit_value <- sample(26:30, 1, replace = TRUE)
-
       } else if (sex == "M") {
-
         upsit_value <- sample(26:29, 1, replace = TRUE)
-
       }
-
     } else if (upsit_cat <= 0.3) {
-
       upsit_value <- sample(19:25, 1, replace = TRUE)
-
     } else {
-
       upsit_value <- sample(0:18, 1, replace = TRUE)
-
     }
 
     # Create the dataset using create_records_for_one_id function
@@ -234,7 +211,7 @@ all_dat <- bind_rows(
       "RATIO", NA
     ),
     NVSTRESC = NVORRES,
-    NVSTRESN = if_else(NVTESTCD == "SUVR",
+    NVSTRESN = if_else(NVTESTCD %in% c("SUVR", "UPSIT"),
       suppressWarnings(as.numeric(NVORRES)), NA
     ),
     NVSTRESU = if_else(NVTESTCD == "SUVR",
@@ -279,7 +256,7 @@ all_dat <- bind_rows(
   arrange(USUBJID, VISIT) |>
   group_by(USUBJID) |>
   mutate(
-    NVLNKID = match(NVCAT, c("FBP", "FBB", "FTP")) +
+    NVLNKID = match(NVCAT, c("FBP", "FBB", "FTP", "NEUROLOGICAL EXAMINATION")) +
       (n_distinct(NVCAT) * (dense_rank(VISIT) - 1))
   ) |>
   ungroup() |>

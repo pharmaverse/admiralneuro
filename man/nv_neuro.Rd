@@ -42,7 +42,7 @@ A SDTM NV domain dataset containing nervous system findings and measurements
 \details{
 Nervous System Findings Dataset
 
-A SDTM NV domain dataset for Alzheimer's disease observational and interventional studies, including amyloid and tau PET data at baseline and two follow-up visits reflect levels of pathology appropriate for disease or treatment course
+A SDTM NV domain dataset for Alzheimer's disease observational and interventional studies, including amyloid and tau PET data at baseline and two follow-up visits, reflecting levels of pathology appropriate for disease or treatment course. The dataset also includes baseline data for the University of Pennsylvania Smell Identification Test.
 }
 \seealso{
 Other datasets: 
