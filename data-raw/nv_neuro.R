@@ -16,36 +16,36 @@ dm_neuro <- convert_blanks_to_na(dm_neuro)
 
 # Separate placebo and observation from treatment group to mimic different disease progression ----
 
-placebo_group <- dm_neuro |>
+placebo_group <- dm_neuro %>%
   filter(!is.na(ARMCD) & ARMCD == "Pbo")
 
-treatment_group <- dm_neuro |>
+treatment_group <- dm_neuro %>%
   filter(!is.na(ARMCD) & ARMCD == "Xan_Hi")
 
-observation_group <- dm_neuro |>
+observation_group <- dm_neuro %>%
   filter(is.na(ARMCD) & ARMNRS == "Observational Study")
 
 # Leverage VS visits at BASELINE, WEEK12 and WEEK26
 
-visit_schedule <- pharmaversesdtm::vs |>
-  filter(USUBJID %in% dm_neuro$USUBJID) |>
-  filter(VISITNUM %in% c(3.0, 9.0, 13.0)) |>
-  rename(NVDTC = VSDTC, NVDY = VSDY) |>
-  select(USUBJID, VISITNUM, VISIT, VISITDY, NVDTC, NVDY) |>
-  group_by(USUBJID) |>
+visit_schedule <- pharmaversesdtm::vs %>%
+  filter(USUBJID %in% dm_neuro$USUBJID) %>%
+  filter(VISITNUM %in% c(3.0, 9.0, 13.0)) %>%
+  rename(NVDTC = VSDTC, NVDY = VSDY) %>%
+  select(USUBJID, VISITNUM, VISIT, VISITDY, NVDTC, NVDY) %>%
+  group_by(USUBJID) %>%
   distinct()
 
 # All USUBJID have BASELINE but not all have visits 9 or 13 data
 
-visit9_usubjid <- visit_schedule |>
-  filter(VISITNUM == 9) |>
-  select(USUBJID) |>
-  distinct() |>
+visit9_usubjid <- visit_schedule %>%
+  filter(VISITNUM == 9) %>%
+  select(USUBJID) %>%
+  distinct() %>%
   unlist()
 
-visit13_usubjid <- visit_schedule |>
-  filter(VISITNUM == 13) |>
-  distinct() |>
+visit13_usubjid <- visit_schedule %>%
+  filter(VISITNUM == 13) %>%
+  distinct() %>%
   unlist()
 
 # Create records for one USUBJID ----
@@ -64,10 +64,10 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", amy_tracer = "FBP
       "Standardized Uptake Value Ratio",
       "University of Pennsylvania Smell Identification Test"
     ),
-    NVCAT = c(amy_tracer, amy_tracer, "FTP", "NEUROLOGICAL EXAMINATION"),
+    NVCAT = c(amy_tracer, amy_tracer, "FTP", "OLFACTORY FUNCTION"),
     NVORRES = c("Positive", as.character(amy_suvr_value), as.character(tau_suvr_value), as.character(upsit_value)),
     NVLOC = c(NA_character_, "NEOCORTICAL COMPOSITE", "NEOCORTICAL COMPOSITE", NA_character_),
-    NVNAM = c("IXICO", vendor, vendor, NA_character_),
+    NVNAM = c("IXICO", vendor, vendor, "Sensonics International"),
     NVMETHOD = c(
       paste(amy_tracer, "VISUAL CLASSIFICATION"),
       paste(vendor, amy_tracer, "SUVR PIPELINE"),
@@ -144,9 +144,9 @@ all_visit3_dat <- bind_rows(
 
 # Create visit 9 dataset for placebo and observational groups ----
 
-pbo_obs_visit9_dat <- all_visit3_dat |>
-  filter(USUBJID %in% c(placebo_group$USUBJID, observation_group$USUBJID)) |>
-  filter(NVTESTCD == "SUVR") |>
+pbo_obs_visit9_dat <- all_visit3_dat %>%
+  filter(USUBJID %in% c(placebo_group$USUBJID, observation_group$USUBJID)) %>%
+  filter(NVTESTCD == "SUVR") %>%
   mutate(
     VISITNUM = 9,
     NVORRES = as.character(round(as.numeric(NVORRES) + runif(1, min = 0.1, max = 0.2), 3)),
@@ -155,9 +155,9 @@ pbo_obs_visit9_dat <- all_visit3_dat |>
 
 # Create visit 9 dataset for treatment group ----
 
-treat_visit9_dat <- all_visit3_dat |>
-  filter(USUBJID %in% treatment_group$USUBJID) |>
-  filter(NVTESTCD == "SUVR") |>
+treat_visit9_dat <- all_visit3_dat %>%
+  filter(USUBJID %in% treatment_group$USUBJID) %>%
+  filter(NVTESTCD == "SUVR") %>%
   mutate(
     VISITNUM = 9,
     NVORRES = if_else(NVCAT %in% c("FBP", "FBB"),
@@ -170,8 +170,8 @@ treat_visit9_dat <- all_visit3_dat |>
 
 # Create visit 13 dataset for placebo and observational groups ----
 
-pbo_obs_visit13_dat <- pbo_obs_visit9_dat |>
-  filter(NVTESTCD == "SUVR") |>
+pbo_obs_visit13_dat <- pbo_obs_visit9_dat %>%
+  filter(NVTESTCD == "SUVR") %>%
   mutate(
     VISITNUM = 13,
     NVORRES = as.character(round(as.numeric(NVORRES) + runif(1, min = 0.2, max = 0.3), 3)),
@@ -180,8 +180,8 @@ pbo_obs_visit13_dat <- pbo_obs_visit9_dat |>
 
 # Create visit 13 dataset for treatment group ----
 
-treat_visit13_dat <- treat_visit9_dat |>
-  filter(NVTESTCD == "SUVR") |>
+treat_visit13_dat <- treat_visit9_dat %>%
+  filter(NVTESTCD == "SUVR") %>%
   mutate(
     VISITNUM = 13,
     NVORRES = if_else(NVCAT %in% c("FBP", "FBB"),
@@ -196,15 +196,15 @@ treat_visit13_dat <- treat_visit9_dat |>
 
 all_dat <- bind_rows(
   all_visit3_dat,
-  pbo_obs_visit9_dat |>
+  pbo_obs_visit9_dat %>%
     filter(USUBJID %in% visit9_usubjid),
-  treat_visit9_dat |>
+  treat_visit9_dat %>%
     filter(USUBJID %in% visit9_usubjid),
-  pbo_obs_visit13_dat |>
+  pbo_obs_visit13_dat %>%
     filter(USUBJID %in% visit13_usubjid),
-  treat_visit13_dat |>
+  treat_visit13_dat %>%
     filter(USUBJID %in% visit13_usubjid)
-) |>
+) %>%
   mutate(
     NVLOBXFL = if_else(VISITNUM == 3, "Y", NA_character_),
     NVORRESU = if_else(NVTESTCD == "SUVR",
@@ -217,17 +217,17 @@ all_dat <- bind_rows(
     NVSTRESU = if_else(NVTESTCD == "SUVR",
       "RATIO", NA
     )
-  ) |>
+  ) %>%
   left_join(
     visit_schedule,
     by = c("USUBJID", "VISITNUM")
-  ) |>
+  ) %>%
   # Differentiate Tau tracer visit dates from Amyloid tracer visit dates for realism
-  group_by(USUBJID, VISIT) |>
+  group_by(USUBJID, VISIT) %>%
   mutate(
     rand_diff = sample(2:4, 1),
     rand_sign = sample(c(-1, 1), size = 1)
-  ) |>
+  ) %>%
   mutate(
     # Apply a random difference of between +/- 2 to 4 days to visit date for Tau tracer
     # assessments. For baseline only subtraction is done
@@ -248,18 +248,18 @@ all_dat <- bind_rows(
       NVCAT == "FTP" & VISIT != "BASELINE" ~ NVDY + rand_sign * rand_diff,
       TRUE ~ NVDY
     )
-  ) |>
-  ungroup() |>
-  group_by(USUBJID) |>
-  mutate(NVSEQ = row_number()) |>
-  ungroup() |>
-  arrange(USUBJID, VISIT) |>
-  group_by(USUBJID) |>
+  ) %>%
+  ungroup() %>%
+  group_by(USUBJID) %>%
+  mutate(NVSEQ = row_number()) %>%
+  ungroup() %>%
+  arrange(USUBJID, VISIT) %>%
+  group_by(USUBJID) %>%
   mutate(
-    NVLNKID = match(NVCAT, c("FBP", "FBB", "FTP", "NEUROLOGICAL EXAMINATION")) +
+    NVLNKID = match(NVCAT, c("FBP", "FBB", "FTP", "OLFACTORY FUNCTION")) +
       (n_distinct(NVCAT) * (dense_rank(VISIT) - 1))
-  ) |>
-  ungroup() |>
+  ) %>%
+  ungroup() %>%
   select(
     STUDYID, DOMAIN, USUBJID, NVSEQ, NVLNKID,
     NVTESTCD, NVTEST, NVCAT,
