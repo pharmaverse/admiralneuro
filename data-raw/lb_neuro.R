@@ -38,8 +38,10 @@ visit_schedule <- nv_neuro %>%
     VISITDY = if_else(
       USUBJID %in% randomized_group,
       as.numeric(LBDY),
-      NA_real_),
-    LBDTC = as.character(LBDTC)) %>%
+      NA_real_
+    ),
+    LBDTC = as.character(LBDTC)
+  ) %>%
   distinct()
 
 # Get subject characteristics with treatment information from adsl_neuro ----
