@@ -1,13 +1,10 @@
 # Dataset: nv_neuro
 # Description: Create NV test SDTM dataset for Alzheimer's Disease (neuro studies)
 
-# Load libraries ----
-
-library(tibble)
-library(dplyr)
-library(stringr)
 library(admiral)
+library(dplyr)
 library(lubridate)
+library(tibble)
 
 # Read input data ----
 
@@ -53,8 +50,9 @@ visit13_usubjid <- visit_schedule %>%
 
 # Create records for one USUBJID ----
 
-create_records_for_one_id <- function(usubjid = "01-701-1015", amy_tracer = "FBP", vendor = "AVID", visitnum = 3, amy_suvr_value, tau_suvr_value) {
-  tibble(
+create_records_for_one_id <- function(usubjid = "01-701-1015", amy_tracer = "FBP", vendor = "AVID",
+                                      visitnum = 3, amy_suvr_value, tau_suvr_value) {
+  tibble::tibble(
     STUDYID = "CDISCPILOT01",
     DOMAIN = "NV",
     USUBJID = usubjid,
@@ -69,7 +67,11 @@ create_records_for_one_id <- function(usubjid = "01-701-1015", amy_tracer = "FBP
     NVORRES = c("Positive", as.character(amy_suvr_value), as.character(tau_suvr_value)),
     NVLOC = c(NA_character_, "NEOCORTICAL COMPOSITE", "NEOCORTICAL COMPOSITE"),
     NVNAM = c("IXICO", vendor, vendor),
-    NVMETHOD = c(paste(amy_tracer, "VISUAL CLASSIFICATION"), paste(vendor, amy_tracer, "SUVR PIPELINE"), paste(vendor, "FTP", "SUVR PIPELINE")),
+    NVMETHOD = c(
+      paste(amy_tracer, "VISUAL CLASSIFICATION"),
+      paste(vendor, amy_tracer, "SUVR PIPELINE"),
+      paste(vendor, "FTP", "SUVR PIPELINE")
+    ),
     VISITNUM = visitnum
   )
 }
@@ -126,9 +128,9 @@ treat_visit9_dat <- all_visit3_dat %>%
   filter(NVTESTCD == "SUVR") %>%
   mutate(
     VISITNUM = 9,
-    NVORRES = ifelse(NVCAT %in% c("FBP", "FBB"),
+    NVORRES = if_else(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
-      ifelse(NVCAT == "FTP",
+      if_else(NVCAT == "FTP",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.005, max = 0.01), 3)), NVORRES
       )
     )
@@ -150,9 +152,9 @@ treat_visit13_dat <- treat_visit9_dat %>%
   filter(NVTESTCD == "SUVR") %>%
   mutate(
     VISITNUM = 13,
-    NVORRES = ifelse(NVCAT %in% c("FBP", "FBB"),
+    NVORRES = if_else(NVCAT %in% c("FBP", "FBB"),
       as.character(round(as.numeric(NVORRES) - runif(1, min = 0.3, max = 0.8), 3)),
-      ifelse(NVCAT == "FTP",
+      if_else(NVCAT == "FTP",
         as.character(round(as.numeric(NVORRES) - runif(1, min = 0.01, max = 0.05), 3)), NVORRES
       )
     )
@@ -177,17 +179,17 @@ all_dat <- bind_rows(
       "RATIO", NA
     ),
     NVSTRESC = NVORRES,
-    NVSTRESN = ifelse(NVTESTCD == "SUVR",
+    NVSTRESN = if_else(NVTESTCD == "SUVR",
       suppressWarnings(as.numeric(NVORRES)), NA
     ),
-    NVSTRESU = ifelse(NVTESTCD == "SUVR",
+    NVSTRESU = if_else(NVTESTCD == "SUVR",
       "RATIO", NA
     )
   ) %>%
   left_join(
     visit_schedule,
     by = c("USUBJID", "VISITNUM")
-  ) %>%
+  ) |>
   # Differentiate Tau tracer visit dates from Amyloid tracer visit dates for realism
   group_by(USUBJID, VISIT) %>%
   mutate(
@@ -197,8 +199,10 @@ all_dat <- bind_rows(
   mutate(
     # Apply a random difference of between +/- 2 to 4 days to visit date for Tau tracer assessments. For baseline only subtraction is done
     NVDTC = case_when(
-      NVCAT == "FTP" & VISIT == "BASELINE" ~ as.character(lubridate::ymd(NVDTC) - lubridate::days(rand_diff)),
-      NVCAT == "FTP" & VISIT != "BASELINE" ~ as.character(lubridate::ymd(NVDTC) + rand_sign * lubridate::days(rand_diff)),
+      NVCAT == "FTP" & VISIT == "BASELINE" ~ as.character(lubridate::ymd(NVDTC) -
+        lubridate::days(rand_diff)),
+      NVCAT == "FTP" & VISIT != "BASELINE" ~ as.character(lubridate::ymd(NVDTC) +
+        rand_sign * lubridate::days(rand_diff)),
       TRUE ~ NVDTC
     ),
     VISITDY = case_when(
