@@ -201,3 +201,22 @@ test_that("Test 14: Custom parameters non numeric inputs trigger error", {
     )
   )
 })
+
+test_that("Test 15 cli_abort() throws the expected error message", {
+  # The cli_abort() message uses string interpolation
+  # so these must exisit in the test environment
+  # to include variable values in the error message.
+
+  tracer <- "TestTracer"
+  pipeline <- "TestPipeline"
+  ref_region <- "TestRegion"
+
+  expect_snapshot_error(
+   cli_abort(c(
+      "No standard conversion formula available for:",
+      "*" = "tracer = {.val {tracer}}",
+      "*" = "pipeline = {.val {pipeline}}",
+      "*" = "ref_region = {.val {ref_region}}"
+  ))
+  )
+})
