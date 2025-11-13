@@ -55,16 +55,16 @@ library(metatools)
 
 ## Read in Data {#readdata}
 
-To start, all data frames needed for the creation of `ADTPET` or `ADAPET` should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{admiralneuro}`. We will utilize `NV`, `SUPPNV`, `AG` and `ADSL` for the basis of the PET Scan ADaM datasets.
+To start, all data frames needed for the creation of `ADTPET` or `ADAPET` should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiralneuro}`. We will utilize `NV`, `SUPPNV`, `AG` and `ADSL` for the basis of the PET Scan ADaM datasets.
 
 ```{r, message=FALSE, warning=FALSE}
-nv <- admiralneuro::nv_neuro %>%
+nv <- pharmaversesdtm::nv_neuro %>%
   convert_blanks_to_na()
 
-suppnv <- admiralneuro::suppnv_neuro %>%
+suppnv <- pharmaversesdtm::suppnv_neuro %>%
   convert_blanks_to_na()
 
-ag <- admiralneuro::ag_neuro %>%
+ag <- pharmaversesdtm::ag_neuro %>%
   convert_blanks_to_na()
 
 adsl <- admiralneuro::adsl_neuro %>%
