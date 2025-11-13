@@ -30,10 +30,8 @@ for the most common steps are provided by the following vignette:
 
 - [Creating ADAPET/ADTPET](adpet.html)
 
-
 `{admiralneuro}` also provides template R scripts as a starting point. They can be
 created by calling `use_ad_template()` from `{admiral}`, e.g.,
-
 
 ```{r, eval = FALSE}
 library(admiral)
@@ -51,6 +49,8 @@ from `{admiral}`:
 ```{r, eval = TRUE}
 admiral::list_all_templates(package = "admiralneuro")
 ```
+
+Neuroscience test SDTM datasets are provided through the `{pharmaversesdtm}` package. The following datasets are available: `DM`, `NV`, `SUPPNV` and `AG`.
 
 # Support
 

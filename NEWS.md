@@ -1,5 +1,15 @@
 # admiralneuro (development version)
 
+## New features
+
+## Documentation
+
+## Template programs
+
+## Various
+
+- Moved test SDTM datasets `dm_neuro`, `nv_neuro`, `suppnv_neuro` and `ag_neuro` from `{admiralneuro}` to `{pharmaversesdtm}`. (#92)
+
 # admiralneuro 0.1.0
 
 - Initial package release mainly focused on Alzheimer’s disease specifically for the PET scan analysis.
