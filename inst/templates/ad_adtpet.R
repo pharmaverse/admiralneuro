@@ -216,5 +216,10 @@ admiralneuro_adtpet <- adtpet
 # Save output ----
 
 # Change to whichever directory you want to save the dataset in
-tmp_file <- file.path(tempdir(), "admiralneuro_adtpet.rda")
-save(admiralneuro_adtpet, file = tmp_file, compress = "bzip2")
+dir <- tools::R_user_dir("admiralneuro_templates_data", which = "cache")
+
+if (!file.exists(dir)) {
+  # Create the folder
+  dir.create(dir, recursive = TRUE, showWarnings = FALSE)
+}
+save(admiralneuro_adtpet, file = file.path(dir, "adtpet.rda"), compress = "bzip2")

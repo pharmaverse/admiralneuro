@@ -1,5 +1,12 @@
 # admiralneuro (development version)
 
+<details>
+<summary>Developer Notes</summary>
+
+- Aligned the templates' save directory with `{pharmaverseadam}` requirements. (#91)
+
+</details>
+
 # admiralneuro 0.1.0
 
 - Initial package release mainly focused on Alzheimer’s disease specifically for the PET scan analysis.
