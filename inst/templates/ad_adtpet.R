@@ -20,7 +20,7 @@ set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 
 # Use e.g. `haven::read_sas()` to read in .sas7bdat, or other suitable functions
 # as needed and assign to the variables below.
-# For illustration purposes read in pharmaversesdtm neuro and admiralneuro test data
+# For illustration purposes read in pharmaversesdtm and admiralneuro test data
 nv <- pharmaversesdtm::nv_neuro
 ag <- pharmaversesdtm::ag_neuro
 suppnv <- pharmaversesdtm::suppnv_neuro
