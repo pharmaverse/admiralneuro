@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralneuro
 Title: Neuroscience Extension Package for ADaM in 'R' Asset Library
-Version: 0.1.0.9007
+Version: 0.1.0.9008
 Authors@R: c(
     person("Jian", "Wang", , "wang_jian_wj@lilly.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-4677-3781")),
