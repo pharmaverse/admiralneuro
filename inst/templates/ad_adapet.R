@@ -20,10 +20,10 @@ set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 
 # Use e.g. `haven::read_sas()` to read in .sas7bdat, or other suitable functions
 # as needed and assign to the variables below.
-# For illustration purposes read in admiral test data
-nv <- admiralneuro::nv_neuro
-ag <- admiralneuro::ag_neuro
-suppnv <- admiralneuro::suppnv_neuro
+# For illustration purposes read in pharmaversesdtm and admiralneuro neuro test data
+nv <- pharmaversesdtm::nv_neuro
+ag <- pharmaversesdtm::ag_neuro
+suppnv <- pharmaversesdtm::suppnv_neuro
 adsl <- admiralneuro::adsl_neuro
 
 # When SAS datasets are imported into R using haven::read_sas(), missing

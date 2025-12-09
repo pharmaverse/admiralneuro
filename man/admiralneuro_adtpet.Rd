@@ -16,11 +16,7 @@ An updated ADaM ADTPET dataset using NV, AG, SUPPNV, ADSL
 \seealso{
 Other datasets: 
 \code{\link{admiralneuro_adapet}},
-\code{\link{adsl_neuro}},
-\code{\link{ag_neuro}},
-\code{\link{dm_neuro}},
-\code{\link{nv_neuro}},
-\code{\link{suppnv_neuro}}
+\code{\link{adsl_neuro}}
 }
 \concept{datasets}
 \keyword{datasets}
