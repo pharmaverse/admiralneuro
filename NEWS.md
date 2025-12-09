@@ -1,5 +1,13 @@
 # admiralneuro (development version)
 
+
+<details>
+<summary>Developer Notes</summary>
+
+- Aligned the templates' save directory with `{pharmaverseadam}` requirements. (#91)
+
+</details>
+
 ## New features
 
 ## Documentation
