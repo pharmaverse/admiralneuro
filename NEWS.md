@@ -1,11 +1,22 @@
 # admiralneuro (development version)
 
+
 <details>
 <summary>Developer Notes</summary>
 
 - Aligned the templates' save directory with `{pharmaverseadam}` requirements. (#91)
 
 </details>
+
+## New features
+
+## Documentation
+
+## Template programs
+
+## Various
+
+- Moved test SDTM datasets `dm_neuro`, `nv_neuro`, `suppnv_neuro` and `ag_neuro` from `{admiralneuro}` to `{pharmaversesdtm}`. (#92)
 
 # admiralneuro 0.1.0
 
