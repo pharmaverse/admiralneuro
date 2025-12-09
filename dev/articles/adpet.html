@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">admiralneuro</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9006</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9007</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -158,17 +158,18 @@ Set-up</a></li>
 <code>ADTPET</code> or <code>ADAPET</code> should be loaded into the
 global environment. Reading data will usually be a company specific
 process, however, for the purpose of this vignette, we will use example
-data from <a href="https://pharmaverse.github.io/admiralneuro/">admiralneuro</a>. We will utilize <code>NV</code>,
+data from <a href="https://pharmaverse.github.io/pharmaversesdtm/" class="external-link">pharmaversesdtm</a> and
+<a href="https://pharmaverse.github.io/admiralneuro/">admiralneuro</a>. We will utilize <code>NV</code>,
 <code>SUPPNV</code>, <code>AG</code> and <code>ADSL</code> for the basis
 of the PET Scan ADaM datasets.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nv</span> <span class="op">&lt;-</span> <span class="fu">admiralneuro</span><span class="fu">::</span><span class="va"><a href="../reference/nv_neuro.html">nv_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span><span class="va">nv</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/nv_neuro.html" class="external-link">nv_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">suppnv</span> <span class="op">&lt;-</span> <span class="fu">admiralneuro</span><span class="fu">::</span><span class="va"><a href="../reference/suppnv_neuro.html">suppnv_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">suppnv</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/suppnv_neuro.html" class="external-link">suppnv_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ag</span> <span class="op">&lt;-</span> <span class="fu">admiralneuro</span><span class="fu">::</span><span class="va"><a href="../reference/ag_neuro.html">ag_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">ag</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/ag_neuro.html" class="external-link">ag_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.3.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">admiralneuro</span><span class="fu">::</span><span class="va"><a href="../reference/adsl_neuro.html">adsl_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
