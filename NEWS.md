@@ -2,7 +2,8 @@
 
 ##  Updates of Existing Functions
 
-- Improved test coverage in `compute_centiloid()` function when invalid tracer combination is provided. 
+- Improved test coverage in `compute_centiloid()` function when invalid tracer combination is provided. (#106)
+
 # admiralneuro 0.1.0
 
 - Initial package release mainly focused on Alzheimer’s disease specifically for the PET scan analysis.
