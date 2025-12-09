@@ -202,13 +202,12 @@ test_that("Test 14: Custom parameters non numeric inputs trigger error", {
   )
 })
 
-test_that("Test 15 compute_centiloid() throws the expected error message when non-valid combination for conversion formula is used", {
-
+test_that("Test 15 compute_centiloid() throws the expected error message when non-valid combination for conversion formula is used", { # nolint
   expect_snapshot_error(
-   compute_centiloid(
+    compute_centiloid(
       tracer = "18F-Florbetapir",
       pipeline = "AVID FBB SUVR PIPELINE",
       ref_region = "Whole Cerebellum"
-  )
+    )
   )
 })
