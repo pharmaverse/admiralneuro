@@ -3,6 +3,15 @@
 ##  Updates of Existing Functions
 
 - Improved test coverage in `compute_centiloid()` function when invalid tracer combination is provided. (#106)
+## New features
+
+## Documentation
+
+## Template programs
+
+## Various
+
+- Moved test SDTM datasets `dm_neuro`, `nv_neuro`, `suppnv_neuro` and `ag_neuro` from `{admiralneuro}` to `{pharmaversesdtm}`. (#92)
 
 # admiralneuro 0.1.0
 
