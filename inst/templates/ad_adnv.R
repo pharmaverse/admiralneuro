@@ -36,8 +36,8 @@ adsl <- convert_blanks_to_na(adsl)
 
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
-  ~NVTESTCD, ~NVCAT, ~NVMETHOD, ~PARAMCD, ~PARAM, ~PARAMN,
-  "UPSIT", "OLFACTORY FUNCTION", "UPSIT TOTAL SCORE", "UPSITTS", "UPSIT Combined Score from 40 Odorant", 1
+  ~NVTESTCD, ~NVCAT, ~PARAMCD, ~PARAM, ~PARAMN,
+  "UPSIT", "OLFACTORY FUNCTION", "UPSITTS", "UPSIT Combined Score from 40 Odorant", 1
 )
 attr(param_lookup$NVTESTCD, "label") <- "NV Test Short Name"
 
@@ -66,7 +66,7 @@ adnv <- adnv %>%
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM),
-    by_vars = exprs(NVTESTCD, NVCAT, NVMETHOD)
+    by_vars = exprs(NVTESTCD, NVCAT)
   ) %>%
   ## Calculate AVAL and AVALC ----
   # AVALC should only be mapped if it contains non-redundant information.
@@ -91,7 +91,7 @@ adnv <- adnv %>%
   derive_extreme_records(
     dataset = .,
     dataset_add = .,
-    filter_add = (PARAMCD == "UPSITTS" & NVMETHOD == "UPSIT TOTAL SCORE"),
+    filter_add = (PARAMCD == "UPSITTS"),
     set_values_to = exprs(
       AVAL = compute_upsit_percentile(
         sex = SEX,
