@@ -79,7 +79,7 @@ adnv <- adnv %>%
     )
   )
 
-## upsit percentil derivations ----
+## upsit percentile derivations ----
 ### Convert UPSITTS to  UPSITPC----
 keep_vars <- c(
   get_admiral_option("subject_keys"),
@@ -105,7 +105,7 @@ adnv <- adnv %>%
     keep_source_vars = exprs(!!!keep_vars)
   )
 
-# The 10 percentild cutoff represents sex and age adjusted threshold for olfactory impairment
+# The 10 percentile cutoff represents sex and age adjusted threshold for olfactory impairment
 # based on PPMI study
 adnv <- adnv %>%
   ### Derive criterion flags for UPSITPC Threshold ----
