@@ -152,7 +152,7 @@ tracer/pipeline/ref_region combinations:
   ref_region = "Whole Cerebellum",
   suvr = 1.25
 )
-#> [1] 51.6}\if{html}{\out{</div>}}}
+#> [1] 51.5775}\if{html}{\out{</div>}}}
 \subsection{Using custom parameters}{
 
 Computes Centiloid by overriding slope/intercept using custom values:
@@ -165,5 +165,5 @@ Computes Centiloid by overriding slope/intercept using custom values:
   custom_slope = 193,
   custom_intercept = -187
 )
-#> [1] 54.2}\if{html}{\out{</div>}}}}
+#> [1] 54.25}\if{html}{\out{</div>}}}}
 
