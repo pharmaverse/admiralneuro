@@ -9,6 +9,8 @@
 ## Various
 
 - Moved test SDTM datasets `dm_neuro`, `nv_neuro`, `suppnv_neuro` and `ag_neuro` from `{admiralneuro}` to `{pharmaversesdtm}`. (#92)
+- Modify kapa.ai data-query-input-placeholder-text-color="#000000" (`black`)
+- Modify kapa.ai data-modal-search-placeholder="Ask me a question about {admiralmetabolic} or the {admiral} ecosystem..."
 
 # admiralneuro 0.1.0
 
