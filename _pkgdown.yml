@@ -23,7 +23,7 @@ template:
       data-modal-example-questions="Tell me a little about the {admiralneuro} package., What are some important {admiralneuro} functions and what do they do?"
       data-modal-z-index="9999"
       data-query-input-placeholder-text-color="#000000"
-      data-modal-search-placeholder="Ask me a question about {admiralmetabolic} or the {admiral} ecosystem..."
+      data-modal-search-placeholder="Ask me a question about {admiralneuro} or the {admiral} ecosystem..."
       ></script>
 search:
   exclude: ['news/index.html']
