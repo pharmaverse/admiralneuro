@@ -1,12 +1,11 @@
 # Name: ADNV
 #
-# Label: NV Analysis Dataset
+# Label: Nervous System Analysis Dataset
 #
 # Input: adsl, nv
 
 library(admiral)
 library(admiralneuro)
-# for development purposes remotes::install_github("pharmaverse/pharmaversesdtm")
 library(pharmaversesdtm) # Contains example datasets from the CDISC pilot project
 library(dplyr)
 library(lubridate)
@@ -62,10 +61,10 @@ adnv <- nv %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
 
 adnv <- adnv %>%
-  ## Add PARAMCD and PARAM ----
+  ## Add PARAMCD, PARAM and PARAMN ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
-    new_vars = exprs(PARAMCD, PARAM),
+    new_vars = exprs(PARAMCD, PARAM, PARAMN),
     by_vars = exprs(NVTESTCD, NVCAT)
   ) %>%
   ## Calculate AVAL and AVALC ----
@@ -79,36 +78,46 @@ adnv <- adnv %>%
     )
   )
 
+# Drop AVALC if it contains no non-missing values
+if (all(is.na(adnv$AVALC))) {
+  adnv <- adnv %>% select(-AVALC)
+}
+
 ## upsit percentile derivations ----
-### Convert UPSITTS to  UPSITPC----
+### Convert UPSITTS to UPSITPC----
 keep_vars <- c(
   get_admiral_option("subject_keys"),
   adsl_vars,
   exprs(ADT, ADY, VISIT)
 )
 
-adnv <- adnv %>%
-  derive_extreme_records(
-    dataset = .,
-    dataset_add = .,
-    filter_add = (PARAMCD == "UPSITTS"),
-    set_values_to = exprs(
-      AVAL = compute_upsit_percentile(
-        sex = SEX,
-        age = AGE,
-        upsit_score = AVAL
-      ),
-      PARAMCD = "UPSITPC",
-      PARAM = "Percentile derived from UPSIT total score",
-      AVALU = NA
+# prepare derived rows
+upsit_percentile <- adnv %>%
+  filter(PARAMCD == "UPSITTS") %>%
+  mutate(
+    AVAL = compute_upsit_percentile(
+      sex = SEX,
+      age = AGE,
+      upsit_score = AVAL
     ),
-    keep_source_vars = exprs(!!!keep_vars)
+    PARAMCD = "UPSITPC",
+    PARAM = "Percentile derived from UPSIT total score",
+    PARAMN = 2,
+    AVALU = NA
   )
+
+# Bind with original dataset
+adnv <- bind_rows(adnv, upsit_percentile)
+
+# Drop AVALU if it contains no non-missing values
+if (all(is.na(adnv$AVALU))) {
+  adnv <- adnv %>% select(-AVALU)
+}
 
 # The 10 percentile cutoff represents sex and age adjusted threshold for olfactory impairment
 # based on PPMI study
 adnv <- adnv %>%
-  ### Derive criterion flags for UPSITPC Threshold ----
+  ### Derive criterion flags for UPSITPC threshold ----
   restrict_derivation(
     derivation = derive_vars_crit_flag,
     args = params(
@@ -119,7 +128,6 @@ adnv <- adnv %>%
     ),
     filter = PARAMCD == "UPSITPC"
   )
-
 
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
@@ -148,7 +156,12 @@ adnv <- adnv %>%
     filter_pre_timepoint = toupper(AVISIT) == "BASELINE" # Observations as not on-treatment
   )
 
-### Derive Baseline flags ----
+# Drop ONTRTFL if it contains no non-missing values
+if (all(is.na(adnv$ONTRTFL))) {
+  adnv <- adnv %>% select(-ONTRTFL)
+}
+
+## Derive Baseline flags ----
 
 ### Calculate ABLFL ----
 adnv <- adnv %>%
@@ -160,7 +173,7 @@ adnv <- adnv %>%
       order = exprs(ADT, VISITNUM, NVSEQ),
       mode = "last"
     ),
-    filter = ((!is.na(AVAL) | !is.na(AVALC)) & ADT <= TRTSDT & !is.na(BASETYPE))
+    filter = (!is.na(AVAL) & ADT <= TRTSDT & !is.na(BASETYPE))
   )
 
 ## Derive visit flags ----
@@ -175,7 +188,7 @@ adnv <- adnv %>%
       order = exprs(ADT, AVAL),
       mode = "last"
     ),
-    filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+    filter = !is.na(AVISITN) & ABLFL == "Y"
   ) %>%
   ### ANL02FL: Flag last result within a PARAMCD for baseline & on-treatment post-baseline records ----
   restrict_derivation(
@@ -186,7 +199,7 @@ adnv <- adnv %>%
       order = exprs(ADT),
       mode = "last"
     ),
-    filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+    filter = !is.na(AVISITN) & ABLFL == "Y"
   )
 
 ## Derive baseline information ----
@@ -197,12 +210,6 @@ adnv <- adnv %>%
     by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
     source_var = AVAL,
     new_var = BASE
-  ) %>%
-  ### Calculate BASEC ----
-  derive_var_base(
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
-    source_var = AVALC,
-    new_var = BASEC
   ) %>%
   ### Calculate CHG for post-baseline records ----
   # The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
@@ -216,6 +223,16 @@ adnv <- adnv %>%
     derivation = derive_var_pchg,
     filter = AVISITN > 0
   )
+
+# Drop CHG if it contains no non-missing values
+if (all(is.na(adnv$CHG))) {
+  adnv <- adnv %>% select(-CHG)
+}
+
+# Drop PCHG if it contains no non-missing values
+if (all(is.na(adnv$PCHG))) {
+  adnv <- adnv %>% select(-PCHG)
+}
 
 ## Assign ASEQ ----
 adnv <- adnv %>%
