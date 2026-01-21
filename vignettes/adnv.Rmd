@@ -225,9 +225,9 @@ The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.githu
 
 # Example Scripts
 
-| ADaM   | Sourcing Command                                               |
-|--------|----------------------------------------------------------------|
-| ADNV | `admiral::use_ad_template("ADNV", package = "admiralneuro
+| ADaM | Sourcing Command                                             |
+|------|--------------------------------------------------------------|
+| ADNV | `admiral::use_ad_template("ADNV", package = "admiralneuro")` |
 
 ## References
 
