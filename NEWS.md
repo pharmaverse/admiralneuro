@@ -2,9 +2,15 @@
 
 ## New features
 
+- The function `compute_upsit_percentile()` calculates percentiles based on age, sex, and UPSIT scores. (# 95)
+
 ## Documentation
 
+- Vignette "Creating ADNV". (#114)
+
 ## Template programs
+
+- ADNV template scripts `ad_adnv.R` which creates a Nervous System Analysis Dataset. (#113)
 
 ## Various
 
