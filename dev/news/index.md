@@ -15,6 +15,9 @@
   [admiralneuro](https://pharmaverse.github.io/admiralneuro/) to
   [pharmaversesdtm](https://pharmaverse.github.io/pharmaversesdtm/).
   ([\#92](https://github.com/pharmaverse/admiralneuro/issues/92))
+- Updated the kapa.ai `data-modal-search-placeholder` to “Ask me a
+  question about {admiralneuro} or the {admiral} ecosystem…”
+  ([\#119](https://github.com/pharmaverse/admiralneuro/issues/119))
 
 ## admiralneuro 0.1.0
 
