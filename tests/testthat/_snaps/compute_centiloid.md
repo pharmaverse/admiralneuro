@@ -49,3 +49,11 @@
     * pipeline = "AVID FBB SUVR PIPELINE"
     * ref_region = "Whole Cerebellum"
 
+# Test 16 compute_centiloid throws error for non-positive SUVR values
+
+    `suvr` must be a positive numeric value (received 0).
+
+---
+
+    `suvr` must be a positive numeric value (received -1.5).
+

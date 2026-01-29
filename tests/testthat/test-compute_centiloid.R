@@ -207,7 +207,30 @@ test_that("Test 15 compute_centiloid() throws the expected error message when no
     compute_centiloid(
       tracer = "18F-Florbetapir",
       pipeline = "AVID FBB SUVR PIPELINE",
-      ref_region = "Whole Cerebellum"
+      ref_region = "Whole Cerebellum",
+      suvr = 1.25
+    )
+  )
+})
+
+test_that("Test 16 compute_centiloid throws error for non-positive SUVR values", {
+  # Test with zero
+  expect_snapshot_error(
+    compute_centiloid(
+      tracer = "18F-Florbetapir",
+      pipeline = "AVID FBP SUVR PIPELINE",
+      ref_region = "Whole Cerebellum",
+      suvr = 0
+    )
+  )
+
+  # Test with negative value
+  expect_snapshot_error(
+    compute_centiloid(
+      tracer = "18F-Florbetapir",
+      pipeline = "AVID FBP SUVR PIPELINE",
+      ref_region = "Whole Cerebellum",
+      suvr = -1.5
     )
   )
 })

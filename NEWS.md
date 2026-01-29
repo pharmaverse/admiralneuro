@@ -1,6 +1,6 @@
 # admiralneuro (development version)
 
-##  Updates of Existing Functions
+## Updates of Existing Functions
 
 - Improved test coverage in `compute_centiloid()` function when invalid tracer combination is provided. (#106)
 ## New features
