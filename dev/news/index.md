@@ -4,9 +4,20 @@
 
 ### New features
 
+- The function
+  [`compute_upsit_percentile()`](https://pharmaverse.github.io/admiralneuro/dev/reference/compute_upsit_percentile.md)
+  calculates percentiles based on age, sex, and UPSIT scores. (# 95)
+
 ### Documentation
 
+- Vignette “Creating ADNV”.
+  ([\#114](https://github.com/pharmaverse/admiralneuro/issues/114))
+
 ### Template programs
+
+- ADNV template scripts `ad_adnv.R` which creates a Nervous System
+  Analysis Dataset.
+  ([\#113](https://github.com/pharmaverse/admiralneuro/issues/113))
 
 ### Various
 
