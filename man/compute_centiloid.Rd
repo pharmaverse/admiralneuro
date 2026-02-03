@@ -49,7 +49,7 @@ See Details section for accepted values in combination with \code{tracer} and \c
 
 \item{suvr}{SUVR value
 
-A numeric value is expected.
+A positive numeric value is expected.
 
 \describe{
 \item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}

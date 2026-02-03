@@ -136,9 +136,10 @@ compute_centiloid <- function(
   custom_slope = NULL,
   custom_intercept = NULL
 ) {
-  # Validation check SUVR must be positive
-  if (suvr <= 0) {
-    cli::cli_abort("{.arg suvr} must be a positive numeric value (received {.val {suvr}}).")
+  if (any(suvr <= 0, na.rm = TRUE)) {
+    cli::cli_abort(
+      "{.arg suvr} must be a positive numeric value. Found non-positive values: {.val {suvr[suvr <= 0]}}."
+    )
   }
 
   # Check custom_slope and custom_intercept
@@ -155,7 +156,7 @@ compute_centiloid <- function(
   if (use_custom_params) {
     assert_numeric_vector(custom_slope, length = 1)
     assert_numeric_vector(custom_intercept, length = 1)
-    assert_numeric_vector(suvr, length = 1)
+    assert_numeric_vector(suvr)
 
     # Use custom parameters
     slope <- custom_slope
