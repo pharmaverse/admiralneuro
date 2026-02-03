@@ -138,7 +138,10 @@ compute_centiloid <- function(
 ) {
   if (any(suvr <= 0, na.rm = TRUE)) {
     cli::cli_abort(
-      "{.arg suvr} must be a positive numeric value. Found non-positive values: {.val {suvr[suvr <= 0]}}."
+      paste(
+        "{.arg suvr} must be a positive numeric value.",
+        "Found non-positive values: {.val {suvr[suvr <= 0]}}."
+      )
     )
   }
 
