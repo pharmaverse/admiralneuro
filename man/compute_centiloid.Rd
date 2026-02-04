@@ -49,7 +49,7 @@ See Details section for accepted values in combination with \code{tracer} and \c
 
 \item{suvr}{SUVR value
 
-A numeric value is expected.
+A positive numeric value is expected.
 
 \describe{
 \item{Permitted values}{a numeric scalar, i.e., a numeric vector of length one}
@@ -133,6 +133,10 @@ Iaccarino, L. et al. (2025). \doi{10.1016/j.nicl.2025.103765}
 
 If a matching combination of tracer, pipeline, and reference region is not specified and both
 \code{custom_slope} and \code{custom_intercept} are not specified, the function aborts with an error.
+}
+\seealso{
+Other com_bds_findings: 
+\code{\link{compute_upsit_percentile}()}
 }
 \concept{com_bds_findings}
 \keyword{com_bds_findings}
