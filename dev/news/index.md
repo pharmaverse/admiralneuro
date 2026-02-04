@@ -10,6 +10,13 @@
   also now only accepts positive SUVR values.
   ([\#106](https://github.com/pharmaverse/admiralneuro/issues/106))
 
+Developer Notes
+
+- Aligned the templates’ save directory with
+  [pharmaverseadam](https://pharmaverse.github.io/pharmaverseadam/)
+  requirements.
+  ([\#91](https://github.com/pharmaverse/admiralneuro/issues/91))
+
 ### New features
 
 - The function
