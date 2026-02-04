@@ -228,11 +228,11 @@ UPSIT percentile ≤ 10 is considered olfactory impairment, while UPSIT
 percentile \> 10 is considered normal olfactory function.
 
 To do this, we will use the
-[`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_crit_flag.html)
+[`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_crit_flag.html)
 function. Since we want to derive these flags specifically for the UPSIT
 percentile parameter, we will apply the derivation only to those records
 using
-[`admiral::restrict_derivation()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/restrict_derivation.html).
+[`admiral::restrict_derivation()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/restrict_derivation.html).
 
 ``` r
 adnv <- adnv %>%

@@ -33,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">admiralneuro</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9011</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9012</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -164,16 +164,16 @@ data from <a href="https://pharmaverse.github.io/pharmaversesdtm/" class="extern
 of the PET Scan ADaM datasets.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nv</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/nv_neuro.html" class="external-link">nv_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">suppnv</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/suppnv_neuro.html" class="external-link">suppnv_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ag</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/ag_neuro.html" class="external-link">ag_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">admiralneuro</span><span class="fu">::</span><span class="va"><a href="../reference/adsl_neuro.html">adsl_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>While loading our input data, we can combine the <code>NV</code>
 domain and the <code>SUPPNV</code> supplementary domain for easier use
 in the next steps. Using the <code><a href="https://pharmaverse.github.io/metatools/reference/combine_supp.html" class="external-link">metatools::combine_supp()</a></code>
@@ -200,21 +200,21 @@ a BDS Finding ADaM vignette</a>.</p>
 <code class="sourceCode R"><span><span class="va">adsl_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">TRTSDT</span>, <span class="va">TRTEDT</span>, <span class="va">TRT01A</span>, <span class="va">TRT01P</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">adpet</span> <span class="op">&lt;-</span> <span class="va">nv_suppnv</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
 <span>    dataset_add <span class="op">=</span> <span class="va">adsl</span>,</span>
 <span>    new_vars <span class="op">=</span> <span class="va">adsl_vars</span>,</span>
 <span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
 <span>    dataset_add <span class="op">=</span> <span class="va">ag</span>,</span>
 <span>    new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">AGTRT</span>, <span class="va">AGCAT</span><span class="op">)</span>,</span>
 <span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span>, <span class="va">VISIT</span>, NVLNKID <span class="op">=</span> <span class="va">AGLNKID</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dt.html">derive_vars_dt</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_dt.html">derive_vars_dt</a></span><span class="op">(</span></span>
 <span>    new_vars_prefix <span class="op">=</span> <span class="st">"A"</span>,</span>
 <span>    dtc <span class="op">=</span> <span class="va">NVDTC</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_dy.html">derive_vars_dy</a></span><span class="op">(</span>reference_date <span class="op">=</span> <span class="va">TRTSDT</span>, source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_dy.html">derive_vars_dy</a></span><span class="op">(</span>reference_date <span class="op">=</span> <span class="va">TRTSDT</span>, source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="paramcd">Create <code>PARAMCD</code>, <code>PARAM</code>, and
 <code>PARAMN</code> variables<a class="anchor" aria-label="anchor" href="#paramcd"></a>
@@ -242,7 +242,7 @@ source data.</p>
 parameters will look like:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adpet</span> <span class="op">&lt;-</span> <span class="va">adpet</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_merged_lookup.html">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_merged_lookup.html">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
 <span>    dataset_add <span class="op">=</span> <span class="va">param_lookup</span>,</span>
 <span>    new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMCD</span>, <span class="va">PARAM</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
 <span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">NVTESTCD</span>, <span class="va">NVCAT</span>, <span class="va">NVLOC</span>, <span class="va">NVMETHOD</span>, <span class="va">REFREG</span><span class="op">)</span></span>
@@ -326,7 +326,7 @@ source variables to retain and copy into newly derived records in the
 next step; all other variables will remain in the dataset but will be
 set to <code>NA</code> in those derived rows.</p>
 <p><strong>2. Convert SUVR to Centiloid</strong></p>
-<p>The second step uses <code><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html">admiral::derive_extreme_records()</a></code>
+<p>The second step uses <code><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_extreme_records.html">admiral::derive_extreme_records()</a></code>
 to add new analysis records in which the original <code>SUVR</code>
 values are converted into Centiloid using
 <code><a href="../reference/compute_centiloid.html">admiralneuro::compute_centiloid()</a></code>. The formula is based on
@@ -355,13 +355,13 @@ that meets the specified filtering condition, with separate derivations
 performed for the four defined filtering conditions.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">keep_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
 <span>  <span class="va">adsl_vars</span>,</span>
 <span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span>, <span class="va">ADY</span>, <span class="va">VISIT</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">adapet</span> <span class="op">&lt;-</span> <span class="va">adapet</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
 <span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRBFBB"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"BERKELEY FBB SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
@@ -378,7 +378,7 @@ performed for the four defined filtering conditions.</p>
 <span>    <span class="op">)</span>,</span>
 <span>    keep_source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">keep_vars</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
 <span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRBFBP"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"BERKELEY FBP SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
@@ -395,7 +395,7 @@ performed for the four defined filtering conditions.</p>
 <span>    <span class="op">)</span>,</span>
 <span>    keep_source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">keep_vars</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
 <span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRAFBB"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"AVID FBB SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
@@ -412,7 +412,7 @@ performed for the four defined filtering conditions.</p>
 <span>    <span class="op">)</span>,</span>
 <span>    keep_source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">keep_vars</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_extreme_records.html">derive_extreme_records</a></span><span class="op">(</span></span>
 <span>    dataset <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    dataset_add <span class="op">=</span> <span class="va">.</span>,</span>
 <span>    filter_add <span class="op">=</span> <span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"SUVRAFBP"</span> <span class="op">&amp;</span> <span class="va">NVMETHOD</span> <span class="op">==</span> <span class="st">"AVID FBP SUVR PIPELINE"</span> <span class="op">&amp;</span> <span class="va">REFREG</span> <span class="op">==</span> <span class="st">"Whole Cerebellum"</span><span class="op">)</span>,</span>
@@ -451,15 +451,15 @@ amyloid positivity (Navitsky <em>et al.</em>, 2018). Centiloid &gt;=
 24.1 is considered amyloid positive, while Centiloid &lt; 24.1 is
 considered amyloid negative.</p>
 <p>To do this, we will use the
-<code><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_crit_flag.html">admiral::derive_vars_crit_flag()</a></code> function. Since we want to
+<code><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_crit_flag.html">admiral::derive_vars_crit_flag()</a></code> function. Since we want to
 derive these flags specifically for the Centiloid parameters, we will
 apply the derivation only to those records using
-<code><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/restrict_derivation.html">admiral::restrict_derivation()</a></code>.</p>
+<code><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/restrict_derivation.html">admiral::restrict_derivation()</a></code>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adapet</span> <span class="op">&lt;-</span> <span class="va">adapet</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
 <span>    derivation <span class="op">=</span> <span class="va">derive_vars_crit_flag</span>,</span>
-<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>      crit_nr <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>      condition <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"CENTLD"</span>, <span class="va">AVAL</span> <span class="op">&lt;</span> <span class="fl">24.1</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>      description <span class="op">=</span> <span class="st">"CENTILOID &lt; 24.1"</span>,</span>

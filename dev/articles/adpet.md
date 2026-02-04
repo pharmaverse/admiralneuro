@@ -240,7 +240,7 @@ step; all other variables will remain in the dataset but will be set to
 **2. Convert SUVR to Centiloid**
 
 The second step uses
-[`admiral::derive_extreme_records()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_extreme_records.html)
+[`admiral::derive_extreme_records()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_extreme_records.html)
 to add new analysis records in which the original `SUVR` values are
 converted into Centiloid using
 [`admiralneuro::compute_centiloid()`](https://pharmaverse.github.io/admiralneuro/dev/reference/compute_centiloid.md).
@@ -366,11 +366,11 @@ the pathology-based definition of amyloid positivity (Navitsky *et al.*,
 Centiloid \< 24.1 is considered amyloid negative.
 
 To do this, we will use the
-[`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/derive_vars_crit_flag.html)
+[`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_crit_flag.html)
 function. Since we want to derive these flags specifically for the
 Centiloid parameters, we will apply the derivation only to those records
 using
-[`admiral::restrict_derivation()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/restrict_derivation.html).
+[`admiral::restrict_derivation()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/restrict_derivation.html).
 
 ``` r
 adapet <- adapet %>%

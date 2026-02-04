@@ -75,7 +75,7 @@ compute_centiloid(
 
   SUVR value
 
-  A numeric value is expected.
+  A positive numeric value is expected.
 
   Permitted values
 

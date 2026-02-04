@@ -102,7 +102,7 @@ developer community:
 ## Example Datasets
 
 You can run
-[`admiral::use_ad_template()`](https:/pharmaverse.github.io/admiral/v1.4.0/cran-release/reference/use_ad_template.html)
+[`admiral::use_ad_template()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/use_ad_template.html)
 to produce additional datasets
 
 - [`admiralneuro_adapet`](https://pharmaverse.github.io/admiralneuro/dev/reference/admiralneuro_adapet.md)

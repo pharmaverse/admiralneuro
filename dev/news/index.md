@@ -2,6 +2,14 @@
 
 ## admiralneuro (development version)
 
+### Updates of Existing Functions
+
+- Improved test coverage in
+  [`compute_centiloid()`](https://pharmaverse.github.io/admiralneuro/dev/reference/compute_centiloid.md)
+  function when invalid tracer combination is provided. The function
+  also now only accepts positive SUVR values.
+  ([\#106](https://github.com/pharmaverse/admiralneuro/issues/106))
+
 ### New features
 
 - The function
@@ -26,6 +34,7 @@
   [admiralneuro](https://pharmaverse.github.io/admiralneuro/) to
   [pharmaversesdtm](https://pharmaverse.github.io/pharmaversesdtm/).
   ([\#92](https://github.com/pharmaverse/admiralneuro/issues/92))
+
 - Updated the kapa.ai `data-modal-search-placeholder` to “Ask me a
   question about {admiralneuro} or the {admiral} ecosystem…”
   ([\#119](https://github.com/pharmaverse/admiralneuro/issues/119))
