@@ -5,6 +5,13 @@
 - Improved test coverage in `compute_centiloid()` function when invalid tracer combination is provided. The 
 function also now only accepts positive SUVR values. (#106)
 
+<details>
+<summary>Developer Notes</summary>
+
+- Aligned the templates' save directory with `{pharmaverseadam}` requirements. (#91)
+
+</details>
+
 ## New features
 
 - The function `compute_upsit_percentile()` calculates percentiles based on age, sex, and UPSIT scores. (# 95)
