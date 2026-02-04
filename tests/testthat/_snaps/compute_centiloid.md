@@ -42,3 +42,18 @@
 
     Argument `custom_intercept` must be a numeric vector, but it is a string.
 
+# Test 15 compute_centiloid() throws the expected error message when non-valid combination for conversion formula is used
+
+    No standard conversion formula available for:
+    * tracer = "18F-Florbetapir"
+    * pipeline = "AVID FBB SUVR PIPELINE"
+    * ref_region = "Whole Cerebellum"
+
+# Test 16 compute_centiloid throws error for non-positive SUVR values
+
+    `suvr` must be a positive numeric value. Found non-positive values: 0.
+
+---
+
+    `suvr` must be a positive numeric value. Found non-positive values: -1.5.
+
