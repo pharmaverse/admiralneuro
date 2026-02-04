@@ -1,4 +1,4 @@
-# admiralneuro (development version)
+# admiralneuro
 
 ## Updates of Existing Functions
 
