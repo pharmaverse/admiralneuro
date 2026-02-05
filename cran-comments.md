@@ -1,1 +1,1 @@
-This is the first release of the package.
+This is the 2nd release of the package.
