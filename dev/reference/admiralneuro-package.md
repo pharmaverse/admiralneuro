@@ -17,6 +17,8 @@ Useful links:
 
 - <https://github.com/pharmaverse/admiralneuro>
 
+- Report bugs at <https://github.com/pharmaverse/admiralneuro/issues>
+
 ## Author
 
 **Maintainer**: Jian Wang <wang_jian_wj@lilly.com>
