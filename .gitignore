@@ -53,3 +53,5 @@ docs/
 
 # CRAN release help file
 CRAN-SUBMISSION
+/doc/
+/Meta/
