@@ -1,7 +1,7 @@
 Type: Package
 Package: admiralneuro
 Title: Neuroscience Extension Package for ADaM in 'R' Asset Library
-Version: 0.2.1
+Version: 0.2.1.9000
 Authors@R: c(
     person("Jian", "Wang", , "wang_jian_wj@lilly.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0002-4677-3781")),
@@ -35,9 +35,9 @@ Description: Programming neuroscience specific Clinical Data Standards
     <https://www.cdisc.org/standards/foundational/adam>). This package
     extends the 'admiral' package.
 License: Apache License (>= 2)
-BugReports: https://github.com/pharmaverse/admiralneuro/issues
 URL: https://pharmaverse.github.io/admiralneuro/,
     https://github.com/pharmaverse/admiralneuro
+BugReports: https://github.com/pharmaverse/admiralneuro/issues
 Depends: 
     R (>= 4.1)
 Imports:
