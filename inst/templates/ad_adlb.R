@@ -20,11 +20,7 @@ library(stringr)
 set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 
 # Load source datasets ----
-
-# Use e.g. `haven::read_sas()` to read in .sas7bdat, or other suitable functions
-# as needed and assign to the variables below.
-# For illustration purposes read in pharmaversesdtm and admiralneuro neuro test data
-# nv <- pharmaversesdtm::nv_neuro
+# For illustration purposes read in pharmaversesdtm test data
 lb_neuro <- pharmaversesdtm::lb_neuro
 admiralneuro_adsl <- admiralneuro::adsl_neuro
 
@@ -35,15 +31,14 @@ admiralneuro_adsl <- admiralneuro::adsl_neuro
 adlb <- convert_blanks_to_na(lb_neuro)
 adsl <- convert_blanks_to_na(admiralneuro_adsl)
 
-
 # Lookup tables ----
 
 # Assign PARAMCD, PARAM, and PARAMN
 param_lookup <- tibble::tribble(
   ~LBTESTCD, ~PARAMCD, ~PARAM, ~PARAMN,
   "PTAU217", "PTAU217", "Lumipulse G pTau 217 Plasma (pg/mL)", 1,
-  "AMYLB42",  "AMYLB42", "Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)", 2,
-  "PTAB42R",  "PTAB42R", "Lumipulse G pTau 217/Beta-Amyloid 1-42 Plasma Ratio", 3,
+  "AMYLB42", "AMYLB42", "Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)", 2,
+  "PTAB42R", "PTAB42R", "Lumipulse G pTau 217/Beta-Amyloid 1-42 Plasma Ratio", 3,
   "ASYNASAA", "ASYNASAA", "Alpha Synuclein Seed Amplification Assay (CSF)", 4
 )
 
@@ -54,19 +49,19 @@ adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
 adlb <- adlb %>%
   ## Join ADSL with LB (need TRTSDT for ADY derivation) ----
-derive_vars_merged(
-  dataset_add = adsl,
-  new_vars = adsl_vars,
-  by_vars = get_admiral_option("subject_keys")
-)
+  derive_vars_merged(
+    dataset_add = adsl,
+    new_vars = adsl_vars,
+    by_vars = get_admiral_option("subject_keys")
+  )
 
 adlb <- adlb %>%
   ## Add PARAMCD and PARAM ----
-derive_vars_merged_lookup(
-  dataset_add = param_lookup,
-  new_vars = exprs(PARAMCD, PARAM, PARAMN),
-  by_vars = exprs(LBTESTCD)
-)
+  derive_vars_merged_lookup(
+    dataset_add = param_lookup,
+    new_vars = exprs(PARAMCD, PARAM, PARAMN),
+    by_vars = exprs(LBTESTCD)
+  )
 
 # Derive Date/Time and Analysis Day ----
 # See the "Derive/Impute Numeric Date/Time and Analysis Day" vignette section
@@ -103,26 +98,26 @@ adlb <- adlb %>%
 # Derive AVAL and AVALC and define parameter categories
 adlb <- adlb %>%
   mutate(
-        LBSTRESN2 = case_when(
-          PARAMN == 1 ~ round(LBSTRESN,4),
-          PARAMN == 2 ~ round(LBSTRESN,1),
-          PARAMN == 3 ~ round(LBSTRESN,5),
-          PARAMN == 4 ~ LBSTRESN,
-          TRUE ~ NA
-        ),
-        AVAL = LBSTRESN,
-        # Only populate AVALC if character value is non-redundant with AVAL
-        AVALC = if_else(
-          is.na(AVAL) | as.character(signif(LBSTRESN2,5)) != LBSTRESC,
-          LBSTRESC,
-          NA_character_
-        ),
-        ANRLO = LBSTNRLO,
-        ANRHI = LBSTNRHI
-)
+    LBSTRESN2 = case_when(
+      PARAMN == 1 ~ round(LBSTRESN, 4),
+      PARAMN == 2 ~ round(LBSTRESN, 1),
+      PARAMN == 3 ~ round(LBSTRESN, 5),
+      PARAMN == 4 ~ LBSTRESN,
+      TRUE ~ NA
+    ),
+    AVAL = LBSTRESN,
+    # Only populate AVALC if character value is non-redundant with AVAL
+    AVALC = if_else(
+      is.na(AVAL) | as.character(signif(LBSTRESN2, 5)) != LBSTRESC,
+      LBSTRESC,
+      NA_character_
+    ),
+    ANRLO = LBSTNRLO,
+    ANRHI = LBSTNRHI
+  )
 
 ## Domain-specific derivations ----
-
+# To be added in the future for more parameters
 
 ## Calculate ONTRTFL ----
 adlb <- adlb %>%
@@ -163,16 +158,16 @@ adlb <- adlb %>%
     filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
   ) %>%
   ### ANL02FL: Flag last result within a PARAMCD for baseline & on-treatment post-baseline records ----
-restrict_derivation(
-  derivation = derive_var_extreme_flag,
-  args = params(
-    new_var = ANL02FL,
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, ABLFL)),
-    order = exprs(ADT),
-    mode = "last"
-  ),
-  filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
-)
+  restrict_derivation(
+    derivation = derive_var_extreme_flag,
+    args = params(
+      new_var = ANL02FL,
+      by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, ABLFL)),
+      order = exprs(ADT),
+      mode = "last"
+    ),
+    filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+  )
 
 ## Derive baseline information ----
 
@@ -184,23 +179,23 @@ adlb <- adlb %>%
     new_var = BASE
   ) %>%
   ### Calculate BASEC ----
-derive_var_base(
-  by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
-  source_var = AVALC,
-  new_var = BASEC
-) %>%
+  derive_var_base(
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
+    source_var = AVALC,
+    new_var = BASEC
+  ) %>%
   ### Calculate CHG for post-baseline records ----
-# The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
-restrict_derivation(
-  derivation = derive_var_chg,
-  filter = AVISITN > 0
-) %>%
+  # The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
+  restrict_derivation(
+    derivation = derive_var_chg,
+    filter = AVISITN > 0
+  ) %>%
   ### Calculate PCHG for post-baseline records ----
-# The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
-restrict_derivation(
-  derivation = derive_var_pchg,
-  filter = AVISITN > 0
-)
+  # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
+  restrict_derivation(
+    derivation = derive_var_pchg,
+    filter = AVISITN > 0
+  )
 
 ## Assign ASEQ ----
 adlb <- adlb %>%
@@ -213,8 +208,6 @@ adlb <- adlb %>%
 
 # Final Steps, Select final variables and Add labels ----
 # This process will be based on your metadata, no example given for this reason
-
-
 
 # Save output ----
 

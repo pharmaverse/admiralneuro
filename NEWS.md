@@ -23,6 +23,7 @@ function also now only accepts positive SUVR values. (#106)
 ## Template programs
 
 - ADNV template scripts `ad_adnv.R` which creates a Nervous System Analysis Dataset. (#113)
+- ADLB template scripts `ad_adlb.R` which creates a Lab Analysis Dataset. (#119)
 
 ## Various
 
