@@ -1,6 +1,6 @@
 # Name: ADLB
 #
-# Label: Laboratory Analysis dataset for neuroscience
+# Label: Laboratory Analysis Dataset for Neuroscience
 #
 # Description: This template focuses on neuroscience specific derivations. For additional
 # often found in `ADLB` view the `admiral` template by running `admiral::use_ad_template("adlb")`.
@@ -13,6 +13,7 @@ library(pharmaversesdtm) # Contains example datasets from the CDISC pilot projec
 library(dplyr)
 library(lubridate)
 library(stringr)
+options(scipen = 999) #turn off scientific notation
 
 # Define project options/variables ----
 # Use the admiral option functionality to store subject key variables in one
@@ -68,7 +69,7 @@ adlb <- adlb %>%
 # for more information:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#datetime)
 
-# Add analysis date (ADT) and treatment start date (TRTSDT)
+# Add analysis date (ADT)
 adlb <- adlb %>%
   derive_vars_dt(new_vars_prefix = "A", dtc = LBDTC) %>%
   derive_vars_dy(reference_date = TRTSDT, source_vars = exprs(ADT))
@@ -114,10 +115,8 @@ adlb <- adlb %>%
     ),
     ANRLO = LBSTNRLO,
     ANRHI = LBSTNRHI
-  )
-
-## Domain-specific derivations ----
-# To be added in the future for more parameters
+  ) %>%
+  select(!LBSTRESN2)
 
 ## Calculate ONTRTFL ----
 adlb <- adlb %>%
@@ -128,9 +127,7 @@ adlb <- adlb %>%
     filter_pre_timepoint = toupper(AVISIT) == "BASELINE" # Observations as not on-treatment
   )
 
-### Derive Baseline flags ----
-
-### Calculate ABLFL ----
+### Derive Baseline flags ABLFL ----
 adlb <- adlb %>%
   restrict_derivation(
     derivation = derive_var_extreme_flag,
@@ -143,7 +140,7 @@ adlb <- adlb %>%
     filter = ((!is.na(AVAL) | !is.na(AVALC)) & ADT <= TRTSDT & !is.na(BASETYPE))
   )
 
-## Derive visit flags ----
+## Derive analysis flags based on visit----
 
 ### ANL01FL: Flag last result within a visit and timepoint for baseline and on-treatment post-baseline records ----
 adlb <- adlb %>%
@@ -197,7 +194,7 @@ adlb <- adlb %>%
     filter = AVISITN > 0
   )
 
-## Assign ASEQ ----
+## Assign ASEQ (Optional Variable) ----
 adlb <- adlb %>%
   derive_var_obs_number(
     new_var = ASEQ,
