@@ -331,8 +331,8 @@ The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.githu
 
 | ADaM   | Sourcing Command                                               |
 |--------|----------------------------------------------------------------|
-| ADTPET | `admiral::use_ad_template("ADTPET", package = "admiralneuro")` |
-| ADAPET | `admiral::use_ad_template("ADAPET", package = "admiralneuro")` |
+| [`ADTPET`](templates.html#adtpet) | `admiral::use_ad_template("ADTPET", package = "admiralneuro")` |
+| [`ADAPET`](templates.html#adapet) | `admiral::use_ad_template("ADAPET", package = "admiralneuro")` |
 
 ## References
 
