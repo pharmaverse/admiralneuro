@@ -221,7 +221,7 @@ dataset_vignette(adnv_flags %>% arrange(USUBJID, ADT), display_vars = exprs(USUB
 
 ## Remaining Analysis Dataset Set-up {#dataset_end}
 
-The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html) covers all the steps that are not shown here, such as merging the timing variables, analysis flags, baseline derivations, change from baseline calculations, etc.
+The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html) covers all the steps that are not shown here, such as merging the timing variables, analysis flags, baseline derivations, change from baseline calculations, etc.
 
 # Example Scripts
 
