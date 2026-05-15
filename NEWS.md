@@ -5,7 +5,7 @@
 - Added a new vignette "Explore ADaM Templates" to the "Get Started" menu.
 It displays the `{admiralneuro}` templates. (#126)
 
-# admiralneuro 0.2.1.9000
+# admiralneuro 0.2.1
 
 ## Updates of Existing Functions
 
