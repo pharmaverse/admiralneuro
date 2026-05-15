@@ -24,6 +24,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Jian Wang \email{wang_jian_wj@lilly.com} (\href{https://orcid.org/0009-0002-4677-3781}{ORCID})
   \item Miles Almond (\href{https://orcid.org/0009-0007-1784-0355}{ORCID})
   \item Xiao Chen (\href{https://orcid.org/0009-0000-6959-5151}{ORCID})
   \item Fanny Gautier (\href{https://orcid.org/0009-0004-3581-0131}{ORCID})
