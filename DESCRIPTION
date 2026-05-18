@@ -77,3 +77,4 @@ LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("collate", "namespace",
     "admiraldev::rdx_roclet"))
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 8.0.0

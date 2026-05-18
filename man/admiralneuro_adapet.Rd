@@ -14,7 +14,7 @@ admiralneuro_adapet
 An updated ADaM ADAPET dataset using NV, AG, SUPPNV, ADSL
 }
 \seealso{
-Other datasets:
+Other datasets: 
 \code{\link{admiralneuro_adtpet}},
 \code{\link{adsl_neuro}}
 }

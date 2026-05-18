@@ -14,7 +14,7 @@ adsl_neuro
 An updated ADaM ADSL dataset with Alzheimer's Disease patients
 }
 \seealso{
-Other datasets:
+Other datasets: 
 \code{\link{admiralneuro_adapet}},
 \code{\link{admiralneuro_adtpet}}
 }
