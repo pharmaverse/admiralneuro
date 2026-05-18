@@ -13,5 +13,6 @@ exclusions <- list(
   "inst" = list(undesirable_function_linter = Inf),
   "R/assertions.R" = list(undesirable_function_linter = Inf),
   "vignettes" = list(undesirable_function_linter = Inf),
-  "data-raw" = list(undesirable_function_linter = Inf)
+  "data-raw" = list(undesirable_function_linter = Inf),
+  "R/admiralneuro-package.R" = list(undesirable_function_linter = Inf)
 )
