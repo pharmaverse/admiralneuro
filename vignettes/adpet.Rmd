@@ -23,7 +23,7 @@ This article describes the creation of PET Scan ADaMs.
 
 We recommend splitting out amyloid and tau into two distinct ADaM datasets. The vignette presents a combined approach for the initial setup, parameter mapping and finals steps. It then splits into separate sections for each data type, as they require different processes: starting with `ADTPET` (Tau PET Scan Analysis Dataset), followed by `ADAPET` (Amyloid PET Scan Analysis Dataset).
 
-We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html). The programming workflow around creating the general set-up of a BDS ADaM dataset using `{admiral}` functions is the same. In this vignette, we focus on the neuro-specific steps to avoid repeating information and maintaining the same content in two places. As such, the code in this vignette is not completely executable; we recommend consulting the `ADTPET` and `ADAPET` template scripts to view the full workflow.
+We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html). The programming workflow around creating the general set-up of a BDS ADaM dataset using `{admiral}` functions is the same. In this vignette, we focus on the neuro-specific steps to avoid repeating information and maintaining the same content in two places. As such, the code in this vignette is not completely executable; we recommend consulting the `ADTPET` and `ADAPET` template scripts to view the full workflow.
 
 **Note**: *All examples assume CDISC SDTM and/or ADaM format as input unless otherwise specified.*
 
@@ -79,7 +79,7 @@ nv_suppnv <- combine_supp(nv, suppnv)
 
 ## Initial PET Scan Analysis Dataset Set-up {#adpet_setup}
 
-The following steps are used to merge `ADSL` variables with the source data `NV` (previously combined with `SUPPNV`), along with tracer information from the `AG` dataset, without distinguishing between Tau and Amyloid data at this stage. This distinction will be made later. Common analysis variables such as Analysis Date (`ADT`) and Relative Analysis Day (`ADY`) can also be derived during this process. Note that only the sections relevant to this vignette are included in the steps below. To get a detailed guidance on all the steps, refer the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+The following steps are used to merge `ADSL` variables with the source data `NV` (previously combined with `SUPPNV`), along with tracer information from the `AG` dataset, without distinguishing between Tau and Amyloid data at this stage. This distinction will be made later. Common analysis variables such as Analysis Date (`ADT`) and Relative Analysis Day (`ADY`) can also be derived during this process. Note that only the sections relevant to this vignette are included in the steps below. To get a detailed guidance on all the steps, refer the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html).
 
 ```{r, message=FALSE, warning=FALSE}
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
@@ -325,7 +325,7 @@ dataset_vignette(adapet_flags %>% arrange(USUBJID, ADT), display_vars = exprs(US
 
 ## Remaining PET Scan Analysis Dataset Set-up {#dataset_end}
 
-The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html) covers all the steps that are not shown here, such as merging the timing variables, analysis flags, etc.
+The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html) covers all the steps that are not shown here, such as merging the timing variables, analysis flags, etc.
 
 # Example Scripts
 
