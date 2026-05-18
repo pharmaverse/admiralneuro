@@ -22,7 +22,7 @@ This article describes the creation of the `ADNV` (Nervous System Analysis Datas
 
 The `ADNV` dataset focuses on olfactory function assessments, specifically the University of Pennsylvania Smell Identification Test (UPSIT). This vignette demonstrates the neuro-specific steps for creating this BDS finding dataset.
 
-We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html). The programming workflow around creating the general set-up of a BDS ADaM dataset using `{admiral}` functions is the same. In this vignette, we focus on the neuro-specific steps to avoid repeating information and maintaining the same content in two places. As such, the code in this vignette is not completely executable; we recommend consulting the `ADNV` template script to view the full workflow.
+We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html). The programming workflow around creating the general set-up of a BDS ADaM dataset using `{admiral}` functions is the same. In this vignette, we focus on the neuro-specific steps to avoid repeating information and maintaining the same content in two places. As such, the code in this vignette is not completely executable; we recommend consulting the `ADNV` template script to view the full workflow.
 
 **Note**: *All examples assume CDISC SDTM and/or ADaM format as input unless otherwise specified.*
 
@@ -63,7 +63,7 @@ adsl <- admiralneuro::adsl_neuro %>%
 
 ## Initial Setup {#adnv_setup}
 
-The following steps are used to merge `ADSL` variables with the source data `NV`,  followed with filtering to retain only UPSIT records. Common analysis variables such as Analysis Date (`ADT`) and Relative Analysis Day (`ADY`) can also be derived during this process. Note that only the sections relevant to this vignette are included in the steps below. To get detailed guidance on all the steps, refer to the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+The following steps are used to merge `ADSL` variables with the source data `NV`,  followed with filtering to retain only UPSIT records. Common analysis variables such as Analysis Date (`ADT`) and Relative Analysis Day (`ADY`) can also be derived during this process. Note that only the sections relevant to this vignette are included in the steps below. To get detailed guidance on all the steps, refer to the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html).
 
 
 
@@ -221,7 +221,7 @@ dataset_vignette(adnv_flags %>% arrange(USUBJID, ADT), display_vars = exprs(USUB
 
 ## Remaining Analysis Dataset Set-up {#dataset_end}
 
-The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html) covers all the steps that are not shown here, such as merging the timing variables, analysis flags, baseline derivations, change from baseline calculations, etc.
+The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html) covers all the steps that are not shown here, such as merging the timing variables, analysis flags, baseline derivations, change from baseline calculations, etc.
 
 # Example Scripts
 
