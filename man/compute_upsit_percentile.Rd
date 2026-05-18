@@ -67,8 +67,8 @@ Pennsylvania Smell Identification Test in Adults 50 Years of Age and Older.
 \doi{10.1212/WNL.0000000000201463}
 }
 \seealso{
-Other com_bds_findings: 
-\code{\link{compute_centiloid}()}
+Other com_bds_findings:
+\code{\link[=compute_centiloid]{compute_centiloid()}}
 }
 \concept{com_bds_findings}
 \keyword{com_bds_findings}
