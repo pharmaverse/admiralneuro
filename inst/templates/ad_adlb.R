@@ -13,7 +13,7 @@ library(pharmaversesdtm) # Contains example datasets from the CDISC pilot projec
 library(dplyr)
 library(lubridate)
 library(stringr)
-options(scipen = 999) #turn off scientific notation
+options(scipen = 999) # turn off scientific notation
 
 # Define project options/variables ----
 # Use the admiral option functionality to store subject key variables in one
@@ -117,6 +117,25 @@ adlb <- adlb %>%
     ANRHI = LBSTNRHI
   ) %>%
   select(!LBSTRESN2)
+
+
+# Derive domain specific parameters ----
+# See the "Derive Additional Parameters" vignette section for general
+# information about domain specific parameters:
+# (https://pharmaverse.github.io/admiral/articles/bds_finding.html#derive_param)
+
+# Derive LOG-tranformed AMYLB42 for further plot and analysis
+adlb <- adlb %>%
+  derive_param_computed(
+    by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
+    parameters = "AMYLB42",
+    set_values_to = exprs(
+      AVAL = log(AVAL.AMYLB42),
+      PARAMCD = "LOG(AMYLB42)",
+      PARAM = "LOG-Transform Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
+      PARAMN = 5
+    )
+  )
 
 ## Calculate ONTRTFL ----
 adlb <- adlb %>%
