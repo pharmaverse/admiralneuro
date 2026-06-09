@@ -1,8 +1,12 @@
-# admiralneuro (development version)
+# admiralneuro 0.3.0
+
+## Documentation
+
+- Vignette "Creating ADLB". (#115)
 
 ## Template programs
 
-- ADLB template scripts `ad_adlb.R` which creates a Laboratory Analysis Dataset. (#119)
+- ADLB template scripts `ad_adlb.R` which creates a Laboratory Analysis Dataset. (#117)
 
 # admiralneuro 0.2.1.
 
