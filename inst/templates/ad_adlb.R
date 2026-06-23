@@ -124,7 +124,7 @@ adlb <- adlb %>%
 # information about domain specific parameters:
 # (https://pharmaverse.github.io/admiral/articles/bds_finding.html#derive_param)
 
-# Derive LOG-tranformed AMYLB42 for further plot and analysis
+# Derive log transformed AMYLB42 for further plot and analysis
 adlb <- adlb %>%
   derive_param_computed(
     by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
