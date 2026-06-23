@@ -45,7 +45,7 @@ library(stringr)
 -   [Define Lookup Tables](#lookups)
 -   [Derive Core ADLB Variables](#derive_core)
 -   [Derive Visit Information](#derive_visits)
--   [Derive Log Tranformation of Biomarkers](#neuro_params)
+-   [Derive Log Transformation of Biomarkers](#neuro_params)
 -   [Remaining ADLB Set-up](#adlb_end)
 -   [Example Script](#example)
 
@@ -152,7 +152,7 @@ dataset_vignette(
 
 For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
 
-## Derive Log Tranformation of Biomarkers {#neuro_params}
+## Derive Log Transformation of Biomarkers {#neuro_params}
 
 In addition to the core ADLB variables, log transformation of fluid biomarker values are essential for further analysis and graphing as they are typically skewed.
 
