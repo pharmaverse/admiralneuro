@@ -2,10 +2,12 @@ url: https://pharmaverse.github.io/admiralneuro
 
 template:
   bootstrap: 5
+  light-switch: true
   math-rendering: mathjax
   params:
     bootswatch: flatly
   includes:
+    css: pkgdown/extra.css
     in_header: |
       <script
       async
@@ -24,6 +26,22 @@ template:
       data-modal-z-index="9999"
       data-modal-search-placeholder="Ask me a question about {admiralneuro} or the {admiral} ecosystem..."
       ></script>
+
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Select all navbar links that have an aria-label
+        var navLinks = document.querySelectorAll('.navbar-nav .nav-link[aria-label]');
+
+        navLinks.forEach(function (link) {
+          // Initialize Bootstrap 5 Tooltip
+          link.setAttribute('title', link.getAttribute('aria-label'));
+          new bootstrap.Tooltip(link, {
+            placement: 'bottom', // Tooltip appears below the icon
+            trigger: 'hover'
+          });
+        });
+      });
+      </script>
 search:
   exclude: ['news/index.html']
 repo:
@@ -69,7 +87,7 @@ reference:
 navbar:
   structure:
     left: [getstarted, reference, articles, news]
-    right: [search, slack, history, newissue, github]
+    right: [search, slack, history, newissue, github, lightswitch]
   components:
     getstarted:
       text: Get Started
@@ -89,8 +107,8 @@ navbar:
     slack:
       icon: fa-slack
       href: https://pharmaverse.slack.com/
-      aria-label: Slack
+      aria-label: Join the pharmaverse Slack!
     newissue:
       icon: fa-bug
       href: https://github.com/pharmaverse/admiralneuro/issues/new/choose
-      aria-label: New Issue
+      aria-label: Report an issue
