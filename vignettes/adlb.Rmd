@@ -153,7 +153,7 @@ For deriving visits based on time-windows, see `{admiral}` [Visit and Period Var
 
 ## Derive Log Transformation of Biomarkers {#neuro_params}
 
-In addition to the core ADLB variables, log transformation of fluid biomarker values are essential for further analysis and graphing as they are typically skewed.
+In addition to the core ADLB variables, log transformation of fluid biomarkers values are essential for further analysis and graphing as they are typically skewed.
 
 
 ```{r}
