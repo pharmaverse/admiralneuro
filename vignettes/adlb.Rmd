@@ -84,8 +84,8 @@ For the derivation of analysis values, various variable types and significant fi
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
-adlb <- adlb %>%
-  ## Join ADSL with lab data (need TRTSDT for ADY derivation) ----
+adlb <- lb %>%
+  ## Join ADSL with LB data (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
