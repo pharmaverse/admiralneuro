@@ -28,8 +28,8 @@ admiralneuro_adsl <- admiralneuro::adsl_neuro
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
 # as NA values. Further details can be obtained via the following link:
-# https://pharmaverse.github.io/admiral/articles/admiral.html#handling-of-missing-values # nolint
-adlb <- convert_blanks_to_na(lb_neuro)
+# https://pharmaverse.github.io/admiral/main/articles/concepts_conventions.html#missing # nolint
+lb <- convert_blanks_to_na(lb_neuro)
 adsl <- convert_blanks_to_na(admiralneuro_adsl)
 
 # Lookup tables ----
@@ -48,26 +48,26 @@ param_lookup <- tibble::tribble(
 # Get list of ADSL vars required for derivations
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
-adlb <- adlb %>%
+adlb <- lb %>%
   ## Join ADSL with LB (need TRTSDT for ADY derivation) ----
-  derive_vars_merged(
-    dataset_add = adsl,
-    new_vars = adsl_vars,
-    by_vars = get_admiral_option("subject_keys")
-  )
+derive_vars_merged(
+  dataset_add = adsl,
+  new_vars = adsl_vars,
+  by_vars = get_admiral_option("subject_keys")
+)
 
 adlb <- adlb %>%
   ## Add PARAMCD and PARAM ----
-  derive_vars_merged_lookup(
-    dataset_add = param_lookup,
-    new_vars = exprs(PARAMCD, PARAM, PARAMN),
-    by_vars = exprs(LBTESTCD)
-  )
+derive_vars_merged_lookup(
+  dataset_add = param_lookup,
+  new_vars = exprs(PARAMCD, PARAM, PARAMN),
+  by_vars = exprs(LBTESTCD)
+)
 
 # Derive Date/Time and Analysis Day ----
 # See the "Derive/Impute Numeric Date/Time and Analysis Day" vignette section
 # for more information:
-# (https://pharmaverse.github.io/admiral/articles/bds_finding.html#datetime)
+# (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#datetime)
 
 # Add analysis date (ADT)
 adlb <- adlb %>%
@@ -76,7 +76,7 @@ adlb <- adlb %>%
 
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
-# (https://pharmaverse.github.io/admiral/articles/visits_periods.html#visits)
+# (https://pharmaverse.github.io/admiral/main/articles/visits_periods.html#visits)
 # Derive analysis visit (AVISIT, AVISITN)
 adlb <- adlb %>%
   mutate(
@@ -94,7 +94,7 @@ adlb <- adlb %>%
 
 # Derive results ----
 # See the "Derive Results (AVAL, AVALC)" vignette section for more information:
-# (https://pharmaverse.github.io/admiral/articles/bds_finding.html#aval)
+# (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#aval)
 
 # Derive AVAL and AVALC and define parameter categories
 adlb <- adlb %>%
@@ -122,16 +122,16 @@ adlb <- adlb %>%
 # Derive domain specific parameters ----
 # See the "Derive Additional Parameters" vignette section for general
 # information about domain specific parameters:
-# (https://pharmaverse.github.io/admiral/articles/bds_finding.html#derive_param)
+# (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#derive_param)
 
-# Derive log transformed AMYLB42 for further plot and analysis
+# Derive LOG-tranformed AMYLB42 for further plot and analysis
 adlb <- adlb %>%
   derive_param_computed(
     by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
     parameters = "AMYLB42",
     set_values_to = exprs(
       AVAL = log(AVAL.AMYLB42),
-      PARAMCD = "LOG(AMYLB42)",
+      PARAMCD = "LAMYLB42",
       PARAM = "LOG-Transform Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
       PARAMN = 5
     )
@@ -174,16 +174,16 @@ adlb <- adlb %>%
     filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
   ) %>%
   ### ANL02FL: Flag last result within a PARAMCD for baseline & on-treatment post-baseline records ----
-  restrict_derivation(
-    derivation = derive_var_extreme_flag,
-    args = params(
-      new_var = ANL02FL,
-      by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, ABLFL)),
-      order = exprs(ADT),
-      mode = "last"
-    ),
-    filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
-  )
+restrict_derivation(
+  derivation = derive_var_extreme_flag,
+  args = params(
+    new_var = ANL02FL,
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, ABLFL)),
+    order = exprs(ADT),
+    mode = "last"
+  ),
+  filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+)
 
 ## Derive baseline information ----
 
@@ -195,23 +195,23 @@ adlb <- adlb %>%
     new_var = BASE
   ) %>%
   ### Calculate BASEC ----
-  derive_var_base(
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
-    source_var = AVALC,
-    new_var = BASEC
-  ) %>%
+derive_var_base(
+  by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
+  source_var = AVALC,
+  new_var = BASEC
+) %>%
   ### Calculate CHG for post-baseline records ----
-  # The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
-  restrict_derivation(
-    derivation = derive_var_chg,
-    filter = AVISITN > 0
-  ) %>%
+# The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
+restrict_derivation(
+  derivation = derive_var_chg,
+  filter = AVISITN > 0
+) %>%
   ### Calculate PCHG for post-baseline records ----
-  # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
-  restrict_derivation(
-    derivation = derive_var_pchg,
-    filter = AVISITN > 0
-  )
+# The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
+restrict_derivation(
+  derivation = derive_var_pchg,
+  filter = AVISITN > 0
+)
 
 ## Assign ASEQ (Optional Variable) ----
 adlb <- adlb %>%
