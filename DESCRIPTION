@@ -21,6 +21,8 @@ Authors@R: c(
     person("Eric", "Nantz", role = "aut"),
     person("Lina", "Patil", role = "aut"),
     person("Chris", "Pelentrides", role = "aut"),
+    person("Katie", "Withycombe", role = "aut",
+           comment = c(ORCID = "0009-0005-5376-1932")),
     person("Eli Lilly and Company", role = c("cph", "fnd")),
     person("Cytel Inc.", role = c("cph", "fnd")),
     person("F. Hoffmann-La Roche AG", role = c("cph", "fnd"))
