@@ -21,7 +21,7 @@ library(admiraldev)
 
 This article describes creating a laboratory ADaM for neuroscience clinical trials.
 
-We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/main/articles/bds_finding.html).
 The programming workflow around creating the general set-up of an `ADLB` using `{admiral}` functions is the same. 
 In this vignette, we focus on common ADLB derivations in neuroscience studies and avoid repeating information and maintaining the same content in two places. 
 
@@ -44,7 +44,6 @@ library(stringr)
 -   [Read in Data](#readdata)
 -   [Define Lookup Tables](#lookups)
 -   [Derive Core ADLB Variables](#derive_core)
--   [Derive Visit Information](#derive_visits)
 -   [Derive Log Transformation of Biomarkers](#neuro_params)
 -   [Remaining ADLB Set-up](#adlb_end)
 -   [Example Script](#example)
@@ -86,7 +85,7 @@ For the derivation of analysis values, various variable types and significant fi
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
 adlb <- adlb %>%
-  ## Join ADSL with LB (need TRTSDT for ADY derivation) ----
+  ## Join ADSL with lab data (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
@@ -150,7 +149,7 @@ dataset_vignette(
 )
 ```
 
-For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/articles/visits_periods.html).
+For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/main/articles/visits_periods.html).
 
 ## Derive Log Transformation of Biomarkers {#neuro_params}
 
@@ -165,7 +164,7 @@ adlb <- adlb %>%
     parameters = "AMYLB42",
     set_values_to = exprs(
       AVAL = log(AVAL.AMYLB42),
-      PARAMCD = "LOG(AMYLB42)",
+      PARAMCD = "LAMYLB42",
       PARAM = "LOG-Transform Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
       PARAMN = 5
     )
@@ -175,7 +174,7 @@ adlb <- adlb %>%
 ```{r echo=FALSE}
 # Example display of derived data
 dataset_vignette(
-  filter(adlb, PARAMCD == "LOG(AMYLB42)") %>%
+  filter(adlb, PARAMCD == "LAMYLB42") %>%
     arrange(USUBJID, ADY, PARAMN),
   display_vars = exprs(!!!get_admiral_option("subject_keys"), PARAMCD, PARAM, AVAL, ADY, AVISIT, AVISITN)
 )
@@ -183,7 +182,7 @@ dataset_vignette(
 
 ## Remaining ADLB Set-up {#adlb_end}
 
-The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html) describes further steps, including how to calculate baseline and change from baseline variables, add analysis flags (e.g., `ANL01FL`), handle reference ranges, categorizations, and other common ADLB requirements.
+The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/main/articles/bds_finding.html) describes further steps, including how to calculate baseline and change from baseline variables, add analysis flags (e.g., `ANL01FL`), handle reference ranges, categorizations, and other common ADLB requirements.
 
 # Example Scripts {#example}
 
