@@ -26,6 +26,9 @@ Useful links:
 
 Authors:
 
+- Jian Wang <wang_jian_wj@lilly.com>
+  ([ORCID](https://orcid.org/0009-0002-4677-3781))
+
 - Miles Almond ([ORCID](https://orcid.org/0009-0007-1784-0355))
 
 - Xiao Chen ([ORCID](https://orcid.org/0009-0000-6959-5151))
@@ -45,6 +48,8 @@ Authors:
 - Lina Patil
 
 - Chris Pelentrides
+
+- Katie Withycombe ([ORCID](https://orcid.org/0009-0005-5376-1932))
 
 Other contributors:
 

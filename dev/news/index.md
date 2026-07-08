@@ -1,6 +1,23 @@
 # Changelog
 
-## admiralneuro 0.2.1.9000
+## admiralneuro (development version)
+
+### Documentation
+
+- Added a new vignette “Explore ADaM Templates” to the “Get Started”
+  menu. It displays the
+  [admiralneuro](https://pharmaverse.github.io/admiralneuro/) templates.
+  ([\#126](https://github.com/pharmaverse/admiralneuro/issues/126))
+
+Developer Notes
+
+- Fixed links in the vignettes and added the Slack invitation link to
+  `.lycheeignore` for a successful CI/CD Links/Validate Links workflow
+  run. ([\#131](https://github.com/pharmaverse/admiralneuro/issues/131))
+
+## admiralneuro 0.2.1
+
+CRAN release: 2026-02-04
 
 ### Updates of Existing Functions
 

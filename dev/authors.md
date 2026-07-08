@@ -25,6 +25,9 @@
 
 - **Chris Pelentrides**. Author.
 
+- **Katie Withycombe**. Author.
+  [](https://orcid.org/0009-0005-5376-1932)
+
 - **[](https://www.lilly.com/)[![Eli Lilly and Company
   logo](reference/figures/eli_lilly_and_company_logo.png)](https://www.lilly.com/)**.
   Copyright holder, funder.
@@ -43,13 +46,13 @@ Source:
 [`DESCRIPTION`](https://github.com/pharmaverse/admiralneuro/blob/main/DESCRIPTION)
 
 Wang J, Almond M, Chen X, Gautier F, G. G, Jiang M, Khatri L, Mancini E,
-Nantz E, Patil L, Pelentrides C (2026). *admiralneuro: Neuroscience
-Extension Package for ADaM in 'R' Asset Library*. R package version
-0.2.1.9000, <https://pharmaverse.github.io/admiralneuro/>.
+Nantz E, Patil L, Pelentrides C, Withycombe K (2026). *admiralneuro:
+Neuroscience Extension Package for ADaM in 'R' Asset Library*. R package
+version 0.2.1.9000, <https://pharmaverse.github.io/admiralneuro/>.
 
     @Manual{,
       title = {admiralneuro: Neuroscience Extension Package for ADaM in 'R' Asset Library},
-      author = {Jian Wang and Miles Almond and Xiao Chen and Fanny Gautier and Gayatri G. and Meilin Jiang and Leena Khatri and Edoardo Mancini and Eric Nantz and Lina Patil and Chris Pelentrides},
+      author = {Jian Wang and Miles Almond and Xiao Chen and Fanny Gautier and Gayatri G. and Meilin Jiang and Leena Khatri and Edoardo Mancini and Eric Nantz and Lina Patil and Chris Pelentrides and Katie Withycombe},
       year = {2026},
       note = {R package version 0.2.1.9000},
       url = {https://pharmaverse.github.io/admiralneuro/},

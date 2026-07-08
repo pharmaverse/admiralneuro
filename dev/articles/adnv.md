@@ -13,7 +13,7 @@ creating this BDS finding dataset.
 We advise you first consult the
 [admiral](https://pharmaverse.github.io/admiral/) [Creating a BDS
 Finding ADaM
-vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html).
 The programming workflow around creating the general set-up of a BDS
 ADaM dataset using [admiral](https://pharmaverse.github.io/admiral/)
 functions is the same. In this vignette, we focus on the neuro-specific
@@ -77,7 +77,7 @@ sections relevant to this vignette are included in the steps below. To
 get detailed guidance on all the steps, refer to the
 [admiral](https://pharmaverse.github.io/admiral/) [Creating a BDS
 Finding ADaM
-vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html).
+vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html).
 
 ``` r
 adsl_vars <- exprs(AGE, SEX, TRTSDT, TRTEDT, TRT01A, TRT01P)
@@ -228,11 +228,11 @@ UPSIT percentile ≤ 10 is considered olfactory impairment, while UPSIT
 percentile \> 10 is considered normal olfactory function.
 
 To do this, we will use the
-[`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_crit_flag.html)
+[`admiral::derive_vars_crit_flag()`](https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/derive_vars_crit_flag.html)
 function. Since we want to derive these flags specifically for the UPSIT
 percentile parameter, we will apply the derivation only to those records
 using
-[`admiral::restrict_derivation()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/restrict_derivation.html).
+[`admiral::restrict_derivation()`](https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/restrict_derivation.html).
 
 ``` r
 adnv <- adnv %>%
@@ -254,16 +254,16 @@ This is how the criterion flags will look like:
 
 The [admiral](https://pharmaverse.github.io/admiral/) [Creating a BDS
 Finding ADaM
-vignette](https://pharmaverse.github.io/admiral/articles/bds_finding.html)
+vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html)
 covers all the steps that are not shown here, such as merging the timing
 variables, analysis flags, baseline derivations, change from baseline
 calculations, etc.
 
 ## Example Scripts
 
-| ADaM | Sourcing Command                                             |
-|------|--------------------------------------------------------------|
-| ADNV | `admiral::use_ad_template("ADNV", package = "admiralneuro")` |
+| ADaM   | Sourcing Command                                             |
+|--------|--------------------------------------------------------------|
+| `ADNV` | `admiral::use_ad_template("ADNV", package = "admiralneuro")` |
 
 ### References
 

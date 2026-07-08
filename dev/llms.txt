@@ -102,7 +102,7 @@ developer community:
 ## Example Datasets
 
 You can run
-[`admiral::use_ad_template()`](https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/use_ad_template.html)
+[`admiral::use_ad_template()`](https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/use_ad_template.html)
 to produce additional datasets
 
 - [`admiralneuro_adapet`](https://pharmaverse.github.io/admiralneuro/dev/reference/admiralneuro_adapet.md)
@@ -122,3 +122,5 @@ to produce additional datasets
   ADNV](https://pharmaverse.github.io/admiralneuro/dev/articles/adnv.md):
 - [Creating ADTPET and
   ADAPET](https://pharmaverse.github.io/admiralneuro/dev/articles/adpet.md):
+- [Explore the admiralneuro ADaM
+  Templates](https://pharmaverse.github.io/admiralneuro/dev/articles/templates.md):

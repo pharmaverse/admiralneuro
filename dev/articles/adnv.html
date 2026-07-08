@@ -18,8 +18,8 @@
     }
   };
 </script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Creating ADNV">
 <meta name="robots" content="noindex">
@@ -42,7 +42,13 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><a class="nav-link" href="../articles/admiralneuro.html">Get Started</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-get-started" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Get Started</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-get-started">
+<li><a class="dropdown-item" href="../articles/admiralneuro.html">Get Started</a></li>
+    <li><a class="dropdown-item" href="../articles/templates.html">Explore ADaM Templates 🧭</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-user-guides" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">User Guides</button>
@@ -100,7 +106,7 @@ System Analysis Dataset) ADaM.</p>
 assessments, specifically the University of Pennsylvania Smell
 Identification Test (UPSIT). This vignette demonstrates the
 neuro-specific steps for creating this BDS finding dataset.</p>
-<p>We advise you first consult the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+<p>We advise you first consult the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a>. The programming workflow around
 creating the general set-up of a BDS ADaM dataset using
 <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> functions is the same. In this vignette, we focus
@@ -150,10 +156,10 @@ utilize <code>NV</code> and <code>ADSL</code> for the basis of the
 Nervous System Analysis dataset.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nv</span> <span class="op">&lt;-</span> <span class="fu">pharmaversesdtm</span><span class="fu">::</span><span class="va"><a href="https://pharmaverse.github.io/pharmaversesdtm/reference/nv_neuro.html" class="external-link">nv_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">adsl</span> <span class="op">&lt;-</span> <span class="fu">admiralneuro</span><span class="fu">::</span><span class="va"><a href="../reference/adsl_neuro.html">adsl_neuro</a></span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/convert_blanks_to_na.html">convert_blanks_to_na</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="adnv_setup">Initial Setup<a class="anchor" aria-label="anchor" href="#adnv_setup"></a>
@@ -164,23 +170,23 @@ only UPSIT records. Common analysis variables such as Analysis Date
 (<code>ADT</code>) and Relative Analysis Day (<code>ADY</code>) can also
 be derived during this process. Note that only the sections relevant to
 this vignette are included in the steps below. To get detailed guidance
-on all the steps, refer to the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+on all the steps, refer to the <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adsl_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">AGE</span>, <span class="va">SEX</span>, <span class="va">TRTSDT</span>, <span class="va">TRTEDT</span>, <span class="va">TRT01A</span>, <span class="va">TRT01P</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">adnv</span> <span class="op">&lt;-</span> <span class="va">nv</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/derive_vars_merged.html">derive_vars_merged</a></span><span class="op">(</span></span>
 <span>    dataset_add <span class="op">=</span> <span class="va">adsl</span>,</span>
 <span>    new_vars <span class="op">=</span> <span class="va">adsl_vars</span>,</span>
 <span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">STUDYID</span>, <span class="va">USUBJID</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">NVTESTCD</span> <span class="op">==</span> <span class="st">"UPSIT"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_dt.html">derive_vars_dt</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/derive_vars_dt.html">derive_vars_dt</a></span><span class="op">(</span></span>
 <span>    new_vars_prefix <span class="op">=</span> <span class="st">"A"</span>,</span>
 <span>    dtc <span class="op">=</span> <span class="va">NVDTC</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_dy.html">derive_vars_dy</a></span><span class="op">(</span>reference_date <span class="op">=</span> <span class="va">TRTSDT</span>, source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/derive_vars_dy.html">derive_vars_dy</a></span><span class="op">(</span>reference_date <span class="op">=</span> <span class="va">TRTSDT</span>, source_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="paramcd">Assign <code>PARAMCD</code>, <code>PARAM</code>, and
 <code>PARAMN</code> variables<a class="anchor" aria-label="anchor" href="#paramcd"></a>
@@ -198,7 +204,7 @@ source data.</p>
 <p>This lookup may now be joined to the data:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adnv</span> <span class="op">&lt;-</span> <span class="va">adnv</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_merged_lookup.html">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/derive_vars_merged_lookup.html">derive_vars_merged_lookup</a></span><span class="op">(</span></span>
 <span>    dataset_add <span class="op">=</span> <span class="va">param_lookup</span>,</span>
 <span>    new_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">PARAMCD</span>, <span class="va">PARAM</span>, <span class="va">PARAMN</span><span class="op">)</span>,</span>
 <span>    by_vars <span class="op">=</span> <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">NVTESTCD</span>, <span class="va">NVCAT</span><span class="op">)</span></span>
@@ -262,7 +268,7 @@ based on the patient’s sex and age at the time of assessment.</p>
 assigned for the percentile parameter.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">keep_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/get_admiral_option.html">get_admiral_option</a></span><span class="op">(</span><span class="st">"subject_keys"</span><span class="op">)</span>,</span>
 <span>  <span class="va">adsl_vars</span>,</span>
 <span>  <span class="fu"><a href="https://rlang.r-lib.org/reference/defusing-advanced.html" class="external-link">exprs</a></span><span class="op">(</span><span class="va">ADT</span>, <span class="va">ADY</span>, <span class="va">VISIT</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
@@ -303,15 +309,15 @@ age-adjusted threshold for olfactory impairment based on normative data.
 UPSIT percentile ≤ 10 is considered olfactory impairment, while UPSIT
 percentile &gt; 10 is considered normal olfactory function.</p>
 <p>To do this, we will use the
-<code><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/derive_vars_crit_flag.html">admiral::derive_vars_crit_flag()</a></code> function. Since we want to
+<code><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/derive_vars_crit_flag.html">admiral::derive_vars_crit_flag()</a></code> function. Since we want to
 derive these flags specifically for the UPSIT percentile parameter, we
 will apply the derivation only to those records using
-<code><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/restrict_derivation.html">admiral::restrict_derivation()</a></code>.</p>
+<code><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/restrict_derivation.html">admiral::restrict_derivation()</a></code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">adnv</span> <span class="op">&lt;-</span> <span class="va">adnv</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/restrict_derivation.html">restrict_derivation</a></span><span class="op">(</span></span>
 <span>    derivation <span class="op">=</span> <span class="va">derive_vars_crit_flag</span>,</span>
-<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.4.1/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
+<span>    args <span class="op">=</span> <span class="fu"><a href="https:/pharmaverse.github.io/admiral/v1.5.0/cran-release/reference/params.html">params</a></span><span class="op">(</span></span>
 <span>      crit_nr <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>      condition <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html" class="external-link">if_else</a></span><span class="op">(</span><span class="va">PARAMCD</span> <span class="op">==</span> <span class="st">"UPSITPC"</span>, <span class="va">AVAL</span> <span class="op">&lt;=</span> <span class="fl">10</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>      description <span class="op">=</span> <span class="st">"UPSITPC &lt;= 10"</span>,</span>
@@ -327,7 +333,7 @@ will apply the derivation only to those records using
 <div class="section level3">
 <h3 id="dataset_end">Remaining Analysis Dataset Set-up<a class="anchor" aria-label="anchor" href="#dataset_end"></a>
 </h3>
-<p>The <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/articles/bds_finding.html" class="external-link">Creating
+<p>The <a href="https://pharmaverse.github.io/admiral/" class="external-link">admiral</a> <a href="https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html" class="external-link">Creating
 a BDS Finding ADaM vignette</a> covers all the steps that are not shown
 here, such as merging the timing variables, analysis flags, baseline
 derivations, change from baseline calculations, etc.</p>
@@ -337,12 +343,16 @@ derivations, change from baseline calculations, etc.</p>
 <h2 id="example-scripts">Example Scripts<a class="anchor" aria-label="anchor" href="#example-scripts"></a>
 </h2>
 <table class="table">
+<colgroup>
+<col width="8%">
+<col width="91%">
+</colgroup>
 <thead><tr class="header">
 <th>ADaM</th>
 <th>Sourcing Command</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>ADNV</td>
+<td><code>ADNV</code></td>
 <td><code>admiral::use_ad_template("ADNV", package = "admiralneuro")</code></td>
 </tr></tbody>
 </table>
@@ -366,11 +376,11 @@ amplification. <em>Nature Communications, 16</em>, 7182.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company, Cytel Inc., Jian Wang, Miles Almond, Xiao Chen, Fanny Gautier, Gayatri G., Meilin Jiang, Leena Khatri, Edoardo Mancini, Eric Nantz, Lina Patil, Chris Pelentrides.</p>
+  <p>Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company, Cytel Inc., Jian Wang, Miles Almond, Xiao Chen, Fanny Gautier, Gayatri G., Meilin Jiang, Leena Khatri, Edoardo Mancini, Eric Nantz, Lina Patil, Chris Pelentrides, Katie Withycombe.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
