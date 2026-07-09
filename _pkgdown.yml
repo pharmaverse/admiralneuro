@@ -59,6 +59,30 @@ authors:
     text: "Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company, Cytel Inc., "
   sidebar:
     roles: [aut, fnd]
+  Jian Wang:
+      href: https://github.com/jwang-lilly
+  Miles Almond:
+      href: https://github.com/MilesAlmond
+  Xiao Chen:
+      href: https://github.com/jackychen651
+  Fanny Gautier:
+    href: https://github.com/Fanny-Gautier
+  Gayatri G.:
+    href: https://github.com/gg106046
+  Meilin Jiang:
+    href: https://github.com/meilinjiang
+  Leena Khatri
+    href: https://github.com/khatril
+  Edoardo Mancini:
+    href: https://manciniedoardo.github.io/
+  Eric Nantz:
+    href: https://github.com/cicdguy
+  Lina Patil:
+    href: https://github.com/Lina2689
+  Chris Pelentrides:
+    href: https://github.com/cgpele
+  Katie Withycombe:
+    href: https://github.com/
   F. Hoffmann-La Roche AG:
     html: "<a href='https://www.roche.com/'><img src='man/figures/roche_logo.png' height='34' alt='Roche logo' /></a>"
     href: https://www.roche.com/
