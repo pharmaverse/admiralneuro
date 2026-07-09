@@ -4,7 +4,19 @@
 
 - ADLB template scripts `ad_adlb.R` which creates a Laboratory Analysis Dataset. (#119)
 
-# admiralneuro 0.2.1.
+## Documentation
+
+- Added a new vignette "Explore ADaM Templates" to the "Get Started" menu.
+It displays the `{admiralneuro}` templates. (#126)
+
+<details>
+<summary>Developer Notes</summary>
+
+- Fixed links in the vignettes and added the Slack invitation link to `.lycheeignore` for a successful CI/CD Links/Validate Links workflow run. (#131)
+
+</details>
+
+# admiralneuro 0.2.1
 
 ## Updates of Existing Functions
 

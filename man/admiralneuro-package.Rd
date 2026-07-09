@@ -35,6 +35,7 @@ Authors:
   \item Eric Nantz
   \item Lina Patil
   \item Chris Pelentrides
+  \item Katie Withycombe (\href{https://orcid.org/0009-0005-5376-1932}{ORCID})
 }
 
 Other contributors:
