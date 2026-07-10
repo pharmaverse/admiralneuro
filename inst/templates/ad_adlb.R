@@ -123,7 +123,7 @@ adlb <- adlb %>%
 # information about domain specific parameters:
 # (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#derive_param)
 
-# Derive LOG-tranformed AMYLB42 for further analyses and plotting
+# Derive log-transformed AMYLB42 parameter for further analyses and plotting
 adlb <- adlb %>%
   derive_param_computed(
     by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
@@ -131,7 +131,7 @@ adlb <- adlb %>%
     set_values_to = exprs(
       AVAL = log(AVAL.AMYLB42),
       PARAMCD = "LAMYLB42",
-      PARAM = "LOG-Transform Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
+      PARAM = "Log-Transformed Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
       PARAMN = 5
     )
   )
