@@ -36,7 +36,7 @@ Developer Notes
 
 - Updated the required version of {admiraldev} to 1.5.0 to use the
   custom roclets from admiraldev (i.e. roxygen\_\* functions) instead of
-  admiral now.
+  admiral.
   ([\#135](https://github.com/pharmaverse/admiralneuro/issues/135))
 
 ## admiralneuro 0.2.1
