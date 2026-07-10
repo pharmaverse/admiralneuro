@@ -118,7 +118,6 @@ adlb <- adlb %>%
   ) %>%
   select(!LBSTRESN2)
 
-
 # Derive domain specific parameters ----
 # See the "Derive Additional Parameters" vignette section for general
 # information about domain specific parameters:

@@ -1,8 +1,4 @@
-# admiralneuro 0.3.0
-
-## Documentation
-
-- Vignette "Creating ADLB". (#115)
+# admiralneuro (development version)
 
 ## Template programs
 
