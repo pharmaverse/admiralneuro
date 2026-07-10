@@ -2,8 +2,8 @@
 #
 # Label: Laboratory Analysis Dataset for Neuroscience
 #
-# Description: This template focuses on neuroscience specific derivations. For additional
-# often found in `ADLB` view the `admiral` template by running `admiral::use_ad_template("adlb")`.
+# Description: This template focuses on neuroscience specific derivations. For additional content
+# commonly found in `ADLB` refer to the `admiral` template by running `admiral::use_ad_template("adlb")`.
 #
 # Input: adsl, lb_neuro
 
@@ -123,7 +123,7 @@ adlb <- adlb %>%
 # information about domain specific parameters:
 # (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#derive_param)
 
-# Derive LOG-tranformed AMYLB42 for further plot and analysis
+# Derive LOG-tranformed AMYLB42 for further analyses and plotting
 adlb <- adlb %>%
   derive_param_computed(
     by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),

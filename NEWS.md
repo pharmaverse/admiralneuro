@@ -2,7 +2,7 @@
 
 ## Template programs
 
-- ADLB template scripts `ad_adlb.R` which creates a Laboratory Analysis Dataset. (#117)
+- Added ADLB template scripts `ad_adlb.R` which creates a Laboratory Analysis Dataset. (#117)
 
 ## Documentation
 
