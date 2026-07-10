@@ -21,7 +21,7 @@ library(admiraldev)
 
 This article describes creating a laboratory ADaM for neuroscience clinical trials.
 
-We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/main/articles/bds_finding.html).
+We advise you first consult the `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html).
 The programming workflow around creating the general set-up of an `ADLB` using `{admiral}` functions is the same. 
 In this vignette, we focus on common ADLB derivations in neuroscience studies and avoid repeating information and maintaining the same content in two places. 
 
@@ -149,7 +149,7 @@ dataset_vignette(
 )
 ```
 
-For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/main/articles/visits_periods.html).
+For deriving visits based on time-windows, see `{admiral}` [Visit and Period Variables](https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html).
 
 ## Derive Log Transformation of Biomarkers {#neuro_params}
 
@@ -182,10 +182,10 @@ dataset_vignette(
 
 ## Remaining ADLB Set-up {#adlb_end}
 
-The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/main/articles/bds_finding.html) describes further steps, including how to calculate baseline and change from baseline variables, add analysis flags (e.g., `ANL01FL`), handle reference ranges, categorizations, and other common ADLB requirements.
+The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html) describes further steps, including how to calculate baseline and change from baseline variables, add analysis flags (e.g., `ANL01FL`), handle reference ranges, categorizations, and other common ADLB requirements.
 
 # Example Scripts {#example}
 
-ADaM | Sample Code
----- | --------------
-ADLB | [ad_adlb.R](https://github.com/pharmaverse/admiralneuro/blob/main/inst/templates/ad_adlb.R){target="_blank"}
+| ADaM | Sourcing Command                                            |
+|------|-------------------------------------------------------------|
+| `ADLB` | `admiral::use_ad_template("ADLB", package = "admiralneuro")` |
