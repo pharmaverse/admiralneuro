@@ -135,8 +135,8 @@ If a matching combination of tracer, pipeline, and reference region is not speci
 \code{custom_slope} and \code{custom_intercept} are not specified, the function aborts with an error.
 }
 \seealso{
-Other com_bds_findings: 
-\code{\link{compute_upsit_percentile}()}
+Other com_bds_findings:
+\code{\link[=compute_upsit_percentile]{compute_upsit_percentile()}}
 }
 \concept{com_bds_findings}
 \keyword{com_bds_findings}
