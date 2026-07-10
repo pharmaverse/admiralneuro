@@ -21,7 +21,7 @@ the pull request title to trigger website creation. (#125)
 
 - Clickable links to personal websites or GitHub profiles were added in the home page sidebar for every {admiralneuro} author.(#135)
 
-- Updated the required version of {admiraldev} to 1.5.0 to use the custom roclets from admiraldev (i.e. roxygen_* functions) instead of admiral now. (#135)
+- Updated the required version of {admiraldev} to 1.5.0 to use the custom roclets from admiraldev (i.e. roxygen_* functions) instead of admiral. (#135)
 
 </details>
 
