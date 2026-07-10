@@ -28,7 +28,7 @@ admiralneuro_adsl <- admiralneuro::adsl_neuro
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
 # as NA values. Further details can be obtained via the following link:
-# https://pharmaverse.github.io/admiral/main/articles/concepts_conventions.html#missing # nolint
+# https://pharmaverse.github.io/admiral/cran-release/articles/concepts_conventions.html#missing # nolint
 lb <- convert_blanks_to_na(lb_neuro)
 adsl <- convert_blanks_to_na(admiralneuro_adsl)
 
@@ -67,7 +67,7 @@ adlb <- adlb %>%
 # Derive Date/Time and Analysis Day ----
 # See the "Derive/Impute Numeric Date/Time and Analysis Day" vignette section
 # for more information:
-# (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#datetime)
+# (https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html#datetime)
 
 # Add analysis date (ADT)
 adlb <- adlb %>%
@@ -76,7 +76,7 @@ adlb <- adlb %>%
 
 ## Get visit info ----
 # See also the "Visit and Period Variables" vignette
-# (https://pharmaverse.github.io/admiral/main/articles/visits_periods.html#visits)
+# (https://pharmaverse.github.io/admiral/cran-release/articles/visits_periods.html#visits)
 # Derive analysis visit (AVISIT, AVISITN)
 adlb <- adlb %>%
   mutate(
@@ -94,7 +94,7 @@ adlb <- adlb %>%
 
 # Derive results ----
 # See the "Derive Results (AVAL, AVALC)" vignette section for more information:
-# (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#aval)
+# (https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html#aval)
 
 # Derive AVAL and AVALC and define parameter categories
 adlb <- adlb %>%
@@ -121,7 +121,7 @@ adlb <- adlb %>%
 # Derive domain specific parameters ----
 # See the "Derive Additional Parameters" vignette section for general
 # information about domain specific parameters:
-# (https://pharmaverse.github.io/admiral/main/articles/bds_finding.html#derive_param)
+# (https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html#derive_param)
 
 # Derive log-transformed AMYLB42 parameter for further analyses and plotting
 adlb <- adlb %>%
