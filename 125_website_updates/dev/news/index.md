@@ -2,12 +2,6 @@
 
 ## admiralneuro (development version)
 
-### Template programs
-
-- ADLB template scripts `ad_adlb.R` which creates a Laboratory Analysis
-  Dataset.
-  ([\#119](https://github.com/pharmaverse/admiralneuro/issues/119))
-
 ### Documentation
 
 - Added a new vignette “Explore ADaM Templates” to the “Get Started”
@@ -15,11 +9,35 @@
   [admiralneuro](https://pharmaverse.github.io/admiralneuro/) templates.
   ([\#126](https://github.com/pharmaverse/admiralneuro/issues/126))
 
+- A night mode option has been added to the {admiralneuro} website. This
+  can be be toggled using the sun/moon icon in the top right corner of
+  the navigation bar. Tooltips have also been set up for each of the
+  icons on the navigation bar.
+  ([\#125](https://github.com/pharmaverse/admiralneuro/issues/125))
+
+### Various
+
 Developer Notes
+
+- Update to roxygen2 8.0.0.
+  ([\#135](https://github.com/pharmaverse/admiralneuro/issues/135))
+
+- Creating the website for pull requests was enabled. Add “\[create
+  website\]” to the pull request title to trigger website creation.
+  ([\#125](https://github.com/pharmaverse/admiralneuro/issues/125))
 
 - Fixed links in the vignettes and added the Slack invitation link to
   `.lycheeignore` for a successful CI/CD Links/Validate Links workflow
   run. ([\#131](https://github.com/pharmaverse/admiralneuro/issues/131))
+
+- Clickable links to personal websites or GitHub profiles were added in
+  the home page sidebar for every {admiralneuro}
+  author.([\#135](https://github.com/pharmaverse/admiralneuro/issues/135))
+
+- Updated the required version of {admiraldev} to 1.5.0 to use the
+  custom roclets from admiraldev (i.e. roxygen\_\* functions) instead of
+  admiral now.
+  ([\#135](https://github.com/pharmaverse/admiralneuro/issues/135))
 
 ## admiralneuro 0.2.1
 

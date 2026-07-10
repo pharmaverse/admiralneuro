@@ -2,28 +2,34 @@
 
 ## Authors
 
-- **Jian Wang**. Author, maintainer.
+- **[Jian Wang](https://github.com/jwang-lilly)**. Author, maintainer.
   [](https://orcid.org/0009-0002-4677-3781)
 
-- **Miles Almond**. Author. [](https://orcid.org/0009-0007-1784-0355)
+- **[Miles Almond](https://github.com/MilesAlmond)**. Author.
+  [](https://orcid.org/0009-0007-1784-0355)
 
-- **Xiao Chen**. Author. [](https://orcid.org/0009-0000-6959-5151)
+- **[Xiao Chen](https://github.com/jackychen651)**. Author.
+  [](https://orcid.org/0009-0000-6959-5151)
 
-- **Fanny Gautier**. Author. [](https://orcid.org/0009-0004-3581-0131)
+- **[Fanny Gautier](https://github.com/Fanny-Gautier)**. Author.
+  [](https://orcid.org/0009-0004-3581-0131)
 
-- **Gayatri G.**. Author.
+- **[Gayatri G.](https://github.com/gg106046)**. Author.
 
-- **Meilin Jiang**. Author. [](https://orcid.org/0000-0003-4515-4567)
+- **[Meilin Jiang](https://github.com/meilinjiang)**. Author.
+  [](https://orcid.org/0000-0003-4515-4567)
 
-- **Leena Khatri**. Author. [](https://orcid.org/0000-0002-2268-4023)
+- **[Leena Khatri](https://github.com/khatril)**. Author.
+  [](https://orcid.org/0000-0002-2268-4023)
 
-- **Edoardo Mancini**. Author. [](https://orcid.org/0009-0006-4899-8641)
+- **[Edoardo Mancini](https://manciniedoardo.github.io/)**. Author.
+  [](https://orcid.org/0009-0006-4899-8641)
 
-- **Eric Nantz**. Author.
+- **[Eric Nantz](https://github.com/cicdguy)**. Author.
 
-- **Lina Patil**. Author.
+- **[Lina Patil](https://github.com/Lina2689)**. Author.
 
-- **Chris Pelentrides**. Author.
+- **[Chris Pelentrides](https://github.com/cgpele)**. Author.
 
 - **Katie Withycombe**. Author.
   [](https://orcid.org/0009-0005-5376-1932)
