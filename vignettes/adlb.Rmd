@@ -93,7 +93,7 @@ adlb <- lb %>%
   )
 
 adlb <- adlb %>%
-  ## Add PARAMCD and PARAM ----
+  ## Add PARAMCD, PARAM and PARAMN ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM, PARAMN),
@@ -118,7 +118,7 @@ adlb <- adlb %>%
     ),
     BASETYPE = "LAST"
   )
-# Derive AVAL and AVALC and define parameter categories
+# Derive AVAL and AVALC
 adlb <- adlb %>%
   mutate(
     LBSTRESN2 = case_when(
@@ -153,11 +153,10 @@ For deriving visits based on time-windows, see `{admiral}` [Visit and Period Var
 
 ## Derive Log Transformation of Biomarkers {#neuro_params}
 
-In addition to the core ADLB variables, log transformation of fluid biomarkers values are essential for further analysis and graphing as they are typically skewed.
-
+In addition to the core ADLB variables, log transformation of fluid biomarker values is essential for further analyses and graphing as these values are typically skewed.
 
 ```{r}
-# Derive log transformed AMYLB42 for further plot and analysis
+# Derive log-transformed AMYLB42 parameter for further analyses and plotting
 adlb <- adlb %>%
   derive_param_computed(
     by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
