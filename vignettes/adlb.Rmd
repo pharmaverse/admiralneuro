@@ -164,7 +164,7 @@ adlb <- adlb %>%
     set_values_to = exprs(
       AVAL = log(AVAL.AMYLB42),
       PARAMCD = "LAMYLB42",
-      PARAM = "LOG-Transform Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
+      PARAM = "Log-Transformed Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
       PARAMN = 5
     )
   )
