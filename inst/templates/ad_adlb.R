@@ -50,19 +50,19 @@ adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
 adlb <- lb %>%
   ## Join ADSL with LB (need TRTSDT for ADY derivation) ----
-derive_vars_merged(
-  dataset_add = adsl,
-  new_vars = adsl_vars,
-  by_vars = get_admiral_option("subject_keys")
-)
+  derive_vars_merged(
+    dataset_add = adsl,
+    new_vars = adsl_vars,
+    by_vars = get_admiral_option("subject_keys")
+  )
 
 adlb <- adlb %>%
   ## Add PARAMCD and PARAM ----
-derive_vars_merged_lookup(
-  dataset_add = param_lookup,
-  new_vars = exprs(PARAMCD, PARAM, PARAMN),
-  by_vars = exprs(LBTESTCD)
-)
+  derive_vars_merged_lookup(
+    dataset_add = param_lookup,
+    new_vars = exprs(PARAMCD, PARAM, PARAMN),
+    by_vars = exprs(LBTESTCD)
+  )
 
 # Derive Date/Time and Analysis Day ----
 # See the "Derive/Impute Numeric Date/Time and Analysis Day" vignette section
@@ -173,16 +173,16 @@ adlb <- adlb %>%
     filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
   ) %>%
   ### ANL02FL: Flag last result within a PARAMCD for baseline & on-treatment post-baseline records ----
-restrict_derivation(
-  derivation = derive_var_extreme_flag,
-  args = params(
-    new_var = ANL02FL,
-    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, ABLFL)),
-    order = exprs(ADT),
-    mode = "last"
-  ),
-  filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
-)
+  restrict_derivation(
+    derivation = derive_var_extreme_flag,
+    args = params(
+      new_var = ANL02FL,
+      by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, ABLFL)),
+      order = exprs(ADT),
+      mode = "last"
+    ),
+    filter = !is.na(AVISITN) & (ONTRTFL == "Y" | ABLFL == "Y")
+  )
 
 ## Derive baseline information ----
 
@@ -194,23 +194,23 @@ adlb <- adlb %>%
     new_var = BASE
   ) %>%
   ### Calculate BASEC ----
-derive_var_base(
-  by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
-  source_var = AVALC,
-  new_var = BASEC
-) %>%
+  derive_var_base(
+    by_vars = c(get_admiral_option("subject_keys"), exprs(PARAMCD, BASETYPE)),
+    source_var = AVALC,
+    new_var = BASEC
+  ) %>%
   ### Calculate CHG for post-baseline records ----
-# The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
-restrict_derivation(
-  derivation = derive_var_chg,
-  filter = AVISITN > 0
-) %>%
+  # The decision on how to populate pre-baseline and baseline values of CHG is left as a user choice
+  restrict_derivation(
+    derivation = derive_var_chg,
+    filter = AVISITN > 0
+  ) %>%
   ### Calculate PCHG for post-baseline records ----
-# The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
-restrict_derivation(
-  derivation = derive_var_pchg,
-  filter = AVISITN > 0
-)
+  # The decision on how to populate pre-baseline and baseline values of PCHG is left to producer choice
+  restrict_derivation(
+    derivation = derive_var_pchg,
+    filter = AVISITN > 0
+  )
 
 ## Assign ASEQ (Optional Variable) ----
 adlb <- adlb %>%
