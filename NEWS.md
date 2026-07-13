@@ -12,16 +12,12 @@ It displays the `{admiralneuro}` templates. (#126)
 <details>
 <summary>Developer Notes</summary>
 
-- Update to roxygen2 8.0.0. (#135)
-
 - Creating the website for pull requests was enabled. Add "[create website]" to
 the pull request title to trigger website creation. (#125)
 
 - Fixed links in the vignettes and added the Slack invitation link to `.lycheeignore` for a successful CI/CD Links/Validate Links workflow run. (#131)
 
-- Clickable links to personal websites or GitHub profiles were added in the home page sidebar for every {admiralneuro} author.(#135)
-
-- Updated the required version of {admiraldev} to 1.5.0 to use the custom roclets from admiraldev (i.e. roxygen_* functions) instead of admiral. (#135)
+- Clickable links to personal websites or GitHub profiles were added in the home page sidebar for every {admiralneuro} author. Up-versioned `{admiraldev}` to 1.5.0, as the custom `{admiral}` roclets (i.e., `roxygen_*()` functions) have now been moved to `{admiraldev}`. Update to roxygen2 8.0.0. (#135)
 
 </details>
 
