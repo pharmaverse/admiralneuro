@@ -31,7 +31,7 @@
 
 - **[Chris Pelentrides](https://github.com/cgpele)**. Author.
 
-- **Katie Withycombe**. Author.
+- **[Katie Withycombe](https://github.com/withycok)**. Author.
   [](https://orcid.org/0009-0005-5376-1932)
 
 - **[](https://www.lilly.com/)[![Eli Lilly and Company
