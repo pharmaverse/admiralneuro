@@ -29,7 +29,7 @@ In this vignette, we focus on common ADLB derivations in neuroscience studies an
 
 ## Required Packages
 
-The examples of this vignette require the following packages.
+The following packages are required to run the examples in this vignette.
 
 ```{r, warning=FALSE, message=FALSE}
 library(admiral)
