@@ -53,7 +53,7 @@ library(stringr)
 To start, all data frames needed for the creation of the ADaM dataset should be loaded into the global environment. Reading data will usually be a company specific process, however, for the purpose of this vignette, we will use example data from `{pharmaversesdtm}` and `{admiralneuro}`. We will utilize `LB` and `ADSL` data.
 
 ```{r, message=FALSE, warning=FALSE}
-lb_neuro <- pharmaversesdtm::lb_neuro
+lb <- convert_blanks_to_na(pharmaversesdtm::lb_neuro)
 admiralneuro_adsl <- admiralneuro::adsl_neuro
 
 lb <- convert_blanks_to_na(lb_neuro)
