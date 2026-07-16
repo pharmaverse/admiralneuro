@@ -181,7 +181,7 @@ dataset_vignette(
 
 ## Remaining ADLB Set-up {#adlb_end}
 
-The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html) describes further steps, including how to calculate baseline and change from baseline variables, add analysis flags (e.g., `ANL01FL`), handle reference ranges, categorizations, and other common ADLB requirements.
+The `{admiral}` [Creating a BDS Finding ADaM vignette](https://pharmaverse.github.io/admiral/cran-release/articles/bds_finding.html) describes the remaining standard ADLB derivations, including how to calculate baseline and change from baseline variables, add analysis flags (e.g., `ANL01FL`), handle reference ranges, categorizations, and other common ADLB requirements.
 
 # Example Script {#example}
 
