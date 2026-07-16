@@ -55,9 +55,6 @@ To start, all data frames needed for the creation of the ADaM dataset should be 
 ```{r, message=FALSE, warning=FALSE}
 lb <- convert_blanks_to_na(pharmaversesdtm::lb_neuro)
 adsl <- convert_blanks_to_na(admiralneuro::adsl_neuro)
-
-lb <- convert_blanks_to_na(lb_neuro)
-adsl <- convert_blanks_to_na(admiralneuro_adsl)
 ```
 
 ## Define Lookup Tables {#lookups}
