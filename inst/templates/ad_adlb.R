@@ -5,7 +5,7 @@
 # Description: This template focuses on neuroscience specific derivations. For additional content
 # commonly found in `ADLB` refer to the `admiral` template by running `admiral::use_ad_template("adlb")`.
 #
-# Input: adsl, lb_neuro
+# Input: adsl_neuro, lb_neuro
 
 library(admiral)
 library(admiralneuro)
@@ -22,15 +22,12 @@ set_admiral_options(subject_keys = exprs(STUDYID, USUBJID))
 
 # Load source datasets ----
 # For illustration purposes read in pharmaversesdtm test data
-lb_neuro <- pharmaversesdtm::lb_neuro
-admiralneuro_adsl <- admiralneuro::adsl_neuro
-
 # When SAS datasets are imported into R using haven::read_sas(), missing
 # character values from SAS appear as "" characters in R, instead of appearing
 # as NA values. Further details can be obtained via the following link:
 # https://pharmaverse.github.io/admiral/cran-release/articles/concepts_conventions.html#missing # nolint
-lb <- convert_blanks_to_na(lb_neuro)
-adsl <- convert_blanks_to_na(admiralneuro_adsl)
+lb <- convert_blanks_to_na(pharmaversesdtm::lb_neuro)
+adsl <- convert_blanks_to_na(admiralneuro::adsl_neuro)
 
 # Lookup tables ----
 
@@ -86,7 +83,7 @@ adlb <- adlb %>%
     ),
     AVISITN = case_when(
       AVISIT == "Baseline" ~ 0,
-      str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
+      str_detect(str_to_upper(VISIT), "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     ),
     BASETYPE = "LAST"
@@ -107,7 +104,7 @@ adlb <- adlb %>%
       TRUE ~ NA
     ),
     AVAL = LBSTRESN,
-    # Only populate AVALC if character value is non-redundant with AVAL
+    # Only populate AVALC if the character value is non-redundant with AVAL, following standard ADaM conventions.
     AVALC = if_else(
       is.na(AVAL) | as.character(signif(LBSTRESN2, 5)) != LBSTRESC,
       LBSTRESC,
