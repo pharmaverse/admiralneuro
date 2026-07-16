@@ -113,7 +113,7 @@ adlb <- adlb %>%
     ),
     AVISITN = case_when(
       AVISIT == "Baseline" ~ 0,
-      str_detect(VISIT, "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
+      str_detect(str_to_upper(VISIT), "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     ),
     BASETYPE = "LAST"
