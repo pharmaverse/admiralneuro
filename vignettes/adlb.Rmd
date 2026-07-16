@@ -129,7 +129,7 @@ adlb <- adlb %>%
       TRUE ~ NA
     ),
     AVAL = LBSTRESN,
-    # Only populate AVALC if character value is non-redundant with AVAL
+    # Only populate AVALC if the character value is non-redundant with AVAL, following standard ADaM conventions.
     AVALC = if_else(
       is.na(AVAL) | as.character(signif(LBSTRESN2, 5)) != LBSTRESC,
       LBSTRESC,
