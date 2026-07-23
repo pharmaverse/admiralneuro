@@ -2,10 +2,12 @@ url: https://pharmaverse.github.io/admiralneuro
 
 template:
   bootstrap: 5
+  light-switch: true
   math-rendering: mathjax
   params:
     bootswatch: flatly
   includes:
+    css: pkgdown/extra.css
     in_header: |
       <script
       async
@@ -24,6 +26,22 @@ template:
       data-modal-z-index="9999"
       data-modal-search-placeholder="Ask me a question about {admiralneuro} or the {admiral} ecosystem..."
       ></script>
+
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Select all navbar links that have an aria-label
+        var navLinks = document.querySelectorAll('.navbar-nav .nav-link[aria-label]');
+
+        navLinks.forEach(function (link) {
+          // Initialize Bootstrap 5 Tooltip
+          link.setAttribute('title', link.getAttribute('aria-label'));
+          new bootstrap.Tooltip(link, {
+            placement: 'bottom', // Tooltip appears below the icon
+            trigger: 'hover'
+          });
+        });
+      });
+      </script>
 search:
   exclude: ['news/index.html']
 repo:
@@ -41,6 +59,30 @@ authors:
     text: "Developed by F. Hoffmann-La Roche AG, Eli Lilly and Company, Cytel Inc., "
   sidebar:
     roles: [aut, fnd]
+  Jian Wang:
+      href: https://github.com/jwang-lilly
+  Miles Almond:
+      href: https://github.com/MilesAlmond
+  Xiao Chen:
+      href: https://github.com/jackychen651
+  Fanny Gautier:
+    href: https://github.com/Fanny-Gautier
+  Gayatri G.:
+    href: https://github.com/gg106046
+  Meilin Jiang:
+    href: https://github.com/meilinjiang
+  Leena Khatri:
+    href: https://github.com/khatril
+  Edoardo Mancini:
+    href: https://manciniedoardo.github.io/
+  Eric Nantz:
+    href: https://github.com/cicdguy
+  Lina Patil:
+    href: https://github.com/Lina2689
+  Chris Pelentrides:
+    href: https://github.com/cgpele
+  Katie Withycombe:
+    href: https://github.com/withycok
   F. Hoffmann-La Roche AG:
     html: "<a href='https://www.roche.com/'><img src='man/figures/roche_logo.png' height='34' alt='Roche logo' /></a>"
     href: https://www.roche.com/
@@ -69,7 +111,7 @@ reference:
 navbar:
   structure:
     left: [getstarted, reference, articles, news]
-    right: [search, slack, history, newissue, github]
+    right: [search, slack, history, newissue, github, lightswitch]
   components:
     getstarted:
       text: Get Started
@@ -93,8 +135,8 @@ navbar:
     slack:
       icon: fa-slack
       href: https://pharmaverse.slack.com/
-      aria-label: Slack
+      aria-label: Join the pharmaverse Slack!
     newissue:
       icon: fa-bug
       href: https://github.com/pharmaverse/admiralneuro/issues/new/choose
-      aria-label: New Issue
+      aria-label: Report an issue
