@@ -5,10 +5,19 @@
 - Added a new vignette "Explore ADaM Templates" to the "Get Started" menu.
 It displays the `{admiralneuro}` templates. (#126)
 
+- A night mode option has been added to the {admiralneuro} website. This can be be toggled using the sun/moon icon in the top right corner of the navigation bar. Tooltips have also been set up for each of the icons on the navigation bar. (#125)
+
+## Various
+
 <details>
 <summary>Developer Notes</summary>
 
+- Creating the website for pull requests was enabled. Add "[create website]" to
+the pull request title to trigger website creation. (#125)
+
 - Fixed links in the vignettes and added the Slack invitation link to `.lycheeignore` for a successful CI/CD Links/Validate Links workflow run. (#131)
+
+- Clickable links to personal websites or GitHub profiles were added in the home page sidebar for every {admiralneuro} author. Up-versioned `{admiraldev}` to 1.5.0, as the custom `{admiral}` roclets (i.e., `roxygen_*()` functions) have now been moved to `{admiraldev}`. Update to roxygen2 8.0.0. (#135)
 
 </details>
 
