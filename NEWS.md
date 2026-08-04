@@ -2,6 +2,8 @@
 
 ## Documentation
 
+- Added Vignette "Creating ADLB". (#115)
+
 - Added a new vignette "Explore ADaM Templates" to the "Get Started" menu.
 It displays the `{admiralneuro}` templates. (#126)
 
