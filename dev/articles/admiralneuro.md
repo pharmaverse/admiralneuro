@@ -45,6 +45,7 @@ from [admiral](https://pharmaverse.github.io/admiral/):
 admiral::list_all_templates(package = "admiralneuro")
 #> Existing ADaM templates in package 'admiralneuro':
 #> • ADAPET
+#> • ADLB
 #> • ADNV
 #> • ADTPET
 ```
