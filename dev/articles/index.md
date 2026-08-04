@@ -2,6 +2,8 @@
 
 ### All vignettes
 
+- [Creating a Neuro ADLB
+  ADaM](https://pharmaverse.github.io/admiralneuro/dev/articles/adlb.md):
 - [Get
   Started](https://pharmaverse.github.io/admiralneuro/dev/articles/admiralneuro.md):
 - [Creating

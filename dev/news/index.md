@@ -4,6 +4,9 @@
 
 ### Documentation
 
+- Added Vignette “Creating ADLB”.
+  ([\#115](https://github.com/pharmaverse/admiralneuro/issues/115))
+
 - Added a new vignette “Explore ADaM Templates” to the “Get Started”
   menu. It displays the
   [admiralneuro](https://pharmaverse.github.io/admiralneuro/) templates.
