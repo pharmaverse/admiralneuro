@@ -112,7 +112,7 @@ adlb <- adlb %>%
     ),
     AVISITN = case_when(
       AVISIT == "Baseline" ~ 0,
-      str_detect(str_to_upper(VISIT), "WEEK") ~ 
+      str_detect(str_to_upper(VISIT), "WEEK") ~
         as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     ),
@@ -131,7 +131,7 @@ adlb <- adlb %>%
       TRUE ~ NA
     ),
     AVAL = LBSTRESN,
-    # Only populate AVALC if the character value is non-redundant with AVAL, 
+    # Only populate AVALC if the character value is non-redundant with AVAL,
     # following standard ADaM conventions.
     AVALC = if_else(
       is.na(AVAL) | as.character(signif(LBSTRESN2, 5)) != LBSTRESC,
@@ -162,8 +162,10 @@ In addition to the core ADLB variables, log transformation of fluid biomarker va
 # Derive log-transformed AMYLB42 parameter for further analyses and plotting
 adlb <- adlb %>%
   derive_param_computed(
-    by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, 
-                    ADT, ADY, !!!adsl_vars),
+    by_vars = exprs(
+      !!!get_admiral_option("subject_keys"), AVISIT, AVISITN,
+      ADT, ADY, !!!adsl_vars
+    ),
     parameters = "AMYLB42",
     set_values_to = exprs(
       AVAL = log(AVAL.AMYLB42),
