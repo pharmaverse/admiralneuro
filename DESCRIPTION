@@ -3,8 +3,10 @@ Package: admiralneuro
 Title: Neuroscience Extension Package for ADaM in 'R' Asset Library
 Version: 0.2.1.9005
 Authors@R: c(
-    person("Jian", "Wang", , "wang_jian_wj@lilly.com", role = c("aut", "cre"),
+    person("Jian", "Wang", role = "aut",
            comment = c(ORCID = "0009-0002-4677-3781")),
+    person("Meilin", "Jiang", , "meilin.jiang@lilly.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-4515-4567")),
     person("Miles", "Almond", role = "aut",
            comment = c(ORCID = "0009-0007-1784-0355")),
     person("Xiao", "Chen", role = "aut",
@@ -12,8 +14,6 @@ Authors@R: c(
     person("Fanny", "Gautier", role = "aut",
            comment = c(ORCID = "0009-0004-3581-0131")),
     person("Gayatri", "G.", role = "aut"),
-    person("Meilin", "Jiang", role = "aut",
-           comment = c(ORCID = "0000-0003-4515-4567")),
     person("Leena", "Khatri", role = "aut",
            comment = c(ORCID = "0000-0002-2268-4023")),
     person("Edoardo", "Mancini", role = "aut",
@@ -65,7 +65,7 @@ Suggests:
     knitr,
     metatools,
     methods,
-    pharmaversesdtm (>= 1.0.0),
+    pharmaversesdtm (>= 1.5.0),
     reactable,
     readxl,
     rmarkdown,
