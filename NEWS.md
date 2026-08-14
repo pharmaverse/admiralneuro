@@ -25,7 +25,7 @@ the pull request title to trigger website creation. (#125)
 
 - Clickable links to personal websites or GitHub profiles were added in the home page sidebar for every {admiralneuro} author. Up-versioned `{admiraldev}` to 1.5.0, as the custom `{admiral}` roclets (i.e., `roxygen_*()` functions) have now been moved to `{admiraldev}`. Update to roxygen2 8.0.0. (#135)
 
-- Updated ADLB template and vignette to incorporate new parameter TAU181P from lb_neuro based the most recent pharmaversesdtm release. Added links to ADNV and ADLB vignettes in admiralneuro vignettes. (#138)
+- Updated ADLB template and vignette to incorporate new parameter TAU181P from updated lb_neuro in pharmaversesdtm. Added links to ADNV and ADLB vignettes in admiralneuro vignettes. (#138)
 
 </details>
 
