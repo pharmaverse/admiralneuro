@@ -37,7 +37,8 @@ param_lookup <- tibble::tribble(
   "PTAU217", "PTAU217", "Lumipulse G pTau 217 Plasma (pg/mL)", 1,
   "AMYLB42", "AMYLB42", "Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)", 2,
   "PTAB42R", "PTAB42R", "Lumipulse G pTau 217/Beta-Amyloid 1-42 Plasma Ratio", 3,
-  "ASYNASAA", "ASYNASAA", "Alpha Synuclein Seed Amplification Assay (CSF)", 4
+  "ASYNASAA", "ASYNASAA", "Alpha Synuclein Seed Amplification Assay (CSF)", 4,
+  "TAU181P", "TAU181P", "Elecsys Tau Protein Phosphorylated 181", 5
 )
 
 # Derivations ----
@@ -101,6 +102,7 @@ adlb <- adlb %>%
       PARAMN == 2 ~ round(LBSTRESN, 1),
       PARAMN == 3 ~ round(LBSTRESN, 5),
       PARAMN == 4 ~ LBSTRESN,
+      PARAMN == 5 ~ round(LBSTRESN, 3),
       TRUE ~ NA
     ),
     AVAL = LBSTRESN,
@@ -129,7 +131,7 @@ adlb <- adlb %>%
       AVAL = log(AVAL.AMYLB42),
       PARAMCD = "LAMYLB42",
       PARAM = "Log-Transformed Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
-      PARAMN = 5
+      PARAMN = 6
     )
   )
 

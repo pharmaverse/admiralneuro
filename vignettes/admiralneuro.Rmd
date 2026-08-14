@@ -26,9 +26,11 @@ be able to use `{admiralneuro}`.
 # Creating Neuroscience ADaM Datasets
 
 For the neuroscience ADaM data structures, an overview of the flow and example function calls
-for the most common steps are provided by the following vignette:
+for the most common steps are provided by the following vignettes:
 
 - [Creating ADAPET/ADTPET](adpet.html)
+- [Creating ADNV](adnv.html)
+- [Creating ADLB](adlb.html)
 
 `{admiralneuro}` also provides template R scripts as a starting point. They can be
 created by calling `use_ad_template()` from `{admiral}`, e.g.,
