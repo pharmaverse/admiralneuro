@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <a class="navbar-brand me-2" href="../index.html">admiralneuro</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.1.9003</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -490,7 +490,8 @@ ad_adlb.R
 <span>  <span class="st">"PTAU217"</span>, <span class="st">"PTAU217"</span>, <span class="st">"Lumipulse G pTau 217 Plasma (pg/mL)"</span>, <span class="fl">1</span>,</span>
 <span>  <span class="st">"AMYLB42"</span>, <span class="st">"AMYLB42"</span>, <span class="st">"Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)"</span>, <span class="fl">2</span>,</span>
 <span>  <span class="st">"PTAB42R"</span>, <span class="st">"PTAB42R"</span>, <span class="st">"Lumipulse G pTau 217/Beta-Amyloid 1-42 Plasma Ratio"</span>, <span class="fl">3</span>,</span>
-<span>  <span class="st">"ASYNASAA"</span>, <span class="st">"ASYNASAA"</span>, <span class="st">"Alpha Synuclein Seed Amplification Assay (CSF)"</span>, <span class="fl">4</span></span>
+<span>  <span class="st">"ASYNASAA"</span>, <span class="st">"ASYNASAA"</span>, <span class="st">"Alpha Synuclein Seed Amplification Assay (CSF)"</span>, <span class="fl">4</span>,</span>
+<span>  <span class="st">"TAU181P"</span>, <span class="st">"TAU181P"</span>, <span class="st">"Elecsys Tau Protein Phosphorylated 181"</span>, <span class="fl">5</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Derivations ----</span></span>
@@ -554,6 +555,7 @@ ad_adlb.R
 <span>      <span class="va">PARAMN</span> <span class="op">==</span> <span class="fl">2</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">LBSTRESN</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>      <span class="va">PARAMN</span> <span class="op">==</span> <span class="fl">3</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">LBSTRESN</span>, <span class="fl">5</span><span class="op">)</span>,</span>
 <span>      <span class="va">PARAMN</span> <span class="op">==</span> <span class="fl">4</span> <span class="op">~</span> <span class="va">LBSTRESN</span>,</span>
+<span>      <span class="va">PARAMN</span> <span class="op">==</span> <span class="fl">5</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">LBSTRESN</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    AVAL <span class="op">=</span> <span class="va">LBSTRESN</span>,</span>
@@ -582,7 +584,7 @@ ad_adlb.R
 <span>      AVAL <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">AVAL.AMYLB42</span><span class="op">)</span>,</span>
 <span>      PARAMCD <span class="op">=</span> <span class="st">"LAMYLB42"</span>,</span>
 <span>      PARAM <span class="op">=</span> <span class="st">"Log-Transformed Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)"</span>,</span>
-<span>      PARAMN <span class="op">=</span> <span class="fl">5</span></span>
+<span>      PARAMN <span class="op">=</span> <span class="fl">6</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>

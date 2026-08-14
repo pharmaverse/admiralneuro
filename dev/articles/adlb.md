@@ -67,7 +67,8 @@ param_lookup <- tibble::tribble(
   "PTAU217", "PTAU217", "Lumipulse G pTau 217 Plasma (pg/mL)", 1,
   "AMYLB42", "AMYLB42", "Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)", 2,
   "PTAB42R", "PTAB42R", "Lumipulse G pTau 217/Beta-Amyloid 1-42 Plasma Ratio", 3,
-  "ASYNASAA", "ASYNASAA", "Alpha Synuclein Seed Amplification Assay (CSF)", 4
+  "ASYNASAA", "ASYNASAA", "Alpha Synuclein Seed Amplification Assay (CSF)", 4,
+  "TAU181P", "TAU181P", "Elecsys Tau Protein Phosphorylated 181", 5
 )
 ```
 
@@ -82,7 +83,7 @@ variable types and significant figures need to be considered.
 adsl_vars <- exprs(TRTSDT, TRTEDT, TRT01A, TRT01P)
 
 adlb <- lb %>%
-  ## Join ADSL with LB data (need TRTSDT for ADY derivation) ----
+  # Join ADSL with LB data (need TRTSDT for ADY derivation) ----
   derive_vars_merged(
     dataset_add = adsl,
     new_vars = adsl_vars,
@@ -90,18 +91,13 @@ adlb <- lb %>%
   )
 
 adlb <- adlb %>%
-  ## Add PARAMCD, PARAM and PARAMN ----
+  # Add PARAMCD, PARAM and PARAMN ----
   derive_vars_merged_lookup(
     dataset_add = param_lookup,
     new_vars = exprs(PARAMCD, PARAM, PARAMN),
     by_vars = exprs(LBTESTCD)
   )
-#> List of `LBTESTCD` not mapped:
-#> # A tibble: 1 × 1
-#> LBTESTCD
-#> <chr>
-#> 1 TAU181P
-#> ℹ Run `admiral::get_not_mapped()` to access the full list.
+
 # Add analysis date (ADT)
 adlb <- adlb %>%
   derive_vars_dt(new_vars_prefix = "A", dtc = LBDTC) %>%
@@ -116,11 +112,13 @@ adlb <- adlb %>%
     ),
     AVISITN = case_when(
       AVISIT == "Baseline" ~ 0,
-      str_detect(str_to_upper(VISIT), "WEEK") ~ as.integer(str_extract(VISIT, "\\d+")),
+      str_detect(str_to_upper(VISIT), "WEEK") ~
+        as.integer(str_extract(VISIT, "\\d+")),
       TRUE ~ NA_integer_
     ),
     BASETYPE = "LAST"
   )
+
 # Derive AVAL and AVALC
 adlb <- adlb %>%
   mutate(
@@ -129,10 +127,12 @@ adlb <- adlb %>%
       PARAMN == 2 ~ round(LBSTRESN, 1),
       PARAMN == 3 ~ round(LBSTRESN, 5),
       PARAMN == 4 ~ LBSTRESN,
+      PARAMN == 5 ~ round(LBSTRESN, 3),
       TRUE ~ NA
     ),
     AVAL = LBSTRESN,
-    # Only populate AVALC if the character value is non-redundant with AVAL, following standard ADaM conventions.
+    # Only populate AVALC if the character value is non-redundant with AVAL,
+    # following standard ADaM conventions.
     AVALC = if_else(
       is.na(AVAL) | as.character(signif(LBSTRESN2, 5)) != LBSTRESC,
       LBSTRESC,
@@ -158,13 +158,16 @@ values are typically skewed.
 # Derive log-transformed AMYLB42 parameter for further analyses and plotting
 adlb <- adlb %>%
   derive_param_computed(
-    by_vars = exprs(!!!get_admiral_option("subject_keys"), AVISIT, AVISITN, ADT, ADY, !!!adsl_vars),
+    by_vars = exprs(
+      !!!get_admiral_option("subject_keys"), AVISIT, AVISITN,
+      ADT, ADY, !!!adsl_vars
+    ),
     parameters = "AMYLB42",
     set_values_to = exprs(
       AVAL = log(AVAL.AMYLB42),
       PARAMCD = "LAMYLB42",
       PARAM = "Log-Transformed Lumipulse G Beta-Amyloid 1-42-N Plasma (pg/mL)",
-      PARAMN = 5
+      PARAMN = 6
     )
   )
 ```

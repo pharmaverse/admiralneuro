@@ -16,10 +16,14 @@ thoroughly understand these to be able to use
 
 For the neuroscience ADaM data structures, an overview of the flow and
 example function calls for the most common steps are provided by the
-following vignette:
+following vignettes:
 
 - [Creating
   ADAPET/ADTPET](https://pharmaverse.github.io/admiralneuro/dev/articles/adpet.md)
+- [Creating
+  ADNV](https://pharmaverse.github.io/admiralneuro/dev/articles/adnv.md)
+- [Creating
+  ADLB](https://pharmaverse.github.io/admiralneuro/dev/articles/adlb.md)
 
 [admiralneuro](https://pharmaverse.github.io/admiralneuro/) also
 provides template R scripts as a starting point. They can be created by

@@ -45,6 +45,11 @@ Developer Notes
   roxygen2 8.0.0.
   ([\#135](https://github.com/pharmaverse/admiralneuro/issues/135))
 
+- Updated ADLB template and vignette to incorporate new parameter
+  TAU181P from updated lb_neuro in pharmaversesdtm. Added links to ADNV
+  and ADLB vignettes in admiralneuro vignettes.
+  ([\#138](https://github.com/pharmaverse/admiralneuro/issues/138))
+
 ## admiralneuro 0.2.1
 
 CRAN release: 2026-02-04
