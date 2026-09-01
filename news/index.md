@@ -1,5 +1,55 @@
 # Changelog
 
+## admiralneuro (development version)
+
+### Template programs
+
+- Added ADLB template scripts `ad_adlb.R` which creates a Laboratory
+  Analysis Dataset.
+  ([\#117](https://github.com/pharmaverse/admiralneuro/issues/117))
+
+### Documentation
+
+- Added Vignette “Creating ADLB”.
+  ([\#115](https://github.com/pharmaverse/admiralneuro/issues/115))
+
+- Added a new vignette “Explore ADaM Templates” to the “Get Started”
+  menu. It displays the
+  [admiralneuro](https://pharmaverse.github.io/admiralneuro/) templates.
+  ([\#126](https://github.com/pharmaverse/admiralneuro/issues/126))
+
+- A night mode option has been added to the {admiralneuro} website. This
+  can be be toggled using the sun/moon icon in the top right corner of
+  the navigation bar. Tooltips have also been set up for each of the
+  icons on the navigation bar.
+  ([\#125](https://github.com/pharmaverse/admiralneuro/issues/125))
+
+### Various
+
+Developer Notes
+
+- Creating the website for pull requests was enabled. Add “\[create
+  website\]” to the pull request title to trigger website creation.
+  ([\#125](https://github.com/pharmaverse/admiralneuro/issues/125))
+
+- Fixed links in the vignettes and added the Slack invitation link to
+  `.lycheeignore` for a successful CI/CD Links/Validate Links workflow
+  run. ([\#131](https://github.com/pharmaverse/admiralneuro/issues/131))
+
+- Clickable links to personal websites or GitHub profiles were added in
+  the home page sidebar for every {admiralneuro} author. Up-versioned
+  [admiraldev](https://pharmaverse.github.io/admiraldev/) to 1.5.0, as
+  the custom [admiral](https://pharmaverse.github.io/admiral/) roclets
+  (i.e., `roxygen_*()` functions) have now been moved to
+  [admiraldev](https://pharmaverse.github.io/admiraldev/). Update to
+  roxygen2 8.0.0.
+  ([\#135](https://github.com/pharmaverse/admiralneuro/issues/135))
+
+- Updated ADLB template and vignette to incorporate new parameter
+  TAU181P from updated lb_neuro in pharmaversesdtm. Added links to ADNV
+  and ADLB vignettes in admiralneuro vignettes.
+  ([\#138](https://github.com/pharmaverse/admiralneuro/issues/138))
+
 ## admiralneuro 0.2.1
 
 CRAN release: 2026-02-04

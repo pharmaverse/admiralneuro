@@ -21,10 +21,15 @@ Useful links:
 
 ## Author
 
-**Maintainer**: Jian Wang <wang_jian_wj@lilly.com>
-([ORCID](https://orcid.org/0009-0002-4677-3781))
+**Maintainer**: Meilin Jiang <meilin.jiang@lilly.com>
+([ORCID](https://orcid.org/0000-0003-4515-4567))
 
 Authors:
+
+- Meilin Jiang <meilin.jiang@lilly.com>
+  ([ORCID](https://orcid.org/0000-0003-4515-4567))
+
+- Jian Wang ([ORCID](https://orcid.org/0009-0002-4677-3781))
 
 - Miles Almond ([ORCID](https://orcid.org/0009-0007-1784-0355))
 
@@ -33,8 +38,6 @@ Authors:
 - Fanny Gautier ([ORCID](https://orcid.org/0009-0004-3581-0131))
 
 - Gayatri G.
-
-- Meilin Jiang ([ORCID](https://orcid.org/0000-0003-4515-4567))
 
 - Leena Khatri ([ORCID](https://orcid.org/0000-0002-2268-4023))
 
@@ -45,6 +48,8 @@ Authors:
 - Lina Patil
 
 - Chris Pelentrides
+
+- Katie Withycombe ([ORCID](https://orcid.org/0009-0005-5376-1932))
 
 Other contributors:
 

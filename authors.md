@@ -2,28 +2,37 @@
 
 ## Authors
 
-- **Jian Wang**. Author, maintainer.
+- **[Jian Wang](https://github.com/jwang-lilly)**. Author.
   [](https://orcid.org/0009-0002-4677-3781)
 
-- **Miles Almond**. Author. [](https://orcid.org/0009-0007-1784-0355)
+- **[Meilin Jiang](https://github.com/meilinjiang)**. Author,
+  maintainer. [](https://orcid.org/0000-0003-4515-4567)
 
-- **Xiao Chen**. Author. [](https://orcid.org/0009-0000-6959-5151)
+- **[Miles Almond](https://github.com/MilesAlmond)**. Author.
+  [](https://orcid.org/0009-0007-1784-0355)
 
-- **Fanny Gautier**. Author. [](https://orcid.org/0009-0004-3581-0131)
+- **[Xiao Chen](https://github.com/jackychen651)**. Author.
+  [](https://orcid.org/0009-0000-6959-5151)
 
-- **Gayatri G.**. Author.
+- **[Fanny Gautier](https://github.com/Fanny-Gautier)**. Author.
+  [](https://orcid.org/0009-0004-3581-0131)
 
-- **Meilin Jiang**. Author. [](https://orcid.org/0000-0003-4515-4567)
+- **[Gayatri G.](https://github.com/gg106046)**. Author.
 
-- **Leena Khatri**. Author. [](https://orcid.org/0000-0002-2268-4023)
+- **[Leena Khatri](https://github.com/khatril)**. Author.
+  [](https://orcid.org/0000-0002-2268-4023)
 
-- **Edoardo Mancini**. Author. [](https://orcid.org/0009-0006-4899-8641)
+- **[Edoardo Mancini](https://manciniedoardo.github.io/)**. Author.
+  [](https://orcid.org/0009-0006-4899-8641)
 
-- **Eric Nantz**. Author.
+- **[Eric Nantz](https://github.com/cicdguy)**. Author.
 
-- **Lina Patil**. Author.
+- **[Lina Patil](https://github.com/Lina2689)**. Author.
 
-- **Chris Pelentrides**. Author.
+- **[Chris Pelentrides](https://github.com/cgpele)**. Author.
+
+- **[Katie Withycombe](https://github.com/withycok)**. Author.
+  [](https://orcid.org/0009-0005-5376-1932)
 
 - **[](https://www.lilly.com/)[![Eli Lilly and Company
   logo](reference/figures/eli_lilly_and_company_logo.png)](https://www.lilly.com/)**.
@@ -42,15 +51,15 @@
 Source:
 [`DESCRIPTION`](https://github.com/pharmaverse/admiralneuro/blob/main/DESCRIPTION)
 
-Wang J, Almond M, Chen X, Gautier F, G. G, Jiang M, Khatri L, Mancini E,
-Nantz E, Patil L, Pelentrides C (2026). *admiralneuro: Neuroscience
-Extension Package for ADaM in 'R' Asset Library*. R package version
-0.2.1, <https://pharmaverse.github.io/admiralneuro/>.
+Wang J, Jiang M, Almond M, Chen X, Gautier F, G. G, Khatri L, Mancini E,
+Nantz E, Patil L, Pelentrides C, Withycombe K (2026). *admiralneuro:
+Neuroscience Extension Package for ADaM in 'R' Asset Library*. R package
+version 0.3.0, <https://pharmaverse.github.io/admiralneuro/>.
 
     @Manual{,
       title = {admiralneuro: Neuroscience Extension Package for ADaM in 'R' Asset Library},
-      author = {Jian Wang and Miles Almond and Xiao Chen and Fanny Gautier and Gayatri G. and Meilin Jiang and Leena Khatri and Edoardo Mancini and Eric Nantz and Lina Patil and Chris Pelentrides},
+      author = {Jian Wang and Meilin Jiang and Miles Almond and Xiao Chen and Fanny Gautier and Gayatri G. and Leena Khatri and Edoardo Mancini and Eric Nantz and Lina Patil and Chris Pelentrides and Katie Withycombe},
       year = {2026},
-      note = {R package version 0.2.1},
+      note = {R package version 0.3.0},
       url = {https://pharmaverse.github.io/admiralneuro/},
     }
