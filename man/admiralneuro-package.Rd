@@ -20,16 +20,16 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jian Wang \email{wang_jian_wj@lilly.com} (\href{https://orcid.org/0009-0002-4677-3781}{ORCID})
+\strong{Maintainer}: Meilin Jiang \email{meilin.jiang@lilly.com} (\href{https://orcid.org/0000-0003-4515-4567}{ORCID})
 
 Authors:
 \itemize{
-  \item Jian Wang \email{wang_jian_wj@lilly.com} (\href{https://orcid.org/0009-0002-4677-3781}{ORCID})
+  \item Meilin Jiang \email{meilin.jiang@lilly.com} (\href{https://orcid.org/0000-0003-4515-4567}{ORCID})
+  \item Jian Wang (\href{https://orcid.org/0009-0002-4677-3781}{ORCID})
   \item Miles Almond (\href{https://orcid.org/0009-0007-1784-0355}{ORCID})
   \item Xiao Chen (\href{https://orcid.org/0009-0000-6959-5151}{ORCID})
   \item Fanny Gautier (\href{https://orcid.org/0009-0004-3581-0131}{ORCID})
   \item Gayatri G.
-  \item Meilin Jiang (\href{https://orcid.org/0000-0003-4515-4567}{ORCID})
   \item Leena Khatri (\href{https://orcid.org/0000-0002-2268-4023}{ORCID})
   \item Edoardo Mancini (\href{https://orcid.org/0009-0006-4899-8641}{ORCID})
   \item Eric Nantz
