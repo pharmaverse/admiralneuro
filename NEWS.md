@@ -1,4 +1,9 @@
-# admiralneuro (development version)
+# admiralneuro 0.3.1
+- Fixed release typo in the Changelog (NEWS.md).
+
+Note: no further updates were made in this release, so this release has not been sent to CRAN. 
+
+# admiralneuro 0.3.0
 
 ## Template programs
 
