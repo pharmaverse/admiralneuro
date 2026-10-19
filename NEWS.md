@@ -1,4 +1,18 @@
-# admiralneuro (development version)
+# admiralneuro 0.3.1
+- Fixed release typo in the Changelog (NEWS.md).
+
+## Various
+
+<details>
+<summary>Developer Notes</summary>
+
+- Added the pharmaverse Slack link (https://pharmaverse.slack.com/) to `.lycheeignore` for a successful CI/CD Links/Validate Links workflow run. Update to roxygen2 8.1.1. (#143)
+
+</details>
+
+Note: no further updates were made in this release, so this release has not been sent to CRAN. 
+
+# admiralneuro 0.3.0
 
 ## Template programs
 
