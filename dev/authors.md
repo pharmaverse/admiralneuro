@@ -2,8 +2,11 @@
 
 ## Authors
 
-- **[Jian Wang](https://github.com/jwang-lilly)**. Author, maintainer.
+- **[Jian Wang](https://github.com/jwang-lilly)**. Author.
   [](https://orcid.org/0009-0002-4677-3781)
+
+- **[Meilin Jiang](https://github.com/meilinjiang)**. Author,
+  maintainer. [](https://orcid.org/0000-0003-4515-4567)
 
 - **[Miles Almond](https://github.com/MilesAlmond)**. Author.
   [](https://orcid.org/0009-0007-1784-0355)
@@ -15,9 +18,6 @@
   [](https://orcid.org/0009-0004-3581-0131)
 
 - **[Gayatri G.](https://github.com/gg106046)**. Author.
-
-- **[Meilin Jiang](https://github.com/meilinjiang)**. Author.
-  [](https://orcid.org/0000-0003-4515-4567)
 
 - **[Leena Khatri](https://github.com/khatril)**. Author.
   [](https://orcid.org/0000-0002-2268-4023)
@@ -51,15 +51,15 @@
 Source:
 [`DESCRIPTION`](https://github.com/pharmaverse/admiralneuro/blob/main/DESCRIPTION)
 
-Wang J, Almond M, Chen X, Gautier F, G. G, Jiang M, Khatri L, Mancini E,
+Wang J, Jiang M, Almond M, Chen X, Gautier F, G. G, Khatri L, Mancini E,
 Nantz E, Patil L, Pelentrides C, Withycombe K (2026). *admiralneuro:
 Neuroscience Extension Package for ADaM in 'R' Asset Library*. R package
-version 0.2.1.9004, <https://pharmaverse.github.io/admiralneuro/>.
+version 0.3.1.9000, <https://pharmaverse.github.io/admiralneuro/>.
 
     @Manual{,
       title = {admiralneuro: Neuroscience Extension Package for ADaM in 'R' Asset Library},
-      author = {Jian Wang and Miles Almond and Xiao Chen and Fanny Gautier and Gayatri G. and Meilin Jiang and Leena Khatri and Edoardo Mancini and Eric Nantz and Lina Patil and Chris Pelentrides and Katie Withycombe},
+      author = {Jian Wang and Meilin Jiang and Miles Almond and Xiao Chen and Fanny Gautier and Gayatri G. and Leena Khatri and Edoardo Mancini and Eric Nantz and Lina Patil and Chris Pelentrides and Katie Withycombe},
       year = {2026},
-      note = {R package version 0.2.1.9004},
+      note = {R package version 0.3.1.9000},
       url = {https://pharmaverse.github.io/admiralneuro/},
     }
