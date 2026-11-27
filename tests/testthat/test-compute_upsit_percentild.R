@@ -268,3 +268,28 @@ test_that("compute_upsit_percentile returns consistent results for repeated call
 
   expect_equal(result1, 19)
 })
+
+# Test 13: Fractional ages between integer bracket boundaries ----
+test_that("compute_upsit_percentile handles fractional ages across bracket boundaries", {
+  # Ages in (54, 55), (59, 60), (64, 65), (69, 70), (74, 75), (79, 80)
+  # belong to the completed-year bracket (floor(age))
+  expect_equal(
+    compute_upsit_percentile(
+      sex = rep("M", 6),
+      age = c(54.5, 59.9, 64.1, 69.5, 74.9, 79.5),
+      upsit_score = rep(25, 6)
+    ),
+    compute_upsit_percentile(
+      sex = rep("M", 6),
+      age = c(54, 59, 64, 69, 74, 79),
+      upsit_score = rep(25, 6)
+    )
+  )
+
+  # Fractional ages below 50 remain NA, while 80+ matches 80+
+  expect_true(is.na(compute_upsit_percentile(sex = "M", age = 49.9, upsit_score = 25)))
+  expect_equal(
+    compute_upsit_percentile(sex = "M", age = 80.5, upsit_score = 20),
+    compute_upsit_percentile(sex = "M", age = 80, upsit_score = 20)
+  )
+})
