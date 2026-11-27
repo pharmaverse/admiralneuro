@@ -75,13 +75,14 @@ compute_upsit_percentile <- function(sex, age, upsit_score) {
 
   # Process each element
   for (i in seq_len(n)) {
+    age_i <- floor(age[i])
     # Find matching row in lookup table
     # Handle age_high = NA for "80+" cases
     idx <- which(
       upsit_lookup$sex == sex[i] &
         upsit_lookup$upsit == upsit_score[i] &
-        age[i] >= upsit_lookup$age_low &
-        (is.na(upsit_lookup$age_high) | age[i] <= upsit_lookup$age_high)
+        age_i >= upsit_lookup$age_low &
+        (is.na(upsit_lookup$age_high) | age_i <= upsit_lookup$age_high)
     )
 
     # Assign percentile if match found
